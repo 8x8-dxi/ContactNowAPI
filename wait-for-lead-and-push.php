@@ -6,8 +6,8 @@
  * Time: 16:32
 
   This script receives a POST request from Easycontact Advance Outcome. Its purpose
-  is solely to move record fom one Campaign to another using a target_dataset_id 
-    set in the request url.
+  is solely to move record from one Campaign to another using a target_dataset_id 
+  set in the request url.
 
   Required Parameters
   target_dataset_id : The destination dataset ID the record should be pushed
@@ -17,8 +17,8 @@
   outcomecode : A Complete outcomecode for suppressing the original record. If
   provided the original record will be completed to prevent it from further dialling.
 
-    Exampale URL request
-    http://server2.aspinmedia.net/app/wait-for-lead-and-push.php?target_dataset_id=21&outcomecode=73543
+    Example URL request
+    http://my-site.com/wait-for-lead-and-push.php?target_dataset_id=DATASET-ID&outcomecode=OUTCOMECODE
  */
 include_once('./includes/api-wraper.php');
 
@@ -39,7 +39,7 @@ if (isset($request['target_dataset_id']) && isset($request['data']) && !empty($r
 
     $data['outcomecode'] = 109;
     $data['ProcessType'] = 'NEEDSMOREWORK';
-    $data['note'] = $date . " This record was moved From another Campaign with Dataset ID " . $data['datasetid'];
+    $data['notes_append'] = $date . " This record was moved From another Campaign with Dataset ID " . $data['datasetid'];
     unset($data['sourcefile'], $data['loaddate'], $data['id']);
     $data['dataset'] = $data['datasetid'] = $target_dataset_id;
 
@@ -52,7 +52,8 @@ if (isset($request['target_dataset_id']) && isset($request['data']) && !empty($r
             $response = api_ecnow('ecnow_records', 'update', array(
                 'id' => $originalId,
                 'dataset' => $originalDataset,
-                'outcomecode' => intval($request['outcomecode'])
+                'outcomecode' => intval($request['outcomecode']),
+                'notes_append' => $date.' Record completed via API'
             ));
             error_log(print_r($response, true));
         }
