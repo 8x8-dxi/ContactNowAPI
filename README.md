@@ -1,5 +1,5 @@
 
-# ![ContactNow Logo Here](https://github.com/8x8-dxi/ContactNowAPI/tree/master/images/ContactNow-Contact-Centre-Software.svg) API
+# ![ContactNow Logo Here](https://raw.githubusercontent.com/8x8-dxi/ContactNowAPI/master/images/ContactNow-Contact-Centre-Software.svg) API
 
 This technical document is intended for CRUD*ing* the ContactNow API. The document
 will fucus on using a PHP wrapper to describe how you can achieve posting/reading
