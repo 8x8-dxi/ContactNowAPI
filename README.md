@@ -11,9 +11,10 @@ the frequency/rate at which you dial a specific customer record**
 **[8x8 ContactNow API v2](#8x8-contactnow-api-v2)**<br>
 **[API Domains](#api-domains)**<br>
 **[API Endpoints Scripts](#api-endpoints-scripts)**<br>
-**[API Endpoint Request format](#api-endpoint-request-format)**<br>
+**[API Endpoint Request Format](#api-endpoint-request-format)**<br>
 **[API Scripts Name](#api-scripts-name)**<br>
 **[A high level API diagram](#a-high-level-api-diagram)**<br>
+**[PHP Client Script](#php-client-script)**<br>
 
 ### 8x8 ContactNow API v2
 The version 2 of the API is built on a legacy web service which is still currently
@@ -29,12 +30,12 @@ That said, we have a new kid on the block and it's... API v3! Version 3 is the n
 but it's currently geared towards Agent actions once logged in to the dialler. So, for the purpose of keeping 
 things simple we will focus on API v2.
 
-### Accessing the API
+## Accessing the API
 To get access to the 8x8 ContactNow API you will need an 8x8 ContactNow Contact Centre (center *for the US*!) account.
 Once you have a contact centre, you can request for an API credentials from our support team.
 
 
-### API Domains
+## API Domains
 There are various API domains of the 8x8 ContactNow API depending on the login URL you use when logging
 on to your Contact Centre. To help you determine your API BASE URL refer to the table below. Using the 
 wrong API base URL will result o invalid result.
@@ -45,18 +46,18 @@ https://app.easycontactnow.com | [https://api-106.dxi.eu/](https://api-106.dxi.e
 https://app.contactnow.8x8.com | [https://api.contactnow.8x8.com/api/](https://api.contactnow.8x8.com/api/token.php?action=get&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD) | United States
 
 
-### API Endpoints Scripts
+## API Endpoints Scripts
 As earlier stated the version 2 of the API does not fully implement the concept of
 a REST*ful* web service in the sense that you would have to append a script to the base url which defines
 a certain set of methods and actions.
 
-###### API Endpoint Request format 
+### API Endpoint Request Format 
 `API BASE URL/scriptName.php?`
 
 This section aims to list the various endpoints and scripts that can be used for certain
 type of data manipulation. 
 
-#### API Scripts Name
+### API Scripts Name
 
 1. #### token.php
 
@@ -101,10 +102,12 @@ type of data manipulation.
 ![API Diagram](https://raw.githubusercontent.com/8x8-dxi/ContactNowAPI/master/images/High-level-API-diagram.png)
 
 
-#
+## PHP Client Script
+This part of the documentation will aim to simplify CRUD*ing* the API. The php client script
+contains functions which act as API wrappers functions. The aim is to save you some valuable
+time of trying to understand the semantics of the core API.
 
-#Table of Contents
-[Authentication & Token]()
+
 Initialise the following API credentials in includes/api-wraper.php
 
 define('API_H', 'https://api-106.dxi.eu');
