@@ -49,20 +49,22 @@ This section aims to list the various endpoints and scripts that can be used for
 type of data manipulation. 
 
 #### Scripts (in other of importance)
-1. token.php
+1. ##### token.php
 
     The token endpoint provides access to the 8x8 ContactNow API interface.
-2. ecnow.php
+2. ##### ecnow.php
 
     This endpoint is the mostly widely used API which allows dynamic data feed in/out of
     the dialler.
 
-3. database.php
+3. ##### database.php
+
     The database endpoint designed for dialler and logic
-4. ajax.php
-5. reporting.php
-6. recording.php
-7. click2dial.php
+
+4. ##### ajax.php
+5. ##### reporting.php
+6. ##### recording.php
+7. ##### click2dial.php
 8. ~~agent.php~~
 
 
