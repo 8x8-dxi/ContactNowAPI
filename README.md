@@ -28,7 +28,7 @@ on to your Contact Centre. To help you determine your API URL refer to the table
 https://app.easycontactnow.com
 
 Login URL | API URL | Location
-------------------------------
+----------|---------|---------
 https://app.easycontactnow.com | [https://api-106.dxi.eu/](https://api-106.dxi.eu/token.php?action=get&username=&password=) | United Kingdom
 https://app.contactnow.8x8.com | [https://api.contactnow.8x8.com/api/](https://api.contactnow.8x8.com/api/token.php?action=get&username=&password=) | United States
 
