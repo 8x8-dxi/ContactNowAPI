@@ -10,7 +10,7 @@ the frequency/rate at which you dial a specific customer record**
 # Table of Contents
 **[8x8 ContactNow API v2](#8x8-contactnow-api-v2)**<br>
 **[API Domains](#api-domains)**<br>
-**[API Endpoints/Scripts](#api-endpoints-scripts)**<br>
+**[API Endpoints Scripts](#api-endpoints-scripts)**<br>
 **[API Endpoint Request format](#api-endpoint-request-format)**<br>
 **[API Scripts Name](#api-scripts-name)**<br>
 **[A high level API diagram](#a-high-level-api-diagram)**<br>
@@ -45,7 +45,7 @@ https://app.easycontactnow.com | [https://api-106.dxi.eu/](https://api-106.dxi.e
 https://app.contactnow.8x8.com | [https://api.contactnow.8x8.com/api/](https://api.contactnow.8x8.com/api/token.php?action=get&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD) | United States
 
 
-### API Endpoints/Scripts
+### API Endpoints Scripts
 As earlier stated the version 2 of the API does not fully implement the concept of
 a REST*ful* web service in the sense that you would have to append a script to the base url which defines
 a certain set of methods and actions.
