@@ -1,9 +1,22 @@
+# ![8x8 ContactNow API](https://raw.githubusercontent.com/8x8-dxi/ContactNowAPI/master/images/8x8ContactNow.png) API
 
-# ![ContactNow Logo Here](https://raw.githubusercontent.com/8x8-dxi/ContactNowAPI/master/images/8x8ContactNow.png) API
+This technical documentation is aimed at the very technical minded person/developers willing
+to use the ContactNow API v2 for data manipulation in and out of the 8x8 ContactNow Dialler (Dialer US).
 
-This technical document is intended for CRUD*ing* the ContactNow API. The document
-will fucus on using a PHP wrapper to describe how you can achieve posting/reading
-data from the ContactNow API
+**It is worth noting that the use of 8x8 ContactNow API for manipulating data on your dialling list/Campaign
+comes at your own risk! You MUST understand the national/local legal implications governing
+the frequency/rate at which you dial a specific customer record**
+
+###8x8 ContactNow API v2
+The version 2 of the API is built on a legacy RESTful web service which is still currently
+being used by 99.9% of our clients. This is to assure you that it is still here to stay for
+a long while! It is also still being heavily support by our product team hence why I have 
+decided to spend some time to documenting it to the very best of my knowledge. 
+
+That said, we have a new kid on the block and it's... API v3! Version 3 is the next big thing 
+but it's currently geared towards Agent actions once logged in to the dialler. 
+For the purpose of keeping things simple we will focus on API v2.
+
 
 A ContactNow account is required for using the API. Once you have a contact centre
 you can request for an API credentials which is tied to your contact centre.
@@ -12,7 +25,7 @@ The API credential comes with a username and password as it required for POST*in
 and GET*ing* data.
 
 #Table of Contents
-[Generating a authentication token]()
+[Authentication & Token]()
 Initialise the following API credentials in includes/api-wraper.php
 
 define('API_H', 'https://api-106.dxi.eu');
