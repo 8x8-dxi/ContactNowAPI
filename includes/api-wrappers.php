@@ -6,20 +6,26 @@
 
  */
 
-define('LOG_PATH', '/tmp/');
+define('LOG_PATH', '/tmp/api_imports/');
 define('LOG_FILE', '/tmp/contactNow-error.log');
 
 define('API_H', 'https://api-106.dxi.eu');
 define('API_U', '');
 define('API_P', '');
-define('CAMPAIGN', 0);
+define('CCID', 0);
 
 $API_H = API_H;
 $API_U = API_U;
 $API_P = API_P;
 
-// Make a curl request to a url with any request types
-function request($url, $post = array(), $import = "") {
+/**
+ * Make a curl request to a url with any request types
+ * @param type $url API Base URL including the script name
+ * @param type $post POST data
+ * @param type $import
+ * @return type
+ */
+function post_request($url, $post = array(), $import = "") {
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:'));
     curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8');
@@ -28,7 +34,7 @@ function request($url, $post = array(), $import = "") {
     if (!empty($import)) {
         $id = uniqid();
         $filename = "import-$id.json";
-        $dir_name = LOG_PATH."/api_imports";
+        $dir_name = LOG_PATH;
 
         if (!is_dir($dir_name)) {
             mkdir($dir_name);
@@ -57,45 +63,25 @@ function request($url, $post = array(), $import = "") {
     return $postResult;
 }
 
-// Upload a file on disk to a url
-function api_upload_raw_file($fname, $url) {
-    if (preg_match('/(^$|\s)/', $fname)) {
-        return array(false, "The filename cannot contain whitespaces.");
-    }
-    if (!file_exists($fname)) {
-        return array(false, "Did not find file to upload: $fname");
-    }
-    // Send file to API
-    log_debug("API Upload: \n\tURL: $url\n\tFilename: $fname");
-    $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, array('easycall' => "@{$fname}"));
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:'));
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    $return = curl_exec($ch);
-    curl_close($ch);
-    log_debug("API Response: \n$return");
-
-    return array(true, $return);
-}
-
-// Get a DXI API authentication token
+/**
+ * Get a DXI API authentication token
+ * @global url $API_H
+ * @global string $API_U
+ * @global string $API_P
+ * @return string
+ */
 function get_auth_token() {
     global $API_H, $API_U, $API_P;
-    if (!preg_match("/^http/i", $API_H)) {
-        $API_H = "http://$API_H";
-    }
     $url = "{$API_H}/token.php?action=get&format=json&username=$API_U&password=$API_P";
     $post = http_build_query(
         array('username' => $API_U, 'password' => $API_P)
     );
-    $opts = array('http' =>
+    $context  = stream_context_create(array('http' =>
         array(
             'method'  => 'GET',
             'header'  => 'Content-type: application/x-www-form-urlencoded',
         )
-    );
-
-    $context  = stream_context_create($opts);
+    ));
 
     $raw = file_get_contents($url, false, $context);
 
@@ -106,42 +92,29 @@ function get_auth_token() {
         $msg .= "\nAPI Call Response:\n$raw\n\n";
         file_put_contents(LOG_FILE, $msg, FILE_APPEND);
     }
-
-
     if (empty($json['token'])) {
-        return '';
+        throw new Exception(print_r($json, true));
     }
-
-    //echo print_r($json['token'], true)."\n";
     return $json['token'];
 }
 
 /**
- * @param $script
- * @param $get
- * @param $post
- * @param $import
+ * Call a DXI APIs, 
+ * @global ulr $API_H
+ * @global bool $DebugAPI
+ * @global string $API_TOKEN
+ * @global link $logFile
+ * @global bool $LOGGING_ENABLED
+ * @global bool $Debug
+ * @param string $script
+ * @param array $get
+ * @param array $post
+ * @param array $import
+ * @return array
  */
-function decorateDxiRequest($script, &$get, &$post, $import)
-{
-    global $ROOT_PROTOCOL, $ROOT_URL, $MIDDLEWARE_SUBDIR;
-
-    if (
-        $script == "database"
-        && isset($get["method"]) && $get["method"] == "agents"
-        && isset($get["action"]) && in_array($get["action"], array("create", "update"))
-    ) {
-        $post["middleware"] = $ROOT_PROTOCOL . $ROOT_URL . $MIDDLEWARE_SUBDIR;
-    }
-}
-
-
-// Call a DXI api, auto place campaign argument if not browsing as reseller
 function dxi($script, $get = array(), $post = array(), $import = array()) {
     global $API_H, $DebugAPI, $API_TOKEN;
     global $logFile, $LOGGING_ENABLED, $Debug;
-
-    decorateDxiRequest($script, $get, $post, $import);
 
     // Check we have a valid token or get a new one
     if (!isset($API_TOKEN)) {
@@ -152,7 +125,7 @@ function dxi($script, $get = array(), $post = array(), $import = array()) {
     if (!empty($DebugAPI)) {
         $get['debug'] = "1";
     }
-    $get['campaign'] = CAMPAIGN;
+    $get['campaign'] = CCID;
 
     $url = "{$API_H}/$script.php?" . http_build_query($get);
     log_debug("API Call: \nURL: $url\n" . print_r($post, true) . print_r($import, true));
@@ -162,7 +135,7 @@ function dxi($script, $get = array(), $post = array(), $import = array()) {
     }
     $t = microtime(true);
     log_debug("--URL: $url\n ".print_r($post, true). "\n ".print_r($import, true));
-    $response = request($url, $post, $import);
+    $response = post_request($url, $post, $import);
     $dur = round(microtime(true) - $t, 3);
 
     $json = json_decode($response, true);
@@ -182,7 +155,7 @@ function dxi($script, $get = array(), $post = array(), $import = array()) {
         $API_TOKEN = get_auth_token();
         $get['token'] = $API_TOKEN;
         $url = "{$API_H}/$script.php?" . http_build_query($get);
-        $response = request($url, $post, $import);
+        $response = post_request($url, $post, $import);
 
         $json = json_decode($response, true);
     }
@@ -202,16 +175,16 @@ function dxi($script, $get = array(), $post = array(), $import = array()) {
     return $json;
 }
 
-// A general function, should be avoided, an alias for each type is better, used by api_db and api_ecnow
-function api($script, $method, $action, $data = array()) {
-    build_request($action, $get, $post, $import, $data);
-    $get['method'] = $method;
-    $get['action'] = $action;
-    return dxi($script, $get, $post, $import);
-}
-
-// Useful for ecnow and database APIs, will place data into import for create / update / delete
-function build_request(&$action, &$get, &$post, &$import, &$data) {
+/**
+ * Useful for ecnow and database APIs, will place data into import for create / update / delete
+ * Note the memory reference on the parameters
+ * @param string $action
+ * @param array $get
+ * @param array $post
+ * @param array $import
+ * @param array $data
+ */
+function build_request_data(&$action, &$get, &$post, &$import, &$data) {
     $get = $post = $import = array();
     if (in_array($action, array('create', 'update', 'delete'))) {
         if (is_array($data)) {
@@ -224,6 +197,22 @@ function build_request(&$action, &$get, &$post, &$import, &$data) {
     } else {
         $post = $data;
     }
+}
+
+
+/**
+ * A general function, should be avoided, an alias for each type is better, used by api_db and api_ecnow
+ * @param string $script
+ * @param string $method
+ * @param string $action
+ * @param array $data
+ * @return array
+ */
+function api($script, $method, $action, $data = array()) {
+    build_request_data($action, $get, $post, $import, $data);
+    $get['method'] = $method;
+    $get['action'] = $action;
+    return dxi($script, $get, $post, $import);
 }
 
 /**
@@ -256,7 +245,13 @@ function pullExtraComponents($result, $method){
     }
     return $result;
 }
-
+/**
+ * Helper function
+ * @param type $result
+ * @param type $method
+ * @param type $action
+ * @return type
+ */
 function persistExtraObjects($result, $method, $action){
     // We expect result to contain success (boolean) and list (array
     if (!empty($result['success']) || !empty($result['list'])){
@@ -283,17 +278,6 @@ function api_db($method, $action, $data = array()) {
     if ($method == "ecnow_datasets") {
         return api_ecnow($method, $action, $data);
     }
-
-    // filter out deleted (999) and default pbx (505050) queues and agents if not filtering on something else already
-    if ($action == "read" && ($method == "queues" || $method == "agents") && !isset($data['filter'])) {
-        $data['filter'] = "NOT IN (999, 505050)";
-    }
-
-    // filter out deleted campaigns
-    if ($action == "read" && $method == "campaigns" && !isset($data['state'])) {
-        $data['state'] = "active";
-    }
-
     // call the api
     $result = api("database", $method, $action, $data);
 
@@ -319,9 +303,6 @@ function api_reporting($method, $post = array()) {
 // Alias for agent api
 function api_agent($action, $get = array()) {
     $get['action'] = $action;
-    if (empty($get['agent']) && !empty($_SESSION['agent'])) {
-        $get['agent'] = $_SESSION['agent'];
-    }
     return dxi("agent", $get);
 }
 
@@ -337,20 +318,34 @@ function api_ajax($method, $get = array()) {
     return dxi("ajax", $get, null, null);
 }
 
-
-// alias for memstore api
-function api_memstore($action, $get) {
-    $get['action'] = $action;
-    $post = array();
-    if (isset($get['data'])) {
-        $post['data'] = $get['data'];
+/**
+ * Upload a file on disk.
+ * @param type $fname
+ * @param type $url
+ * @return type
+ */
+function api_upload_raw_file($fname, $url) {
+    if (preg_match('/(^$|\s)/', $fname)) {
+        return array(false, "The filename cannot contain whitespaces.");
     }
-    unset($get['data']);
-    return dxi("memstore", $get, $post);
+    if (!file_exists($fname)) {
+        return array(false, "Did not find file to upload: $fname");
+    }
+    // Send file to API
+    log_debug("API Upload: \n\tURL: $url\n\tFilename: $fname");
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, array('easycall' => "@{$fname}"));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:'));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    $return = curl_exec($ch);
+    curl_close($ch);
+    log_debug("API Response: \n$return");
+
+    return array(true, $return);
 }
 
 // Upload an audio file to the api
-function api_upload_audio_file($wave_file_path, $wave_file_name, $campaign_id = 0, $transcript = "") {
+function api_upload_audio_file($wave_file_path, $wave_file_name, $ccid = 0, $transcript = "") {
     global $API_H, $API_U, $API_P, $Debug, $API_TOKEN;
     if (!preg_match("/^http/i", $API_H)) {
         $API_H = "http://$API_H";
@@ -364,11 +359,11 @@ function api_upload_audio_file($wave_file_path, $wave_file_name, $campaign_id = 
         $API_TOKEN = get_auth_token();
     }
     $url .= "&token={$API_TOKEN}";
-    if (empty($campaign_id) && !empty($_SESSION['campaign_id'])) {
-        $campaign_id = $_SESSION['campaign_id'];
+    if (empty($ccid) && !empty($_SESSION['ccid'])) {
+        $ccid = $_SESSION['ccid'];
     }
-    if (!empty($campaign_id)) {
-        $url .= "&campaign=$campaign_id";
+    if (!empty($ccid)) {
+        $url .= "&campaign=$ccid";
     }
     $fname = "$wave_file_path/$wave_file_name";
     list ($rc, $return) = api_upload_raw_file($fname, $url . '&action=create');
@@ -392,7 +387,7 @@ function api_upload_audio_file($wave_file_path, $wave_file_name, $campaign_id = 
 }
 
 /**
- * HtmlEntities for all arrays and subarray values
+ * HtmlEntities for all arrays and sub array values
  * The scope is to apply it for all API responses
  *
  * @param array or string $values by reference
