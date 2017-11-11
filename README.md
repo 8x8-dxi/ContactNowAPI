@@ -50,24 +50,42 @@ type of data manipulation.
 
 #### API Scripts Name (in other of importance)
 
-1. ##### token.php
+1. #### token.php
 
     The token endpoint provides access to the 8x8 ContactNow API interface.
 
-2. ##### ecnow.php
+2. #### ecnow.php
 
-    This endpoint is the mostly widely used API. It allows dynamic data feed in/out of
-    the dialler.
+    This endpoint is the most widely used API. It allows dynamic data/record feed in/out of
+    the campaign database and the dialler.
 
-3. ##### database.php
+3. #### database.php
 
-    The database endpoint designed for dialler and logic
+    The database endpoint enable a user to dynamically configure various components of the contact centre.
+    This include the ability to manipulate campaign settings, Campaign/Queue assignments to Agents and many more.
 
-4. ##### ajax.php
-5. ##### reporting.php
-6. ##### recording.php
-7. ##### click2dial.php
-8. ~~agent.php~~
+4. #### ajax.php
+
+    The Ajax API is used for retrieving live statistics of your contact centre activities such as
+    status board agents, outgoing/incoming calls and more.
+
+5. #### reporting.php
+
+    This endpoint handles your reporting need
+
+6. #### recording.php
+
+    This endpoint allow you to pull down your call recording (if any)
+
+7. #### click2dial.php
+
+    For customers wanting to initiate a call from a web site to an online agent on the dialler.
+
+8. ~~agent.php~~ 
+    
+    The agent endpoint allows an agent to manipulate live calls and status change. To use this endpoint 
+    you would have to constantly poll to receive any state change. This is where API v3 comes in as implement
+    a WebSocket layer aid a push notification for when it detect a change in status.
 
 
 
