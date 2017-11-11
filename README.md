@@ -14,15 +14,26 @@ a long while! It is also still being heavily support by our product team hence w
 decided to spend some time to documenting it to the very best of my knowledge. 
 
 That said, we have a new kid on the block and it's... API v3! Version 3 is the next big thing 
-but it's currently geared towards Agent actions once logged in to the dialler. 
-For the purpose of keeping things simple we will focus on API v2.
+but it's currently geared towards Agent actions once logged in to the dialler. So, 
+for the purpose of keeping things simple we will focus on API v2.
+
+### Accessing the API
+To get access to the 8x8 ContactNow API you will need an ContactNow account in the form of a Contact Centre (center of the US!).
+Once you have a contact centre you can request for an API credentials which is tied to your contact centre.
+
+### API Domains
+There are various domains of the 8x8 ContactNow API depending on the base URL you use when logging
+on to your Contact Centre. To help you determine your API URL refer to the table below
+
+https://app.easycontactnow.com
+
+Login URL | API URL | Location
+------------------------------
+https://app.easycontactnow.com | [https://api-106.dxi.eu/](https://api-106.dxi.eu/token.php?action=get&username=&password=) | United Kingdom
+https://app.contactnow.8x8.com | [https://api.contactnow.8x8.com/api/](https://api.contactnow.8x8.com/api/token.php?action=get&username=&password=) | United States
 
 
-A ContactNow account is required for using the API. Once you have a contact centre
-you can request for an API credentials which is tied to your contact centre.
 
-The API credential comes with a username and password as it required for POST*ing*
-and GET*ing* data.
 
 #Table of Contents
 [Authentication & Token]()
