@@ -19,7 +19,7 @@ $API_U = API_U;
 $API_P = API_P;
 
 // Make a curl request to a url with any request types
-function do_api_request($url, $post = array(), $import = "") {
+function request($url, $post = array(), $import = "") {
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:'));
     curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8');
@@ -116,13 +116,32 @@ function get_auth_token() {
     return $json['token'];
 }
 
+/**
+ * @param $script
+ * @param $get
+ * @param $post
+ * @param $import
+ */
+function decorateDxiRequest($script, &$get, &$post, $import)
+{
+    global $ROOT_PROTOCOL, $ROOT_URL, $MIDDLEWARE_SUBDIR;
+
+    if (
+        $script == "database"
+        && isset($get["method"]) && $get["method"] == "agents"
+        && isset($get["action"]) && in_array($get["action"], array("create", "update"))
+    ) {
+        $post["middleware"] = $ROOT_PROTOCOL . $ROOT_URL . $MIDDLEWARE_SUBDIR;
+    }
+}
+
 
 // Call a DXI api, auto place campaign argument if not browsing as reseller
-function dxi($type, $get = array(), $post = array(), $import = array(), $override_campaign = null) {
+function dxi($script, $get = array(), $post = array(), $import = array()) {
     global $API_H, $DebugAPI, $API_TOKEN;
     global $logFile, $LOGGING_ENABLED, $Debug;
 
-    decorateDxiRequest($type, $get, $post, $import, $override_campaign);
+    decorateDxiRequest($script, $get, $post, $import);
 
     // Check we have a valid token or get a new one
     if (!isset($API_TOKEN)) {
@@ -133,18 +152,9 @@ function dxi($type, $get = array(), $post = array(), $import = array(), $overrid
     if (!empty($DebugAPI)) {
         $get['debug'] = "1";
     }
-    // apply campaign argument
-    if (isset($override_campaign)) {
-        $get['campaign'] = $override_campaign;
-    } else if (!empty($_SESSION['campaign_id'])) {
-        if (empty($_SESSION['reseller_id'])) {
-            $get['campaign'] = $_SESSION['campaign_id'];
-        } else if (!empty($_SESSION['campaign_id']) && strpos($_SERVER['REQUEST_URI'], "/reseller/") === false && strpos(isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : "", "/reseller/") === false) {
-            $get['campaign'] = $_SESSION['campaign_id'];
-        }
-    }
+    $get['campaign'] = CAMPAIGN;
 
-    $url = "{$API_H}/$type.php?" . http_build_query($get);
+    $url = "{$API_H}/$script.php?" . http_build_query($get);
     log_debug("API Call: \nURL: $url\n" . print_r($post, true) . print_r($import, true));
     $import = json_encode($import);
     if ($import[0] != "[") {
@@ -152,7 +162,7 @@ function dxi($type, $get = array(), $post = array(), $import = array(), $overrid
     }
     $t = microtime(true);
     log_debug("--URL: $url\n ".print_r($post, true). "\n ".print_r($import, true));
-    $response = do_api_request($url, $post, $import);
+    $response = request($url, $post, $import);
     $dur = round(microtime(true) - $t, 3);
 
     $json = json_decode($response, true);
@@ -171,8 +181,8 @@ function dxi($type, $get = array(), $post = array(), $import = array(), $overrid
     ) {
         $API_TOKEN = get_auth_token();
         $get['token'] = $API_TOKEN;
-        $url = "{$API_H}/$type.php?" . http_build_query($get);
-        $response = do_api_request($url, $post, $import);
+        $url = "{$API_H}/$script.php?" . http_build_query($get);
+        $response = request($url, $post, $import);
 
         $json = json_decode($response, true);
     }
@@ -193,11 +203,11 @@ function dxi($type, $get = array(), $post = array(), $import = array(), $overrid
 }
 
 // A general function, should be avoided, an alias for each type is better, used by api_db and api_ecnow
-function api($type, $method, $action, $data = array(), $override_campaign = null) {
+function api($script, $method, $action, $data = array()) {
     build_request($action, $get, $post, $import, $data);
     $get['method'] = $method;
     $get['action'] = $action;
-    return dxi($type, $get, $post, $import, $override_campaign);
+    return dxi($script, $get, $post, $import);
 }
 
 // Useful for ecnow and database APIs, will place data into import for create / update / delete
@@ -216,11 +226,62 @@ function build_request(&$action, &$get, &$post, &$import, &$data) {
     }
 }
 
+/**
+ * Pull extra configuration from related components
+ * @param type $result
+ * @param type $method
+ * @return type
+ */
+function pullExtraComponents($result, $method){
+    $ecnow = array(); $uids = ''; $sep = '';
+    $filters = array('queues' => 'qid', 'agents' => 'agent', 'outcomecodes' => 'outcome');
+    foreach ($result['list'] as $obj) {
+        $uids .= $sep . $obj[$keys[$method]];
+        $sep = ',';
+    }
+    $export = api_ecnow("ecnow_$method", 'read', array($filters[$method] => $uids));
+    if (!empty($export['success']) && !empty($export['list']) ) {
+        foreach ($export['list'] as $item) {
+            $ecnow[$item[$keys[$method]]] = $item;
+        }
+    }
+    foreach ($result['list'] as &$obj) {
+        $key = $obj[$keys[$method]];
+        if (!isset($ecnow[$key])) continue;
+        foreach ($ecnow[$key] as $field => $value) {
+            if (!isset($obj[$field])) {
+                $obj[$field] = $value;
+            }
+        }
+    }
+    return $result;
+}
+
+function persistExtraObjects($result, $method, $action){
+    // We expect result to contain success (boolean) and list (array
+    if (!empty($result['success']) || !empty($result['list'])){
+        return $result;
+    }
+    $keys = array('queues' => 'qid', 'agents' => 'agentid', 'outcomecodes' => 'outcome');
+    if ($action == 'read') {
+        return pullExtraComponents($result, $method);
+    } else if ($action == 'update' || $action == 'create') {
+        if (!empty($result['key'])) {
+            $data[$keys[$method]] = $result['key'];
+        }
+        $result2 = api_ecnow("ecnow_$method", $action, $data);
+        if (!empty($result2['success']) && $result2['total'] > $result['total']) {
+            $result['total'] = $result2['total'];
+        }
+    }
+    return $result;
+}
+
 // Alias for database API
-function api_db($method, $action, $data = array(), $override_campaign = null) {
+function api_db($method, $action, $data = array()) {
     // redirect datasets method to ecnow api
     if ($method == "ecnow_datasets") {
-        return api_ecnow($method, $action, $data, $override_campaign);
+        return api_ecnow($method, $action, $data);
     }
 
     // filter out deleted (999) and default pbx (505050) queues and agents if not filtering on something else already
@@ -234,59 +295,25 @@ function api_db($method, $action, $data = array(), $override_campaign = null) {
     }
 
     // call the api
-    $result = api("database", $method, $action, $data, $override_campaign);
+    $result = api("database", $method, $action, $data);
 
     // merge ecnow queues and agents with dxi, on update send same data to both
     if (!empty($result['success']) && in_array($method, array('queues', 'agents', 'outcomecodes'))) {
-        $keys = array('queues' => 'qid', 'agents' => 'agentid', 'outcomecodes' => 'outcome');
-        if ($action == 'read') {
-            $ecnow = array();
-            $filters = array('queues' => 'qid', 'agents' => 'agent', 'outcomecodes' => 'outcome');
-            $uids = '';
-            $sep = '';
-            foreach ($result['list'] as $obj) {
-                $uids .= $sep . $obj[$keys[$method]];
-                $sep = ',';
-            }
-            $export = api_ecnow("ecnow_$method", 'read', array($filters[$method] => $uids), $override_campaign);
-            if (!empty($export['success'])) {
-                foreach ($export['list'] as $item) {
-                    $ecnow[$item[$keys[$method]]] = $item;
-                }
-            }
-            foreach ($result['list'] as &$obj) {
-                $key = $obj[$keys[$method]];
-                if (isset($ecnow[$key])) {
-                    foreach ($ecnow[$key] as $field => $value) {
-                        if (!isset($obj[$field])) {
-                            $obj[$field] = $value;
-                        }
-                    }
-                }
-            }
-        } else if ($action == 'update' || $action == 'create') {
-            if (!empty($result['key'])) {
-                $data[$keys[$method]] = $result['key'];
-            }
-            $result2 = api_ecnow("ecnow_$method", $action, $data, $override_campaign);
-            if (!empty($result2['success']) && $result2['total'] > $result['total']) {
-                $result['total'] = $result2['total'];
-            }
-        }
+        return persistExtraObjects($result, $method, $action);
     }
     return $result;
 }
 
 // Alias for report API (deprecated)
-function api_report($method, $post = array(), $override_campaign = null) {
+function api_report($method, $post = array()) {
     $get['method'] = $method;
-    return dxi("reports", $get, $post, null, $override_campaign);
+    return dxi("reports", $get, $post, null);
 }
 
 // Alias for reporting API (use this for all reporting when implementing new features)
-function api_reporting($method, $post = array(), $override_campaign = null) {
+function api_reporting($method, $post = array()) {
     $get['method'] = $method;
-    return dxi("reporting", $get, $post, null, $override_campaign);
+    return dxi("reporting", $get, $post, null);
 }
 
 // Alias for agent api
@@ -299,15 +326,15 @@ function api_agent($action, $get = array()) {
 }
 
 // ecnow api alias
-function api_ecnow($method, $action, $data = array(), $override_campaign = null) {
-    return api("ecnow", $method, $action, $data, $override_campaign);
+function api_ecnow($method, $action, $data = array()) {
+    return api("ecnow", $method, $action, $data);
 }
 
 // ajax api alias
-function api_ajax($method, $get = array(), $override_campaign = null) {
+function api_ajax($method, $get = array()) {
     $get['method'] = $method;
     $get['action'] = 'read';
-    return dxi("ajax", $get, null, null, $override_campaign);
+    return dxi("ajax", $get, null, null);
 }
 
 
@@ -380,28 +407,6 @@ function arrayHtmlEntities(&$values) {
         $values = htmlentities($values);
     }
 }
-
-/**
- * @param $type
- * @param $get
- * @param $post
- * @param $import
- * @param $override_campaign
- */
-function decorateDxiRequest($type, &$get, &$post, $import, $override_campaign)
-{
-    global $ROOT_PROTOCOL, $ROOT_URL, $MIDDLEWARE_SUBDIR;
-
-    if (
-        $type == "database"
-        && isset($get["method"]) && $get["method"] == "agents"
-        && isset($get["action"]) && in_array($get["action"], array("create", "update"))
-    ) {
-        $post["middleware"] = $ROOT_PROTOCOL . $ROOT_URL . $MIDDLEWARE_SUBDIR;
-    }
-}
-
-
 
 function log_debug($msg) {
     global $logFile, $LOGGING_ENABLED;

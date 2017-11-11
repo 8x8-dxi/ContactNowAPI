@@ -27,14 +27,40 @@ Once you have a contact centre, you can request for an API credentials from our 
 
 
 ### API Domains
-There are various domains of the 8x8 ContactNow API depending on the base URL you use when logging
-on to your Contact Centre. To help you determine your API URL refer to the table below
+There are various API domains of the 8x8 ContactNow API depending on the login URL you use when logging
+on to your Contact Centre. To help you determine your API BASE URL refer to the table below. Using the 
+wrong API base URL will result o invalid result.
 
-Login URL | API URL | Location
+Web Login URL | API BASE URL | Location
 ----------|---------|---------
 https://app.easycontactnow.com | [https://api-106.dxi.eu/](https://api-106.dxi.eu/token.php?action=get&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD) | United Kingdom
 https://app.contactnow.8x8.com | [https://api.contactnow.8x8.com/api/](https://api.contactnow.8x8.com/api/token.php?action=get&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD) | United States
 
+
+### API Endpoints/Scripts
+As earlier stated the version 2 of the API does not fully implement the concept of
+a REST*ful* web service in the sense that you would have to append a script to the base url which defines
+a certain set of methods and actions.
+
+###### Request format 
+`API BASE URL/scriptName.php?`
+
+This section aims to list the various endpoints and scripts that can be used for certain
+type of data manipulation. 
+
+#### Scripts (in other of importance)
+1. token.php
+    The token endpoint provides access to the 8x8 ContactNow API interface.
+2. ecnow.php
+    This endpoint is the mostly widely used API which allows dynamic data feed in/out of
+    the dialler.
+3. database.php
+    The database endpoint designed for dialler and logic
+4. ajax.php
+5. reporting.php
+6. recording.php
+7. click2dial.php
+8. ~~agent.php~~
 
 
 
