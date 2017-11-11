@@ -7,6 +7,14 @@ to use the ContactNow API v2 for data manipulation in and out of the 8x8 Contact
 comes at your very own risk! You MUST understand the national/local legal implications governing
 the frequency/rate at which you dial a specific customer record**
 
+# Table of Contents
+**[8x8 ContactNow API v2](#8x8-contactNow-api-v2)**<br>
+**[API Domains](#api-domains)**<br>
+**[API Endpoints/Scripts](#api-endpoints-scripts)**<br>
+**[API Endpoint Request format](#API-Endpoint-Request-format)**<br>
+**[API Scripts Name](#API-Scripts-Name)**<br>
+**[A high level API diagram](#A-high-level-API-diagram)**<br>
+
 ### 8x8 ContactNow API v2
 The version 2 of the API is built on a legacy web service which is still currently
 being used by 99.9% of our clients. The API v2 is not that REST*ful* as you would explicitly need to 
@@ -42,13 +50,13 @@ As earlier stated the version 2 of the API does not fully implement the concept 
 a REST*ful* web service in the sense that you would have to append a script to the base url which defines
 a certain set of methods and actions.
 
-###### Request format 
+###### API Endpoint Request format 
 `API BASE URL/scriptName.php?`
 
 This section aims to list the various endpoints and scripts that can be used for certain
 type of data manipulation. 
 
-#### API Scripts Name (in other of importance)
+#### API Scripts Name
 
 1. #### token.php
 
@@ -93,6 +101,7 @@ type of data manipulation.
 ![API Diagram](https://raw.githubusercontent.com/8x8-dxi/ContactNowAPI/master/images/High-level-API-diagram.png)
 
 
+#
 
 #Table of Contents
 [Authentication & Token]()
