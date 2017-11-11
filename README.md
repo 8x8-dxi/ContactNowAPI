@@ -84,8 +84,8 @@ type of data manipulation.
 8. ~~agent.php~~ 
     
     The agent endpoint allows an agent to manipulate live calls and status change. To use this endpoint 
-    you would have to constantly poll to receive any state change. This is where API v3 comes in as implement
-    a WebSocket layer aid a push notification for when it detect a change in status.
+    you would have to constantly poll to receive any state change. This is where API v3 comes in as its implement
+    a WebSocket layer to aid a push notification mechanism for when it detect a change in status.
 
 
 
