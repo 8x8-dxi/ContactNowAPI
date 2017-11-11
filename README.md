@@ -48,7 +48,7 @@ a certain set of methods and actions.
 This section aims to list the various endpoints and scripts that can be used for certain
 type of data manipulation. 
 
-#### Scripts (in other of importance)
+#### API Scripts Name (in other of importance)
 
 1. ##### token.php
 
@@ -72,7 +72,7 @@ type of data manipulation.
 
 
 ## A high level API diagram
-![API Diagram](https://raw.githubusercontent.com/8x8-dxi/ContactNowAPI/master/images/High-level-API-diagram.png) API
+![API Diagram](https://raw.githubusercontent.com/8x8-dxi/ContactNowAPI/master/images/High-level-API-diagram.png)
 
 
 
