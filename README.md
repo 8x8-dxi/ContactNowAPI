@@ -8,12 +8,12 @@ comes at your very own risk! You MUST understand the national/local legal implic
 the frequency/rate at which you dial a specific customer record**
 
 # Table of Contents
-**[8x8 ContactNow API v2](#8x8-contactNow-api-v2)**<br>
+**[8x8 ContactNow API v2](#8x8-contactnow-api-v2)**<br>
 **[API Domains](#api-domains)**<br>
 **[API Endpoints/Scripts](#api-endpoints-scripts)**<br>
-**[API Endpoint Request format](#API-Endpoint-Request-format)**<br>
-**[API Scripts Name](#API-Scripts-Name)**<br>
-**[A high level API diagram](#A-high-level-API-diagram)**<br>
+**[API Endpoint Request format](#api-endpoint-request-format)**<br>
+**[API Scripts Name](#api-scripts-name)**<br>
+**[A high level API diagram](#a-high-level-api-diagram)**<br>
 
 ### 8x8 ContactNow API v2
 The version 2 of the API is built on a legacy web service which is still currently
