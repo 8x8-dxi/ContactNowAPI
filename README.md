@@ -1,13 +1,13 @@
 # ![8x8 ContactNow API](https://raw.githubusercontent.com/8x8-dxi/ContactNowAPI/master/images/8x8ContactNow.png) API
 
 This technical documentation is aimed at the very technical minded person/developers willing
-to use the ContactNow API v2 for data manipulation in and out of the 8x8 ContactNow Dialler (Dialer US).
+to use the ContactNow API v2 for data manipulation in and out of the 8x8 ContactNow Dialler (Dialer US!).
 
 **It is worth noting that the use of 8x8 ContactNow API for manipulating data on your dialling list/Campaign
 comes at your own risk! You MUST understand the national/local legal implications governing
 the frequency/rate at which you dial a specific customer record**
 
-###8x8 ContactNow API v2
+### 8x8 ContactNow API v2
 The version 2 of the API is built on a legacy RESTful web service which is still currently
 being used by 99.9% of our clients. This is to assure you that it is still here to stay for
 a long while! It is also still being heavily support by our product team hence why I have 
