@@ -11,9 +11,9 @@ the frequency/rate at which you dial a specific customer record**
 **[8x8 ContactNow API v2](#8x8-contactnow-api-v2)**<br>
 **[API Domains](#api-domains)**<br>
 **[API Endpoints Scripts](#api-endpoints-scripts)**<br>
+**[High level API diagram](#high-level-api-diagram)**<br>
 **[API Endpoint Request Format](#api-endpoint-request-format)**<br>
 **[API Scripts Name](#api-scripts-name)**<br>
-**[A high level API diagram](#a-high-level-api-diagram)**<br>
 **[PHP Client Script](#php-client-script)**<br>
 
 ### 8x8 ContactNow API v2
@@ -60,7 +60,7 @@ API in XML then you need to append `&formart=xml` to your requests.
 This section aims to list the various endpoints and scripts that can be used for certain
 type of data manipulation. 
 
-## A high level API diagram
+## High level API diagram
 ![API Diagram](https://raw.githubusercontent.com/8x8-dxi/ContactNowAPI/master/images/High-level-API-diagram.png)
 
 
