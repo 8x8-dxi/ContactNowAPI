@@ -60,6 +60,10 @@ API in XML then you need to append `&formart=xml` to your requests.
 This section aims to list the various endpoints and scripts that can be used for certain
 type of data manipulation. 
 
+## A high level API diagram
+![API Diagram](https://raw.githubusercontent.com/8x8-dxi/ContactNowAPI/master/images/High-level-API-diagram.png)
+
+
 ### API Scripts Name
 
 1. #### token.php
@@ -165,12 +169,6 @@ type of data manipulation.
     The agent endpoint allows an agent to manipulate live calls and status change. To use this endpoint 
     you would have to constantly poll to receive any state change. This is where API v3 comes in as its implement
     a WebSocket layer to aid a push notification mechanism for when it detect a change in status.
-
-
-
-## A high level API diagram
-![API Diagram](https://raw.githubusercontent.com/8x8-dxi/ContactNowAPI/master/images/High-level-API-diagram.png)
-
 
 ## PHP Client Script
 This part of the documentation will aim to simplify CRUD*ing* the API. The php client script
