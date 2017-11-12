@@ -54,6 +54,9 @@ a certain set of methods and actions.
 ### API Endpoint Request Format 
 `API BASE URL/scriptName.php?`
 
+The API will by default return a JSON response for every request. If you speak XML and wish to consume the
+API in XML then you need to append `&formart=xml` to your requests.   
+
 This section aims to list the various endpoints and scripts that can be used for certain
 type of data manipulation. 
 
@@ -71,18 +74,25 @@ type of data manipulation.
     ##### Example
     For the EU region
     ```javascript
-    GET https://api-106.dxi.eu/token.php?action=get&username=**YOUR-API-USERNAME**&password=**YOUR-API-PASSWORD**
+    GET https://api-106.dxi.eu/token.php?action=get&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD
+    
+    // A failed API response will return the following JSON data
+    {
+        success: false,
+        error: "Authentication failure"
+    }
+
 
     // Validate a token
-    GET https://api-106.dxi.eu/api/token.php?action=validate&username=**YOUR-API-USERNAME**&password=**YOUR-API-PASSWORD**
+    GET https://api-106.dxi.eu/api/token.php?action=validate&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD
     ```
     For the US region
     ```javascript
     // get a token
-    GET https://api.contactnow.8x8.com/api/token.php?action=get&username=**YOUR-API-USERNAME**&password=**YOUR-API-PASSWORD**
+    GET https://api.contactnow.8x8.com/api/token.php?action=get&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD
 
     // Validate a token
-    GET https://api.contactnow.8x8.com/api/token.php?action=validate&username=**YOUR-API-USERNAME**&password=**YOUR-API-PASSWORD**
+    GET https://api.contactnow.8x8.com/api/token.php?action=validate&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD
     ```
 
 2. #### ecnow.php
