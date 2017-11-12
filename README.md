@@ -75,13 +75,6 @@ type of data manipulation.
     For the EU region
     ```javascript
     GET https://api-106.dxi.eu/token.php?action=get&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD
-    
-    // A failed API response will return the following JSON data
-    {
-        success: false,
-        error: "Authentication failure"
-    }
-
 
     // Validate a token
     GET https://api-106.dxi.eu/api/token.php?action=validate&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD
@@ -94,6 +87,16 @@ type of data manipulation.
     // Validate a token
     GET https://api.contactnow.8x8.com/api/token.php?action=validate&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD
     ```
+
+    ```json
+        
+    // A failed API response will return the following JSON data
+    {
+        success: false,
+        error: "Authentication failure"
+    }
+    ```
+
 
 2. #### ecnow.php
 
