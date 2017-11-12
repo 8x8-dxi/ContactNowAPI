@@ -70,26 +70,12 @@ type of data manipulation.
     The token endpoint provides access to the 8x8 ContactNow API interface.
     This endpoint does not implement any methods but come with two exposed actions    
 
-2. #### ecnow.php
+2. #### [ecnow.php](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md) See ecnow documentation
 
     This endpoint is the most widely used API. It allows dynamic data/record feed in/out of
     the campaign database and the dialler.
-    
-    ##### List of Methods
-    *ecnow_datasets*<br>
-    *ecnow_records*<br>
-    *campaign_tables*<br>
-    *campaign_fields*<br>
-    *ecnow_outcomecodes*<br>
 
-    ##### List of Action
-    *create*<br>
-    *read*<br>
-    *update*<br>
-    *delete*<br>
-
-
-3. #### database.php
+3. #### [database.php](https://github.com/8x8-dxi/ContactNowAPI/blob/master/DATABASE.md) See database documentation
 
     The database endpoint enable a user to dynamically configure various components of the contact centre.
     This include the ability to manipulate campaign settings, Campaign/Queue assignments to Agents and many more.

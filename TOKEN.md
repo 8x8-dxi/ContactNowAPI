@@ -16,6 +16,7 @@ For the US region
 GET https://api.contactnow.8x8.com/api/token.php?action=get&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD
 ```
 
+## Token Response
 ```json
 
 // A failed API response will return the following JSON object

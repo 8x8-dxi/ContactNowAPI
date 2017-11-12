@@ -136,7 +136,7 @@ function dxi($script, $get = array(), $post = array(), $import = array()) {
     global $logFile, $LOGGING_ENABLED, $Debug;
 
     // Check we have a valid token or get a new one
-    if (!isset($API_TOKEN)) {
+    if (!isset($API_TOKEN) || empty($API_TOKEN)) {
         $API_TOKEN = getTokenValue();
     }
     $get['token'] = $API_TOKEN;
