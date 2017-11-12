@@ -84,7 +84,7 @@ type of data manipulation.
 
     ##### Action
     *create*<br>
-    *read**<br>
+    *read*<br>
     *update*<br>
     *delete*<br>
 
