@@ -102,12 +102,13 @@ type of data manipulation.
         token: "13036ea7949b5f5bea79ca1d4c76cc2d56e2d9e8",
         expire: 1510514548
     }
-    
+    ```
     **Note**
     **A token lifespan is 11 hours and 59 seconds**
     The *expire* key of which value is the Unix timestamp the token will expire.
     Your returned token should be stored locally until you need to fetch a new one
 
+    ```javascript
     // A validation token request returns the following JSON Object
     {
         success: true,
