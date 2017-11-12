@@ -104,7 +104,7 @@ type of data manipulation.
     }
     ```
     **Note**<br>
-    **A token is bind to the source IP. Attempting to use a token on a different IP will invalidate the token!**<br>
+    **A token is bind to the source IP. Attempting to use a token from a different IP will return "Invalid token" error !**<br>
     **A token lifespan is 11 hours and 59 seconds**<br>
     The *expire* key of which value is the Unix timestamp indicate when the token value expires.
     Your returned token should be stored locally until you need to fetch a new one <br>
