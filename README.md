@@ -78,17 +78,11 @@ type of data manipulation.
     For the EU region
     ```javascript
     GET https://api-106.dxi.eu/token.php?action=get&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD
-
-    // Validate a token
-    GET https://api-106.dxi.eu/api/token.php?action=validate&token=TOKEN-VALUE
     ```
     For the US region
     ```javascript
     // get a token
     GET https://api.contactnow.8x8.com/api/token.php?action=get&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD
-
-    // Validate a token
-    GET https://api.contactnow.8x8.com/api/token.php?action=validate&token=TOKEN-VALUE
     ```
 
     ```json
@@ -119,6 +113,12 @@ type of data manipulation.
     The *expire* key of which value is the Unix timestamp indicate when the token value expires.
     Your returned token should be stored locally until you need to fetch a new one <br>
     
+
+    ```javascript
+    // Validate a token
+    GET https://api-106.dxi.eu/api/token.php?action=validate&token=TOKEN-VALUE
+    GET https://api.contactnow.8x8.com/api/token.php?action=validate&token=TOKEN-VALUE
+    ```
 
     ```json
     // A validation token request returns the following JSON Object
