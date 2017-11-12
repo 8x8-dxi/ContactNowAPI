@@ -88,31 +88,39 @@ type of data manipulation.
     GET https://api.contactnow.8x8.com/api/token.php?action=validate&token=TOKEN-VALUE
     ```
 
-    ```javascript
+    ```json
         
     // A failed API response will return the following JSON object
     {
-        success: false,
-        error: "Authentication failure"
+        "success": false,
+        "error": "Authentication failure"
     }
 
-    // A successful token request
+    // A successful token response
     {
-        success: true,
-        token: "13036ea7949b5f5bea79ca1d4c76cc2d56e2d9e8",
-        expire: 1510514548
+        "success": true,
+        "token": "13036ea7949b5f5bea79ca1d4c76cc2d56e2d9e8",
+        "expire": 1510514548
     }
     ```
     **Note**<br>
+    **A token is bind to the source IP. Attempting to use a token on a different IP will invalidate the token!**<br>
     **A token lifespan is 11 hours and 59 seconds**<br>
     The *expire* key of which value is the Unix timestamp indicate when the token value expires.
-    Your returned token should be stored locally until you need to fetch a new one
+    Your returned token should be stored locally until you need to fetch a new one <br>
+    
 
-    ```javascript
+    ```json
     // A validation token request returns the following JSON Object
     {
-        success: true,
-        expire: 1510515149
+        "success": true,
+        "expire": 1510515149
+    }
+
+    // An invalid token response
+    {
+        "success":false,
+        "error":"Invalid token"
     }
     ```
 
