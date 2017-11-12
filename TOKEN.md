@@ -39,9 +39,9 @@ Your returned token should be stored locally until you need to fetch a new one <
 
 
 ```javascript
-// Validate a token
-GET https://api-106.dxi.eu/api/token.php?action=validate&token=TOKEN-VALUE
-GET https://api.contactnow.8x8.com/api/token.php?action=validate&token=TOKEN-VALUE
+// Validate token request URL
+
+GET token.php?action=validate&token=TOKEN-VALUE
 ```
 
 ```json
