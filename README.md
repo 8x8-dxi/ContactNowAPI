@@ -103,8 +103,8 @@ type of data manipulation.
         expire: 1510514548
     }
     ```
-    **Note**
-    **A token lifespan is 11 hours and 59 seconds**
+    **Note**<br>
+    **A token lifespan is 11 hours and 59 seconds**<br>
     The *expire* key of which value is the Unix timestamp the token will expire.
     Your returned token should be stored locally until you need to fetch a new one
 
