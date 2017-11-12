@@ -7,16 +7,8 @@
  */
 
 define('LOG_PATH', '/tmp/api_imports/');
-define('LOG_FILE', '/tmp/contactNow-error.log');
-
-define('API_H', 'https://api-106.dxi.eu');
-define('API_U', 'Willtest');
-define('API_P', 'DIeOYiZf9Fp506bzQB');
-define('CCID', 0);
-
-$API_H = API_H;
-$API_U = API_U;
-$API_P = API_P;
+define('LOG_FILE', '/tmp/contactNowAPI.log');
+define('TOKEN_FILE', '/tmp/contactNowToken.log');
 
 /**
  * Make a curl request to a url with any request types
@@ -65,17 +57,14 @@ function post_request($url, $post = array(), $import = "") {
 
 /**
  * Get authentication token
- * @global url $API_H
- * @global string $API_U
- * @global string $API_P
+ * @global url API_H
+ * @global string API_U
+ * @global string API_P
  * @return string
  */
 function get_auth_token() {
-    global $API_H, $API_U, $API_P;
-    $url = "{$API_H}/token.php?action=get&format=json&username=$API_U&password=$API_P";
-    $post = http_build_query(
-        array('username' => $API_U, 'password' => $API_P)
-    );
+    $url = API_H.'/token.php?action=get&format=json&username='.API_U.'&password='.API_P;
+    $post = http_build_query(array('username' => API_U, 'password' => API_P));
     $context  = stream_context_create(array('http' =>
         array(
             'method'  => 'GET',
@@ -83,24 +72,55 @@ function get_auth_token() {
         )
     ));
 
-    $raw = file_get_contents($url, false, $context);
+    $response = file_get_contents($url, false, $context);
+    // decode the token response.
+    $tokenArray = json_decode($response, true);
 
-    $json = json_decode($raw, true);
-
-    if (!$json || empty($json['success'])) {
-        $msg  = "API Call: \nURL: $url\n" . print_r($post, true);
-        $msg .= "\nAPI Call Response:\n$raw\n\n";
+    if (!$tokenArray || empty($tokenArray['success'])) {
+        $msg  = "API Token Call: \nURL: $url\n" . print_r($post, true);
+        $msg .= "\nAPI Token Response:\n$response\n\n";
         file_put_contents(LOG_FILE, $msg, FILE_APPEND);
     }
-    if (empty($json['token'])) {
-        throw new Exception(print_r($json, true));
+    // store the token data in a local file. Ideally, this should be stored in 
+    // in a local redis db
+    file_put_contents(TOKEN_FILE, print_r($response, true));
+    return $tokenArray;
+}
+
+/**
+ * 
+ * @return type
+ */
+function getTokenValue (){
+    try{
+        $response = file_get_contents(TOKEN_FILE);
+        $tokenArray = json_decode($response, true);
+        if (!$tokenArray || (!isset($tokenArray['token']) && !isset($tokenArray['expire']))){
+            $tokenArray = get_auth_token();
+        }
+        // Check if the expire time has elapse
+        $expireAt = new DateTime('@'.$tokenArray['expire']);
+        $now = new DateTime(date("Y-m-d H:i:s"));
+        $timeLapse = $now->diff($expireAt);
+        if ($timeLapse->h === 0 && $timeLapse->i <= 1){
+            $tokenArray = get_auth_token();
+        } else {
+            return $tokenArray['token'];
+        }
+    } catch (Exception $exeption) {
+        
+        $tokenArray = get_auth_token();
+
+        if (empty($tokenArray['token'])) {
+            throw new Exception(print_r($tokenArray, true));
+        }
+        return $tokenArray['token'];
     }
-    return $json['token'];
 }
 
 /**
  * Call the DXI APIs, 
- * @global url $API_H
+ * @global url API_H
  * @global string $API_TOKEN
  * @global link $logFile
  * @global bool $LOGGING_ENABLED
@@ -112,18 +132,18 @@ function get_auth_token() {
  * @return array
  */
 function dxi($script, $get = array(), $post = array(), $import = array()) {
-    global $API_H, $API_TOKEN;
+    global $API_TOKEN;
     global $logFile, $LOGGING_ENABLED, $Debug;
 
     // Check we have a valid token or get a new one
     if (!isset($API_TOKEN)) {
-        $API_TOKEN = get_auth_token();
+        $API_TOKEN = getTokenValue();
     }
     $get['token'] = $API_TOKEN;
     $get['format'] = 'json';
     $get['campaign'] = CCID;
 
-    $url = "{$API_H}/$script.php?" . http_build_query($get);
+    $url = API_H."/$script.php?" . http_build_query($get);
     log_debug("API Call: \nURL: $url\n" . print_r($post, true) . print_r($import, true));
     $import = json_encode($import);
     if ($import[0] != "[") {
@@ -145,12 +165,10 @@ function dxi($script, $get = array(), $post = array(), $import = array()) {
     }
 
     // If token has expired get a new one and re-send the API request
-    if (isset($json['error']) && $json['error'] == 'Expired token'
-        && isset($json['expire']) && $json['expire'] == -1
-    ) {
-        $API_TOKEN = get_auth_token();
+    if (isset($json['error']) && $json['error'] == 'Expired token' && isset($json['expire']) && $json['expire'] == -1) {
+        $API_TOKEN = getTokenValue();
         $get['token'] = $API_TOKEN;
-        $url = "{$API_H}/$script.php?" . http_build_query($get);
+        $url = API_H."/$script.php?" . http_build_query($get);
         $response = post_request($url, $post, $import);
 
         $json = json_decode($response, true);
@@ -330,17 +348,14 @@ function api_upload_raw_file($fname, $url) {
 
 // Upload an audio file to the api
 function api_upload_audio_file($wave_file_path, $wave_file_name, $ccid = 0, $transcript = "") {
-    global $API_H, $API_U, $API_P, $Debug, $API_TOKEN;
-    if (!preg_match("/^http/i", $API_H)) {
-        $API_H = "http://$API_H";
-    }
-    $url = "{$API_H}/database.php?method=audio_files";
+    global $API_TOKEN;
+    $url = API_H.'/database.php?method=audio_files';
     if (!empty($transcript)) {
         $url .= "&transcript=" . urlencode($transcript);
     }
     $url .= "&format=json";
     if (!isset($API_TOKEN)) {
-        $API_TOKEN = get_auth_token();
+        $API_TOKEN = getTokenValue();
     }
     $url .= "&token={$API_TOKEN}";
     if (empty($ccid) && !empty($_SESSION['ccid'])) {
