@@ -92,8 +92,8 @@ type of data manipulation.
         
     // A failed API response will return the following JSON data
     {
-        success: false,
-        error: "Authentication failure"
+        "success": false,
+        "error": "Authentication failure"
     }
     ```
 
