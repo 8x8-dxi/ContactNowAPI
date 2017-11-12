@@ -63,7 +63,6 @@ type of data manipulation.
 ## High level API diagram
 ![API Diagram](https://raw.githubusercontent.com/8x8-dxi/ContactNowAPI/master/images/High-level-API-diagram.png)
 
-
 ### API Scripts Name
 
 1. #### token.php
@@ -105,6 +104,13 @@ type of data manipulation.
         "success": true,
         "token": "13036ea7949b5f5bea79ca1d4c76cc2d56e2d9e8",
         "expire": 1510514548
+    }
+
+    // Expired token will return the following response.
+    {
+        "success": false,
+        "error": "Expired token",
+        "expire": -1
     }
     ```
     **Note**<br>
