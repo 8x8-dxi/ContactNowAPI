@@ -77,7 +77,7 @@ type of data manipulation.
     GET https://api-106.dxi.eu/token.php?action=get&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD
 
     // Validate a token
-    GET https://api-106.dxi.eu/api/token.php?action=validate&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD
+    GET https://api-106.dxi.eu/api/token.php?action=validate&token=TOKEN-VALUE
     ```
     For the US region
     ```javascript
@@ -85,7 +85,7 @@ type of data manipulation.
     GET https://api.contactnow.8x8.com/api/token.php?action=get&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD
 
     // Validate a token
-    GET https://api.contactnow.8x8.com/api/token.php?action=validate&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD
+    GET https://api.contactnow.8x8.com/api/token.php?action=validate&token=TOKEN-VALUE
     ```
 
     ```javascript
@@ -97,7 +97,6 @@ type of data manipulation.
     }
 
     // A successful token request
-
     {
         success: true,
         token: "13036ea7949b5f5bea79ca1d4c76cc2d56e2d9e8",
@@ -108,6 +107,12 @@ type of data manipulation.
     **A token lifespan is 11 hours and 59 seconds**
     The *expire* key of which value is the Unix timestamp the token will expire.
     Your returned token should be stored locally until you need to fetch a new one
+
+    // A validation token request returns the following JSON Object
+    {
+        success: true,
+        expire: 1510515149
+    }
     ```
 
 
