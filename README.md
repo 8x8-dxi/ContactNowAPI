@@ -13,7 +13,7 @@ the frequency/rate at which you dial a specific customer record**
 **[API Endpoints Scripts](#api-endpoints-scripts)**<br>
 **[High level API diagram](#high-level-api-diagram)**<br>
 **[API Endpoint Request Format](#api-endpoint-request-format)**<br>
-**[API Scripts Name](#api-scripts-name)**<br>
+**[APIs](#apis)**<br>
 **[PHP Client Script](#php-client-script)**<br>
 
 ### 8x8 ContactNow API v2
@@ -63,7 +63,7 @@ type of data manipulation.
 ## High level API diagram
 ![API Diagram](https://raw.githubusercontent.com/8x8-dxi/ContactNowAPI/master/images/High-level-API-diagram.png)
 
-### API Scripts Name
+### APIs
 
 1. #### [token.php](https://github.com/8x8-dxi/ContactNowAPI/blob/master/TOKEN.md) See Token documentation
 
