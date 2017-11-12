@@ -65,25 +65,25 @@ type of data manipulation.
     This endpoint does not implement any methods but come with two exposed actions
 
     ##### Actions
-        **get** : Get a new token if one does not already exist.
-        **validate** : check if a token is valid or expired.
+    **get** : Get a new token if one does not already exist.
+    **validate** : check if a token is valid or expired.
 
     ##### Example
-        For the EU region
-        ```javascript
-        GET https://api-106.dxi.eu/token.php?action=get&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD
+    For the EU region
+    ```javascript
+    GET https://api-106.dxi.eu/token.php?action=get&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD
 
-        // Validate a token
-        GET https://api-106.dxi.eu/api/token.php?action=validate&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD
-        ```
-        For the US region
-        ```javascript
-        // get a token
-        GET https://api.contactnow.8x8.com/api/token.php?action=get&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD
+    // Validate a token
+    GET https://api-106.dxi.eu/api/token.php?action=validate&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD
+    ```
+    For the US region
+    ```javascript
+    // get a token
+    GET https://api.contactnow.8x8.com/api/token.php?action=get&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD
 
-        // Validate a token
-        GET https://api.contactnow.8x8.com/api/token.php?action=validate&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD
-        ```
+    // Validate a token
+    GET https://api.contactnow.8x8.com/api/token.php?action=validate&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD
+    ```
 
 2. #### ecnow.php
 
