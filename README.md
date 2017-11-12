@@ -42,7 +42,7 @@ wrong API base URL will result o invalid result.
 
 Web Login URL | API BASE URL | Location
 ----------|---------|---------
-https://app.easycontactnow.com | [https://api-106.dxi.eu/](https://api-106.dxi.eu/token.php?action=get&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD) | United Kingdom
+https://app.easycontactnow.com | [https://api-106.dxi.eu/](https://api-106.dxi.eu/token.php?action=get&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD) | EU and the rest of the world
 https://app.contactnow.8x8.com | [https://api.contactnow.8x8.com/api/](https://api.contactnow.8x8.com/api/token.php?action=get&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD) | United States
 
 
@@ -62,13 +62,35 @@ type of data manipulation.
 1. #### token.php
 
     The token endpoint provides access to the 8x8 ContactNow API interface.
+    This endpoint does not implement any methods but come with two exposed actions
+
+    ##### Actions
+        * get : Get a new token if one does not already exist.
+        * validate: check if a token is valid or expired.
+
+    ##### Example
+        For the EU region
+        ```
+        GET https://api-106.dxi.eu/token.php?action=get&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD
+
+        // Validate a token
+        GET https://api-106.dxi.eu/api/token.php?action=validate&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD
+        ```
+        For the US region
+        ```
+        // get a token
+        GET https://api.contactnow.8x8.com/api/token.php?action=get&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD
+
+        // Validate a token
+        GET https://api.contactnow.8x8.com/api/token.php?action=validate&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD
+        ```
 
 2. #### ecnow.php
 
     This endpoint is the most widely used API. It allows dynamic data/record feed in/out of
     the campaign database and the dialler.
     
-    #### Methods
+    ##### Methods
         * ecnow_datasets
         * ecnow_records
         * campaign_tables
