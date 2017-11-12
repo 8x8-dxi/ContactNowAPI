@@ -64,7 +64,7 @@ function post_request($url, $post = array(), $import = "") {
 }
 
 /**
- * Get a DXI API authentication token
+ * Get authentication token
  * @global url $API_H
  * @global string $API_U
  * @global string $API_P
@@ -99,9 +99,8 @@ function get_auth_token() {
 }
 
 /**
- * Call a DXI APIs, 
- * @global ulr $API_H
- * @global bool $DebugAPI
+ * Call the DXI APIs, 
+ * @global url $API_H
  * @global string $API_TOKEN
  * @global link $logFile
  * @global bool $LOGGING_ENABLED
@@ -113,7 +112,7 @@ function get_auth_token() {
  * @return array
  */
 function dxi($script, $get = array(), $post = array(), $import = array()) {
-    global $API_H, $DebugAPI, $API_TOKEN;
+    global $API_H, $API_TOKEN;
     global $logFile, $LOGGING_ENABLED, $Debug;
 
     // Check we have a valid token or get a new one
@@ -122,9 +121,6 @@ function dxi($script, $get = array(), $post = array(), $import = array()) {
     }
     $get['token'] = $API_TOKEN;
     $get['format'] = 'json';
-    if (!empty($DebugAPI)) {
-        $get['debug'] = "1";
-    }
     $get['campaign'] = CCID;
 
     $url = "{$API_H}/$script.php?" . http_build_query($get);
@@ -166,7 +162,6 @@ function dxi($script, $get = array(), $post = array(), $import = array()) {
     }
 
     if (!$json || empty($json['success'])) {
-
         $msg  = "API Call: \nURL: $url\n" . print_r($post, true) . print_r($import, true);
         $msg .= "\nAPI Call Response:\n$response\n\n";
         file_put_contents(LOG_FILE, $msg, FILE_APPEND);
@@ -201,7 +196,7 @@ function build_request_data(&$action, &$get, &$post, &$import, &$data) {
 
 
 /**
- * A general function, should be avoided, an alias for each type is better, used by api_db and api_ecnow
+ * A general function should be avoided, an alias for each type is better, used by api_db and api_ecnow
  * @param string $script
  * @param string $method
  * @param string $action
@@ -252,7 +247,7 @@ function pullExtraComponents($result, $method){
  * @param type $action
  * @return type
  */
-function persistExtraObjects($result, $method, $action){
+function persistECNExtraObjects($result, $method, $action){
     // We expect result to contain success (boolean) and list (array
     if (!empty($result['success']) || !empty($result['list'])){
         return $result;
@@ -274,24 +269,13 @@ function persistExtraObjects($result, $method, $action){
 
 // Alias for database API
 function api_db($method, $action, $data = array()) {
-    // redirect datasets method to ecnow api
-    if ($method == "ecnow_datasets") {
-        return api_ecnow($method, $action, $data);
-    }
     // call the api
     $result = api("database", $method, $action, $data);
-
     // merge ecnow queues and agents with dxi, on update send same data to both
     if (!empty($result['success']) && in_array($method, array('queues', 'agents', 'outcomecodes'))) {
-        return persistExtraObjects($result, $method, $action);
+        return persistECNExtraObjects($result, $method, $action);
     }
     return $result;
-}
-
-// Alias for report API (deprecated)
-function api_report($method, $post = array()) {
-    $get['method'] = $method;
-    return dxi("reports", $get, $post, null);
 }
 
 // Alias for reporting API (use this for all reporting when implementing new features)
