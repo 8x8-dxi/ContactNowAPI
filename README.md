@@ -76,17 +76,17 @@ type of data manipulation.
     the campaign database and the dialler.
     
     ##### Methods
-    **ecnow_datasets**<br>
-    **ecnow_records**<br>
-    **campaign_tables**<br>
-    **campaign_fields**<br>
-    **ecnow_outcomecodes**<br>
+    *ecnow_datasets*<br>
+    *ecnow_records*<br>
+    *campaign_tables*<br>
+    *campaign_fields*<br>
+    *ecnow_outcomecodes*<br>
 
     ##### Action
-    **create**<br>
-    **read**<br>
-    **update**<br>
-    **delete**<br>
+    *create*<br>
+    *read**<br>
+    *update*<br>
+    *delete*<br>
 
 
 3. #### database.php
