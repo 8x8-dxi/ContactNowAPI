@@ -65,3 +65,5 @@ GET token.php?action=validate&token=TOKEN-VALUE
     "expire": -1
 }
 ```
+
+![Back to Index](https://github.com/8x8-dxi/ContactNowAPI/wiki)

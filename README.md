@@ -109,9 +109,5 @@ contains functions which act as API wrappers functions. The aim is to save you s
 time of trying to understand the semantics of the core API.
 
 
-Initialise the following API credentials in includes/api-wraper.php
 
-define('API_H', 'https://api-106.dxi.eu');
-define('API_U', 'API USER NAME');
-define('API_P', 'API PASSORD');
-define('CAMPAIGN', CID);
+![Back to Index](https://github.com/8x8-dxi/ContactNowAPI/wiki)
