@@ -65,7 +65,7 @@ type of data manipulation.
     This endpoint does not implement any methods but come with two exposed actions
 
     ##### Actions
-    **get** : Get a new token if one does not already exist.
+    **get** : Get a new token if one does not already exist.<br>
     **validate** : check if a token is valid or expired.
 
     ##### Example
