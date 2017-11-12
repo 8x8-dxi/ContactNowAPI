@@ -56,11 +56,13 @@ function post_request($url, $post = array(), $import = "") {
 }
 
 /**
- * Get authentication token
+ * Get authentication token and then save the data to a local file for a later
+ * lookup. This makes sure that we are not making unnecessary requests as we
+ * only need to request a fresh token when the current one is almost expired.
  * @global url API_H
  * @global string API_U
  * @global string API_P
- * @return string
+ * @return array Token data
  */
 function get_auth_token() {
     $url = API_H.'/token.php?action=get&format=json&username='.API_U.'&password='.API_P;
@@ -71,7 +73,6 @@ function get_auth_token() {
             'header'  => 'Content-type: application/x-www-form-urlencoded',
         )
     ));
-
     $response = file_get_contents($url, false, $context);
     // decode the token response.
     $tokenArray = json_decode($response, true);
@@ -88,8 +89,10 @@ function get_auth_token() {
 }
 
 /**
- * 
- * @return type
+ * This function decides when a fresh token should be requested direct from
+ * the ContactNow API by retrieving the stored token data in /tmp/contactNowToken.log
+ * and computing the expired time to the current local time.
+ * @return string Returns the token string
  */
 function getTokenValue (){
     if(file_exists(TOKEN_FILE)){
@@ -102,6 +105,7 @@ function getTokenValue (){
         $expireAt = new DateTime('@'.$tokenArray['expire']);
         $now = new DateTime(date("Y-m-d H:i:s"));
         $timeLapse = $now->diff($expireAt);
+        // Get a fresh token
         if ($timeLapse->h === 0 && $timeLapse->i <= 1){
             $tokenArray = get_auth_token();
         }
