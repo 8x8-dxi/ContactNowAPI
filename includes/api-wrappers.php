@@ -10,8 +10,8 @@ define('LOG_PATH', '/tmp/api_imports/');
 define('LOG_FILE', '/tmp/contactNow-error.log');
 
 define('API_H', 'https://api-106.dxi.eu');
-define('API_U', '');
-define('API_P', '');
+define('API_U', 'Willtest');
+define('API_P', 'DIeOYiZf9Fp506bzQB');
 define('CCID', 0);
 
 $API_H = API_H;

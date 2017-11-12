@@ -88,13 +88,24 @@ type of data manipulation.
     GET https://api.contactnow.8x8.com/api/token.php?action=validate&username=YOUR-API-USERNAME&password=YOUR-API-PASSWORD
     ```
 
-    ```json
+    ```javascript
         
-    // A failed API response will return the following JSON data
+    // A failed API response will return the following JSON object
     {
-        "success": false,
-        "error": "Authentication failure"
+        success: false,
+        error: "Authentication failure"
     }
+
+    // A successful token request
+
+    {
+        success: true,
+        token: "13036ea7949b5f5bea79ca1d4c76cc2d56e2d9e8",
+        expire: 1510514548
+    }
+    
+    Note the *expire* key of value is the time in seconds the token will expire.
+    Your returned token should be stored locally until you need to fetch a new one
     ```
 
 
