@@ -67,6 +67,14 @@ type of data manipulation.
 
     This endpoint is the most widely used API. It allows dynamic data/record feed in/out of
     the campaign database and the dialler.
+    
+    #### Methods
+        * ecnow_datasets
+        * ecnow_records
+        * campaign_tables
+        * campaign_fields
+        * ecnow_outcomecodes
+
 
 3. #### database.php
 
