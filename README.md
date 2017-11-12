@@ -105,7 +105,7 @@ type of data manipulation.
     ```
     **Note**<br>
     **A token lifespan is 11 hours and 59 seconds**<br>
-    The *expire* key of which value is the Unix timestamp the token will expire.
+    The *expire* key of which value is the Unix timestamp indicate when the token value expires.
     Your returned token should be stored locally until you need to fetch a new one
 
     ```javascript
