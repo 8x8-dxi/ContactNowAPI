@@ -92,7 +92,7 @@ function get_auth_token() {
  * @return type
  */
 function getTokenValue (){
-    try{
+    if(file_exists(TOKEN_FILE)){
         $response = file_get_contents(TOKEN_FILE);
         $tokenArray = json_decode($response, true);
         if (!$tokenArray || (!isset($tokenArray['token']) && !isset($tokenArray['expire']))){
@@ -104,18 +104,14 @@ function getTokenValue (){
         $timeLapse = $now->diff($expireAt);
         if ($timeLapse->h === 0 && $timeLapse->i <= 1){
             $tokenArray = get_auth_token();
-        } else {
-            return $tokenArray['token'];
         }
-    } catch (Exception $exeption) {
-        
+    } else {
         $tokenArray = get_auth_token();
-
-        if (empty($tokenArray['token'])) {
-            throw new Exception(print_r($tokenArray, true));
-        }
-        return $tokenArray['token'];
     }
+    if (empty($tokenArray['token'])) {
+        throw new Exception(print_r($tokenArray, true));
+    }
+    return $tokenArray['token'];
 }
 
 /**
