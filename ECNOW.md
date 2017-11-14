@@ -12,33 +12,33 @@ Some of the terms used are sometimes construed and loosely used and I will expla
 
 1. Campaign (Not the actual __campaign__ notation)
 
-...Is a database table holding a datasets of records grouped by Datasets
+    Is a database table holding a datasets of records grouped by Datasets
 
 
 2. Dataset
 
-...Is as a subset of records within a Campaign
-...![CampaignAndDatasetAnalogy](https://raw.githubusercontent.com/8x8-dxi/ContactNowAPI/master/images/CampaignsTables&DatasetsScrsh.png)
+    Is as a subset of records within a Campaign
+    ![CampaignAndDatasetAnalogy](https://raw.githubusercontent.com/8x8-dxi/ContactNowAPI/master/images/CampaignsTables&DatasetsScrsh.png)
 
 3. Queues
 
-...Queues are defined as type of communication channels that can either be Inbound or Outbound.
-...They are used to manage inflow and outflow of **Campaigns** be it Inbound or Outbound.
+    Queues are defined as type of communication channels that can either be Inbound or Outbound.
+    They are used to manage inflow and outflow of **Campaigns** be it Inbound or Outbound.
 
-...There are various types of Queues with multiple inherited properties which defines
-...the behaviours of a queue.
-...##### Queue Type
-...**Inbound**<br>
-...**Outbound**<br>
-...**IVR**<br>
-...**Broadcast**<br>
-...**Message**<br>
-...**SMS Outbound**<br>
-...**SMS Broadcast**<br>
+    There are various types of Queues with multiple inherited properties which defines
+    the behaviours of a queue.
+    ##### Queue Type
+    *Inbound*<br>
+    *Outbound*<br>
+    *IVR*<br>
+    *Broadcast*<br>
+    *Message*<br>
+    *SMS Outbound*<br>
+    *SMS Broadcast*<br>
 
-...Outbound Queues type is tightly coupled with Agents and Datasets. 
-...Inbound Queue type is tightly coupled with Campaign Tables and Agents.
-...Outbound Queues must be assigned to a Campaign if 
+    Outbound Queues type is tightly coupled with Agents and Datasets. 
+    Inbound Queue type is tightly coupled with Campaign Tables and Agents.
+    Outbound Queues must be assigned to a Campaign if 
 
 4. Outcomes / Outcomecodes
 4. Agent
@@ -48,8 +48,8 @@ Some of the terms used are sometimes construed and loosely used and I will expla
 ##### List of Methods
 *ecnow_datasets*<br>
 
-...This methods is used read and manipulate datasets within a specified campaign
-...The 
+    This methods is used read and manipulate datasets within a specified campaign
+    The 
 *ecnow_records*<br>
 *campaign_tables*<br>
 *campaign_fields*<br>
