@@ -18,7 +18,7 @@ Some of the terms used are sometimes construed and loosely used and I will expla
 2. Dataset
 
     Is as a subset of records within a Campaign
-    ![CampaignAndDatasetAnalogy](https://raw.githubusercontent.com/8x8-dxi/ContactNowAPI/master/images/CampaignsTables&Datasets.png)
+    ![CampaignAndDatasetAnalogy](https://raw.githubusercontent.com/8x8-dxi/ContactNowAPI/master/images/CampaignsTables&DatasetsScrsh.png)
 
 3. Queues
 
