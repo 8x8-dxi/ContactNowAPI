@@ -27,7 +27,7 @@ Some of the terms used are sometimes construed and loosely used and I will expla
 
     There are various types of Queues with multiple inherited properties which defines
     the behaviours of a queue.
-    ##### Queue Type
+    ##### Queue Types
     *Inbound*<br>
     *Outbound*<br>
     *IVR*<br>
