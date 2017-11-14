@@ -37,8 +37,8 @@ Once you have a contact centre, you can request for an API credentials from our 
 
 ## API Domains
 There are various API domains of the 8x8 ContactNow API depending on the login URL you use when logging
-on to your Contact Centre. To help you determine your API BASE URL refer to the table below. Using the 
-wrong API base URL will result o invalid result.
+on to your Contact Centre. Please refer to the table below to help you determine your API BASE URL. Using the 
+wrong API base URL will result to invalid result.
 
 Web Login URL | API BASE URL | Location
 ----------|---------|---------
