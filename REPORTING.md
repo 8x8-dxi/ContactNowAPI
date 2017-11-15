@@ -64,48 +64,23 @@ GET https://[API BASE URL]/reporting.php?action=fields&method=calls&format=json&
 
 The following filters can be when requesting data using the calls method.
 
-**range**
+names | Description 
+----------|---------|
+**range** | Date range in UTS (Unix Time Stamp)
+**campaign** | The Campaign table see ![The terminologies](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#the-terminologies) section of the ECNOW endpoint
+**queue** | Queue ID 
+**qtype** | Queue type. See ![Queues](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#queues) schema
+**ctype** |Call direction. Can either be "in" OR "out"
+**agent** | Agent ID
+**dataset** | Dataset ID
+**outcome** | Outcome code ID
+**cutoff** | SLA figure in seconds for call cutoff times.
+**ddi** | This should be the customer Phone number depending on the call direction.
+**cli** | Caller ID/Display Number. For incoming call the CLI will be the customer phone number.
+**urn** | Customer ID reference the ECN Database. See ![Dataset](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#dataset) schema
+**team** | Team ID
 
-    Date range in UTS (Unix Time Stamp)
 
-**campaign** see ![The terminologies](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#the-terminologies) section of the ECNOW endpoint
-
-    The Campaign table 
-**queue**
-
-    Queue ID 
-**qtype** See ![Queues](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#queues) schema
-
-    Queue type.
-**ctype**
-
-    Call direction. Can either be "in" OR "out"
-**agent**
-
-    Agent ID
-**dataset**
-
-    Dataset ID
-**outcome**
-
-    Outcome code ID
-
-**cutoff**
-
-    SLA figure in seconds for call cutoff times.
-**ddi**
-
-    This should be the customer Phone number depending on the call direction.
-**cli**
-
-    Caller ID/Display Number. For incoming call the CLI will be the customer phone number.
-
-**urn** See ![Dataset](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#dataset) schema
-
-    Customer ID reference the ECN Database. 
-**team**
-
-    Team ID
 
 
 
