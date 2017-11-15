@@ -67,18 +67,19 @@ The following filters can be when requesting data using the calls method.
 **range**
 
     Date range in UTS (Unix Time Stamp)
-**campaign**
 
-    The Campaign table see ![The terminologies](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#the-terminologies) section of the ECNOW endpoint
+**campaign** see ![The terminologies](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#the-terminologies) section of the ECNOW endpoint
+
+    The Campaign table 
 **queue**
 
     Queue ID 
-**qtype**
+**qtype** See ![Queues](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#queues) schema
 
-    Queue type. See ![Queues](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#queues) schema
+    Queue type.
 **ctype**
 
-    Call direction. Can either be *in* OR *out*
+    Call direction. Can either be "in" OR "out"
 **agent**
 
     Agent ID
@@ -98,9 +99,10 @@ The following filters can be when requesting data using the calls method.
 **cli**
 
     Caller ID/Display Number. For incoming call the CLI will be the customer phone number.
-**urn**
 
-    Customer ID reference the ECN Database. See ![Dataset](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#dataset) schema
+**urn** See ![Dataset](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#dataset) schema
+
+    Customer ID reference the ECN Database. 
 **team**
 
     Team ID
