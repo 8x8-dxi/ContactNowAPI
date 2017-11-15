@@ -10,7 +10,7 @@ $API_TOKEN = "";
 echo getTokenValue();
 
 // Get agents
-$CampaignTables = api_ecnow('campaign_tables', 'read');
+//$CampaignTables = api_ecnow('campaign_tables', 'read');
 /*
  Array
 (
@@ -36,7 +36,7 @@ $CampaignTables = api_ecnow('campaign_tables', 'read');
         )
  */
 
-$myCampaignSchema = api_ecnow('campaign_fields', 'read', array('table' =>'Willtest'));
+//$myCampaignSchema = api_ecnow('campaign_fields', 'read', array('table' =>'Willtest'));
 /*
  Array
 (
@@ -68,9 +68,9 @@ $myCampaignSchema = api_ecnow('campaign_fields', 'read', array('table' =>'Willte
 
 // Get all Queues assigned to specific Campaign by setting a filter.
 // Note that we are calling the database.php endpoint (api_db()
-$filters = array('table' =>'Willtest', 'type' => 'outbound,inbound', 'filter'=>'!= 999');
-$myCampaignQueues = api_db('queues', 'read', $filters);
-print_r($myCampaignQueues);
+//$filters = array('table' =>'Willtest', 'type' => 'outbound,inbound', 'filter'=>'!= 999');
+//$myCampaignQueues = api_db('queues', 'read', $filters);
+//print_r($myCampaignQueues);
 /*
 Array
 (
