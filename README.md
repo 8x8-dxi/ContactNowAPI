@@ -85,9 +85,10 @@ type of data manipulation.
     The Ajax API is used for retrieving live statistics of your contact centre activities such as
     status board agents, outgoing/incoming calls and more.
 
-5. #### reporting.php
+5. #### [reporting.php](https://github.com/8x8-dxi/ContactNowAPI/blob/master/REPORTING.md)
 
-    This endpoint handles your reporting need
+    Please click [here](https://github.com/8x8-dxi/ContactNowAPI/blob/master/REPORTING.md) for reporting
+    documentation.
 
 6. #### recording.php
 

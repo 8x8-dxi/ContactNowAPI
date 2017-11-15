@@ -79,8 +79,8 @@ Some of the terms used are sometimes construed and loosely used and I will expla
 ##### List of Methods
 *ecnow_datasets*<br>
 
-    This methods is used read and manipulate datasets within a specified campaign
-    The 
+    This methods is used to manipulate datasets within a specified campaign
+
 *ecnow_records*<br>
 *campaign_tables*<br>
 *campaign_fields*<br>
