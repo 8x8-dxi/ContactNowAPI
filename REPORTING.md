@@ -64,19 +64,32 @@ GET https://[API BASE URL]/reporting.php?action=fields&method=calls&format=json&
 
 The following filters can be when requesting data using the calls method.
 
-range       => Date range in UTS (Unix Time Stamp)<br>
-campaign    => The Campaign table see ![The terminologies](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#the-terminologies) section of the ECNOW endpoint<br>
-queue       => Queue ID <br>
-qtype       => Queue type. See ![Queues](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#queues) schema<br>
-ctype       => Call direction. Can either be __in__ OR __out__<br>
-agent       => Agent ID<br>
-dataset     => Dataset ID<br>
-outcome     => Outcome code ID<br>
-cutoff      => SLA figure in seconds for call cutoff times.<br>
-ddi         => This should be the customer Phone number depending on the call direction. <br>
-cli         => Caller ID/Display Number. For incoming call the CLI will be the customer phone number.<br>
-urn         => Customer ID reference the ECN Database. See ![Dataset](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#dataset) schema<br>
-team        => Team ID
+**range** <br>
+    Date range in UTS (Unix Time Stamp)<br>
+**campaign**<br>
+    The Campaign table see ![The terminologies](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#the-terminologies) section of the ECNOW endpoint<br>
+**queue** <br>
+    Queue ID 
+**qtype**<br>
+    Queue type. See ![Queues](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#queues) schema<br>
+**ctype**<br>
+    Call direction. Can either be __in__ OR __out__<br>
+**agent**<br>
+    Agent ID<br>
+**dataset**<br>
+    Dataset ID<br>
+**outcome**<br>
+    Outcome code ID<br>
+**cutoff**<br>
+    SLA figure in seconds for call cutoff times.<br>
+**ddi**<br>
+    This should be the customer Phone number depending on the call direction. <br>
+**cli**<br>
+    Caller ID/Display Number. For incoming call the CLI will be the customer phone number.<br>
+**urn**<br>
+    Customer ID reference the ECN Database. See ![Dataset](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#dataset) schema<br>
+**team**<br>
+    Team ID
 
 
 
