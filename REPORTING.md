@@ -65,7 +65,7 @@ GET https://[API BASE URL]/reporting.php?action=fields&method=calls&format=json&
 The following filters can be when requesting data using the calls method.
 
     range       => Date range in UTS (Unix Time Stamp)
-    campaign    => The Campaign table see [The terminologies section of the ECNOW endpoint](https://github.com/8x8-dxi/ContactNowAPI#the-terminologies)
+    campaign    => The Campaign table see ![The terminologies](https://github.com/8x8-dxi/ContactNowAPI#the-terminologies) section of the ECNOW endpoint
     table
     queue
     qtype
