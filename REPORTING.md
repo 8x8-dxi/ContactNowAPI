@@ -81,7 +81,48 @@ names | Description
 **team** | Team ID
 
 
+Examples: Constructing a request using NodeJS
 
+```javascript
+    var request = require("request"),
+        endpoint = 'https://api-106.dxi.eu/reporting.php',
+        token = '50f9ec11b35b113bf023314222444ea0bf6e7d76';
+    
+    var options = {
+        method: 'GET',
+        url: endpoint,
+        qs:{
+            action: 'fields',
+            token: token,
+            method: 'calls',
+            format: 'json'
+        }
+    };
+
+    /**
+     * First we get the fields list from server. You probably only want to run
+     * this once and then store the fields locally
+     * @param Function callbackFn
+     * @returns Function
+     */
+    var getFields = function (callbackFn){
+        var fieldList = [];
+        request(options, function (error, response, body) {
+            if (error){
+                return callbackFn(true, error);
+                //throw new Error(error);
+            }
+            var Fields = JSON.parse(body);
+            if (Fields && Fields.success && Fields.total > 0){
+                for (let i=0, l = Fields.list.length; i < l; ++i){
+                    fieldList.push(Fields[i].field);
+                }
+            }
+            return callbackFn(false, fieldList);
+        });
+    };
+
+```
 
 
 ## cdr
