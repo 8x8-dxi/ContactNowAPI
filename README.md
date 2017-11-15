@@ -13,6 +13,7 @@ the frequency/rate at which you dial a specific customer record**
 **[API Endpoints Scripts](#api-endpoints-scripts)**<br>
 **[High level API diagram](#high-level-api-diagram)**<br>
 **[API Endpoint Request Format](#api-endpoint-request-format)**<br>
+**[High level API diagram](#high-level-api-diagram)**<br>
 **[APIs](#apis)**<br>
 **[PHP Client Script](#php-client-script)**<br>
 
