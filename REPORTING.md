@@ -66,19 +66,18 @@ The following filters can be when requesting data using the calls method.
 
 range       => Date range in UTS (Unix Time Stamp)
 campaign    => The Campaign table see ![The terminologies](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#the-terminologies) section of the ECNOW endpoint
-table
-queue
-qtype
-ctype
-agent
-dataset
-outcome
-cutoff
-ddi
-cli
-urn
-team
+queue       => Queue ID 
+qtype       => Queue type ![]() See queue types
+ctype       => Call direction. Can either be __in__ OR __out__
+agent       => Agent ID
+dataset     => Dataset ID
+outcome     => Outcome code ID
+cutoff      => SLA figure in seconds for call cutoff times.
+ddi         => This should be the customer Phone number depending on the call direction. 
+cli         => Caller ID/Display Number. For incoming call the CLI will be the customer phone number.
+urn         => Customer ID reference the ECN Database. See ![Dataset](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#dataset) schema
+team        => Team ID
 
 
 
-2. cdr
+## cdr
