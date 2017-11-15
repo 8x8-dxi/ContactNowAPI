@@ -64,31 +64,45 @@ GET https://[API BASE URL]/reporting.php?action=fields&method=calls&format=json&
 
 The following filters can be when requesting data using the calls method.
 
-**range** <br>
-    Date range in UTS (Unix Time Stamp)<br>
-**campaign**<br>
-    The Campaign table see ![The terminologies](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#the-terminologies) section of the ECNOW endpoint<br>
-**queue** <br>
+**range**
+
+    Date range in UTS (Unix Time Stamp)
+**campaign**
+
+    The Campaign table see ![The terminologies](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#the-terminologies) section of the ECNOW endpoint
+**queue**
+
     Queue ID 
-**qtype**<br>
-    Queue type. See ![Queues](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#queues) schema<br>
-**ctype**<br>
-    Call direction. Can either be __in__ OR __out__<br>
-**agent**<br>
-    Agent ID<br>
-**dataset**<br>
-    Dataset ID<br>
-**outcome**<br>
-    Outcome code ID<br>
-**cutoff**<br>
-    SLA figure in seconds for call cutoff times.<br>
-**ddi**<br>
-    This should be the customer Phone number depending on the call direction. <br>
-**cli**<br>
-    Caller ID/Display Number. For incoming call the CLI will be the customer phone number.<br>
-**urn**<br>
-    Customer ID reference the ECN Database. See ![Dataset](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#dataset) schema<br>
-**team**<br>
+**qtype**
+
+    Queue type. See ![Queues](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#queues) schema
+**ctype**
+
+    Call direction. Can either be *in* OR *out*
+**agent**
+
+    Agent ID
+**dataset**
+
+    Dataset ID
+**outcome**
+
+    Outcome code ID
+
+**cutoff**
+
+    SLA figure in seconds for call cutoff times.
+**ddi**
+
+    This should be the customer Phone number depending on the call direction.
+**cli**
+
+    Caller ID/Display Number. For incoming call the CLI will be the customer phone number.
+**urn**
+
+    Customer ID reference the ECN Database. See ![Dataset](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#dataset) schema
+**team**
+
     Team ID
 
 
