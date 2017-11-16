@@ -52,7 +52,7 @@
         qs: {
             action: 'fields',
             token: '',
-            method: 'calls',
+            method: 'cdr',
             format: 'json'
         }
     };
@@ -72,7 +72,7 @@
             var Fields = JSON.parse(body);
             if (Fields && Fields.success && Fields.total > 0) {
                 for (let i = 0, l = Fields.list.length; i < l; ++i) {
-                    fieldList.push(Fields[i].field);
+                    fieldList.push(Fields.list[i].field);
                 }
             }
             return callbackFn(false, fieldList);
@@ -85,7 +85,7 @@
             throw new Error("Unable to retrieve fields");
         }
         requestOptions.qs.fields = fields.join();
-        requestOptions.qs.range = startDate + :':'+stopDate;
+        requestOptions.qs.range = startDate + ':'+stopDate;
     };
 
     var tokenResponse = function(err, tokenData){
@@ -96,7 +96,7 @@
         return getFields(fieldResponse);
     };
 
-    var fetchCall = function () {
+    var fetchCDR = function () {
         getToken(tokenResponse);
     };
 

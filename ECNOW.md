@@ -59,13 +59,13 @@ Some of the terms used are sometimes construed and loosely used and I will expla
     There are various types of Queues with multiple inherited properties which defines
     the behaviours of a queue.
     ##### Queue Types
-    *Inbound*<br>
-    *Outbound*<br>
-    *IVR*<br>
-    *Broadcast*<br>
-    *Message*<br>
-    *SMS Outbound*<br>
-    *SMS Broadcast*<br>
+    *inbound*<br>
+    *outbound*<br>
+    *ivr*<br>
+    *broadcast*<br>
+    *message*<br>
+    *sms_out*<br>
+    *sms_broadcast*<br>
 
     Outbound Queues type is tightly coupled with Agents and Datasets. 
     Inbound Queue type is tightly coupled with Campaign Tables and Agents.

@@ -7,8 +7,11 @@ define('API_P', 'DIeOYiZf9Fp506bzQB');
 define('CCID', 0);
 $API_TOKEN = "";
 
-echo getTokenValue();
+//echo getTokenValue();
+echo strtotime(date('2017-05-01 00:00:00'));
 
+echo "\n";
+echo strtotime(date('2017-11-01 23:59:59'));
 // Get agents
 //$CampaignTables = api_ecnow('campaign_tables', 'read');
 /*
