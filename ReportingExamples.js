@@ -6,9 +6,23 @@
 
 
     var request = require("request");
+    
     var BASE_API_URL = "",// Get this from https://github.com/8x8-dxi/ContactNowAPI#api-domains
-    _APIUSERNAME = '', // Initialise your API Username
-    _APIPASSWORD = ''; // You API Pawword
+        _TOKEN=null,
+        _APIUSERNAME = '', // Initialise your API Username
+        _APIPASSWORD = ''; // You API Pawword
+        
+
+
+    var reportingEndpoint = 'https://'+BASE_API_URL+'/reporting.php',
+        ECNOWEndpoint = 'https://'+BASE_API_URL+'/ecnow.php';
+    
+    // Change the datetime
+    // Get the epoch time from the start and stop time
+    var tstartObject = new Date("2017-11-14 00:00:00"), 
+        tStopObject = new Date("2017-11-14 23:59:59"),
+        tstart = tstartObject.getTime()/1000,
+        tstop = tStopObject.getTime()/1000;
     
 
     /**
@@ -17,6 +31,7 @@
      * @returns {undefined}
      */
     var getToken = function (callbackFunction) {
+        if (_TOKEN !== '') return callbackFunction(false, _TOKEN);;
         var options = {
             method: 'GET',
             url: 'https://'+BASE_API_URL+'/token.php',
@@ -24,10 +39,6 @@
                 action: 'get',
                 username: _APIUSERNAME,
                 password: _APIPASSWORD
-            },
-            headers:{
-                'postman-token': 'e4e86887-7ee0-5daf-43b6-1da6dbbf70ea',
-                'cache-control': 'no-cache'
             }
         };
 
@@ -38,29 +49,24 @@
             }
             // You should really store the token on a local redis server to prevent
             // requesting token when it's not expired. See https://github.com/8x8-dxi/ContactNowAPI/blob/master/TOKEN.md for more info
-            return callbackFunction(false, JSON.parse(body));
+            _TOKEN = JSON.parse(body);
+            return callbackFunction(false, _TOKEN);
         });
     };
 
-
-    var endpoint = 'https://'+BASE_API_URL+'/reporting.php';
-    
-    // Change the datetime
-    // Get the epoch time from the start and stop time
-    var tstartObject = new Date("2017-11-14 00:00:00"), 
-        tStopObject = new Date("2017-11-14 23:59:59"),
-        tstart = tstartObject.getTime()/1000,
-        tstop = tStopObject.getTime()/1000;
-
     /**
      * 
+     * @param {Function} callBackFunction
      * @returns {undefined}
      */
-    var fetchCalls = function () {
+    var fetchCalls = function (callBackFunction) {
+        if (typeof callBackFunction !== 'function'){
+            throw new Error("Please provide a callback function as parameter");
+        }
 
         var options = {
             method: 'GET',
-            url: endpoint,
+            url: reportingEndpoint,
             qs: {
                 token: '',// Toke will be intitialised in getToken Function
                 method: 'calls',
@@ -80,14 +86,9 @@
                //ddi:"",
                //cli:"",
                //urn:"",
-            },
-            headers:
-                    {
-                        'postman-token': '3dc507a9-b14a-7b91-b103-eafc74b6a85e',
-                        'cache-control': 'no-cache'
-                    }
+            }
         };
-
+        // Get token and then attempt fetching the calls data
         getToken(function(err, tokenData){
             if(err || !tokenData.success || !tokenData.token){
                 throw new Error("Unable to retrieve token data");
@@ -98,7 +99,10 @@
                   throw new Error(error);
               }
               // print result to console.
-              console.info(JSON.parse(body));
+              // print result to console.
+              var data = JSON.parse(body);
+              console.info(data);
+              return callBackFunction(data);
               
               // Console log
               /*
@@ -199,13 +203,17 @@
     };
 
     /**
-     * Pull cdr methods
+     *  Pull cdr methods
+     * @param {type} callBackFunction
      * @returns {undefined}
      */
-    var fetchCDR = function () {
+    var fetchCDR = function (callBackFunction) {
+        if (typeof callBackFunction !== 'function'){
+            throw new Error("Please provide a callback function as parameter");
+        }
         var options = {
             method: 'GET',
-            url: endpoint,
+            url: reportingEndpoint,
             qs:{
                 token: '',// Toke will be intitialised in getToken Function
                 method: 'cdr',
@@ -215,25 +223,21 @@
                 //apply any other filters
                 //campaign:"",
                 //queue:"",
-               //qtype:"",
-               //ctype:"",
-               //agent:"",
-               //dataset:"",
-               //outcome:"",
-               //ddi:"",
-               //cli:"",
-               //urn:"",
-               //callid:"",
-               //sort:"",
-               //start:"",
-               //limit:"",
-            },
-            headers: {
-                'postman-token': '4f7d3ea1-e368-6d2b-8652-64ddd9fd0cae',
-                'cache-control': 'no-cache' 
+                //qtype:"",
+                //ctype:"",
+                //agent:"",
+                //dataset:"",
+                //outcome:"",
+                //ddi:"",
+                //cli:"",
+                //urn:"",
+                //callid:"",
+                //sort:"",
+                //start:"",
+                //limit:"",
             }
         };
-
+        // Get token and then attempt fetching the cdr data
         getToken(function(err, tokenData){
             if(err || !tokenData.success || !tokenData.token){
                 throw new Error("Unable to retrieve token data");
@@ -244,7 +248,9 @@
                   throw new Error(error);
               }
               // print result to console.
-              console.info(JSON.parse(body));
+              var data = JSON.parse(body);
+              console.info(data);
+              return callBackFunction(data);
               
               // Console log
               /*
@@ -253,8 +259,8 @@
                 "total": 68,
                 "list": [
                     {
-                        "callid": "7531707222",
-                        "urn": "0",
+                        "callid": "707228882",
+                        "urn": "2428765",
                         "qid": "504016",
                         "qnm": "Christian Inbound Testing - Do not unassign",
                         "qtype": "inbound",
@@ -274,8 +280,8 @@
                         "tag": null,
                         "dest": "44 Landline Standard",
                         "dcode": "44123456",
-                        "ctype": "in",
-                        "dtype": "in",
+                        "ctype": "out",
+                        "dtype": "out",
                         "sms_msg": null,
                         "sec_dur": "105.026",
                         "sec_wait": "1.184",
@@ -299,12 +305,100 @@
                     },
                     ...
                     ]
-                
                 }
-                
                 */
             });
         });
     };
-
+    
+    
+    var getcustomerRecordByCDR = function(cdr){
+        var options = {
+            method: 'GET',
+            url: ECNOWEndpoint,
+            qs: {
+                token: _TOKEN,
+                method: 'ecnow_records',
+                format: 'json',
+                action: 'read',
+                urn: cdr.urn,
+                table: cdr.qtable// This is required for tartgeting the table hoding the record
+            }
+        };
+        
+        request(options, function (error, response, body) {
+              if (error){
+                  throw new Error(error);
+              }
+              // print result to console.
+              var customer = JSON.parse(body);
+              if (customer && customer.sussess && customer.total > 0){
+                  // Do stuff with the record
+              }
+              console.info(data);
+              /*
+              {
+                "success": true,
+                "total": 1,
+                "list": [
+                    {
+                        "Address1": "121B London Road",
+                        "Address2": "",
+                        "Address3": "Reading",
+                        "Address4": "Berkshire",
+                        "Address5": "",
+                        "Address6": "",
+                        "AgentRef": "503314",
+                        "Agent_Specific": "",
+                        "appointment": "",
+                        "callback": "0000-00-00 00:00:00",
+                        "Call_Back_Notes": "",
+                        "Call_Back_Sametime": "",
+                        "Customer_Email": "",
+                        "datasetid": "337",
+                        "FirstName": "Eric",
+                        "flgid": "",
+                        "HomePhone": "",
+                        "id": "2428765",
+                        "LastName": "Forbes",
+                        "loaddate": "2017-06-07",
+                        "HomePhone": "01234567890",
+                        "MobilePhone": "",
+                        "notes": "2017-06-07 15:09:48 agent 503314 set outcome 109\r\n2017-06-07 15:09:49 agent 503314 set outcome 107, call back for 2017-06-07 17:09:00\r\n2017-06-16 10:58:05 agent 503314 set outcome 109\r\n2017-06-16 10:58:06 agent 503314 set outcome 107, call back for 2017-06-16 12:58:00\r\n2017-07-10 13:56:31 agent 503314 set outcome 19, call back for 2017-06-16 12:58:00, 2017-07-10 13:56:31 agent 503314 set wrong number 01184320014, no numbers left\r\n2017-07-17 09:49:49 agent 503314 set outcome 107, call back for 0000-00-00 00:00:00\r\n2017-07-17 10:09:51 agent 503314 set outcome 107, call back for 0000-00-00 00:00:00\r\n",
+                        "outcomecode": "107",
+                        "Postcode": "RG1 5RG",
+                        "ProcessDate": "2017-07-17 10:09:51",
+                        "ProcessType": "NEEDSMOREWORK",
+                        "sourcefile": "Contact Now Test Data.csv",
+                        "Testy": "",
+                        "ThisIsATimeField": "",
+                        "Title": "Mr",
+                        "URN": null,
+                        "VENDOR_URN": null,
+                        "WorkPhone": ""
+                    }
+                ]
+               */
+        });
+    };
+    
+    
+    /**
+     * Get custoer records using data from the CDR log.
+     * @returns {undefined}
+     */
+    var getDialledCustomerRecords = function (){
+        fetchCDR(function (cdrResponse) {
+            if (!cdrResponse || cdrResponse.success || cdrResponse.total > 0){
+                throw new Error(cdrResponse);
+            }
+            for (var i = 0, l = cdrResponse.list.length; i < l; ++i) {
+                var cdr = cdrResponse.list[i];
+                // Notice we are checking the urn value and the table holding the record.
+                if (cdr.urn > 0 && cdr.qtable !== ''){
+                    getcustomerRecordByCDR(cdr);
+                }
+            }
+        });
+    };
 

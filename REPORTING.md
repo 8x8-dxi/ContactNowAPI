@@ -144,14 +144,28 @@ Examples: Constructing a request using NodeJS
 
     Simple GET request Sample
 
-    https://[BASE_API_URL]/reporting.php?token=4f2430df58c1e1875addafc7d41d661f33a2ea02&method=calls&format=json&fields=ccid,ccnm,cid,cnm,qtable,qtype,qid,qnm,aid,anm,dsid,dsnm,urn,ddi,cli,tid,tnm,has_aid,PT10M,PT15M,PT30M,PT1H,P1D,P1W,P1M,date,day,hour,min_10,dest,dcode,ctype,dtype,cres,is_mob,nc_all,nc_in,nc_out,nc_out_all,nc_sms_out,nc_man,nc_tpt,nc_dtpt,nc_wait,nc_wrap,nc_con,nc_ans,nc_ans_in,nc_ans_man,nc_que,nc_ans_le,nc_ans_gt,nc_que_le,nc_que_gt,sec_dur,sec_talk_all,sec_talk,sec_tpt,sec_wait,sec_wrap,sec_call,sec_ans,ocid,ocnm,ocis_cmpl,ocis_cmpli,ocis_sale,ocis_dmc,oc_abdn,oc_cbck,oc_ama,oc_amd,oc_dead,oc_noansw,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur&range=1493593200:1509580799&groupby=qtable,qnm&agent=503314
+    https://[BASE_API_URL]/reporting.php?token=YOUR-TOKEN&method=calls&format=json&fields=qtable,qtype,qid,qnm,aid,anm,dsid,dsnm,urn,ddi,cli,tid,tnm,has_aid,PT10M,PT15M,PT30M,PT1H,P1D,P1W,P1M,date,day,hour,min_10,dest,dcode,ctype,dtype,cres,is_mob,nc_all,nc_in,nc_out,nc_out_all,nc_sms_out,nc_man,nc_tpt,nc_dtpt,nc_wait,nc_wrap,nc_con,nc_ans,nc_ans_in,nc_ans_man,nc_que,nc_ans_le,nc_ans_gt,nc_que_le,nc_que_gt,sec_dur,sec_talk_all,sec_talk,sec_tpt,sec_wait,sec_wrap,sec_call,sec_ans,ocid,ocnm,ocis_cmpl,ocis_cmpli,ocis_sale,ocis_dmc,oc_abdn,oc_cbck,oc_ama,oc_amd,oc_dead,oc_noansw,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur&range=1493593200:1509580799&groupby=qtable,qnm&agent=503314
 */
 
 
     var request = require("request");
+    
     var BASE_API_URL = "",// Get this from https://github.com/8x8-dxi/ContactNowAPI#api-domains
-    _APIUSERNAME = '', // Initialise your API Username
-    _APIPASSWORD = ''; // You API Pawword
+        _TOKEN=null,
+        _APIUSERNAME = '', // Initialise your API Username
+        _APIPASSWORD = ''; // You API Pawword
+        
+
+
+    var reportingEndpoint = 'https://'+BASE_API_URL+'/reporting.php',
+        ECNOWEndpoint = 'https://'+BASE_API_URL+'/ecnow.php';
+    
+    // Change the datetime
+    // Get the epoch time from the start and stop time
+    var tstartObject = new Date("2017-11-14 00:00:00"), 
+        tStopObject = new Date("2017-11-14 23:59:59"),
+        tstart = tstartObject.getTime()/1000,
+        tstop = tStopObject.getTime()/1000;
     
 
     /**
@@ -160,6 +174,7 @@ Examples: Constructing a request using NodeJS
      * @returns {undefined}
      */
     var getToken = function (callbackFunction) {
+        if (_TOKEN !== '') return callbackFunction(false, _TOKEN);;
         var options = {
             method: 'GET',
             url: 'https://'+BASE_API_URL+'/token.php',
@@ -167,10 +182,6 @@ Examples: Constructing a request using NodeJS
                 action: 'get',
                 username: _APIUSERNAME,
                 password: _APIPASSWORD
-            },
-            headers:{
-                'postman-token': 'e4e86887-7ee0-5daf-43b6-1da6dbbf70ea',
-                'cache-control': 'no-cache'
             }
         };
 
@@ -181,39 +192,46 @@ Examples: Constructing a request using NodeJS
             }
             // You should really store the token on a local redis server to prevent
             // requesting token when it's not expired. See https://github.com/8x8-dxi/ContactNowAPI/blob/master/TOKEN.md for more info
-            return callbackFunction(false, JSON.parse(body));
+            _TOKEN = JSON.parse(body);
+            return callbackFunction(false, _TOKEN);
         });
     };
 
-
-    var endpoint = 'https://api-106.dxi.eu/reporting.php';
-    
-    // Change the datetime
-    // Get the epoch time from the start and stop time
-    var tstartObject = new Date("2017-11-14 00:00:00"), 
-        tStopObject = new Date("2017-11-14 23:59:59"),
-        tstart = tstartObject.getTime()/1000,
-        tstop = tStopObject.getTime()/1000;
-
-    var fetchCalls = function () {
+    /**
+     * 
+     * @param {Function} callBackFunction
+     * @returns {undefined}
+     */
+    var fetchCalls = function (callBackFunction) {
+        if (typeof callBackFunction !== 'function'){
+            throw new Error("Please provide a callback function as parameter");
+        }
 
         var options = {
             method: 'GET',
-            url: endpoint,
+            url: reportingEndpoint,
             qs: {
                 token: '',// Toke will be intitialised in getToken Function
                 method: 'calls',
-                fields: 'qtable,qtype,qid,qnm,aid,anm,dsid,dsnm,urn,ddi,cli,tid,tnm,has_aid,PT10M,PT15M,PT30M,PT1H,P1D,P1W,P1M,date,day,hour,min_10,dest,dcode,ctype,dtype,cres,is_mob,nc_all,nc_in,nc_out,nc_out_all,nc_sms_out,nc_man,nc_tpt,nc_dtpt,nc_wait,nc_wrap,nc_con,nc_ans,nc_ans_in,nc_ans_man,nc_que,nc_ans_le,nc_ans_gt,nc_que_le,nc_que_gt,sec_dur,sec_talk_all,sec_talk,sec_tpt,sec_wait,sec_wrap,sec_call,sec_ans,ocid,ocnm,ocis_cmpl,ocis_cmpli,ocis_sale,ocis_dmc,oc_abdn,oc_cbck,oc_ama,oc_amd,oc_dead,oc_noansw,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur',
+                fields: 'qtable,qtype,qid,qnm,aid,anm,dsid,dsnm,urn,ddi,cli,tid,tnm,has_aid,PT10M,PT15M,PT30M,PT1H,P1D,P1W,P1M,date,day,hour,min_10,dest,dcode,ctype,dtype,cres,is_mob,nc_all,nc_in,nc_out,nc_out_all,nc_sms_out,nc_man,nc_tpt,nc_dtpt,nc_wait,nc_wrap,nc_con,nc_ans,nc_ans_in,nc_ans_man,nc_que,nc_ans_le,nc_ans_gt,nc_que_le,nc_que_gt,sec_dur,sec_talk_all,sec_talk,sec_tpt,sec_wait,sec_wrap,sec_call,sec_ans,ocid,ocnm,ocis_cmpl,ocis_cmpli,ocis_sale,ocis_dmc,oc_abdn,oc_cbck,oc_ama,oc_amd,oc_dead,oc_noansw,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur,callid_max',
                 range: tstart + ':'+tstop, // Start and stop time in UTC
                 groupby: 'qtable,qnm', // Group the data by Campaign table and queue name
                 agent: 503314,// Notice I am filtering by agent ID which should return every call handled by this agent only
                 format: 'json'
-            },
-            headers:
-                    {'postman-token': '3dc507a9-b14a-7b91-b103-eafc74b6a85e',
-                        'cache-control': 'no-cache'}
-            };
-
+                //apply any other filters
+                //campaign:"",
+                //queue:"",
+               //qtype:"",
+               //ctype:"",
+               //agent:"",
+               //dataset:"",
+               //outcome:"",
+               //ddi:"",
+               //cli:"",
+               //urn:"",
+            }
+        };
+        // Get token and then attempt fetching the calls data
         getToken(function(err, tokenData){
             if(err || !tokenData.success || !tokenData.token){
                 throw new Error("Unable to retrieve token data");
@@ -224,7 +242,10 @@ Examples: Constructing a request using NodeJS
                   throw new Error(error);
               }
               // print result to console.
-              console.info(JSON.parse(body));
+              // print result to console.
+              var data = JSON.parse(body);
+              console.info(data);
+              return callBackFunction(data);
               
               // Console log
               /*
@@ -235,7 +256,6 @@ Examples: Constructing a request using NodeJS
                             {
                             "ccid": "315",
                                     "ccnm": "ECONStaff",
-                                    "cid": "500650",
                                     "cnm": "Willtest",
                                     "qtable": "APItestcampaign",
                                     "qtype": "outbound",
@@ -267,26 +287,6 @@ Examples: Constructing a request using NodeJS
                                     "ctype": "out",
                                     "dtype": "man",
                                     "cres": "TPT",
-                                    "is_mob": "0",
-                                    "nc_all": 10,
-                                    "nc_in": 0,
-                                    "nc_out": 0,
-                                    "nc_out_all": 0,
-                                    "nc_sms_out": 0,
-                                    "nc_man": 10,
-                                    "nc_tpt": 0,
-                                    "nc_dtpt": 0,
-                                    "nc_wait": 10,
-                                    "nc_wrap": 10,
-                                    "nc_con": 8,
-                                    "nc_ans": 0,
-                                    "nc_ans_in": 0,
-                                    "nc_ans_man": 8,
-                                    "nc_que": 0,
-                                    "nc_ans_le": 0,
-                                    "nc_ans_gt": 0,
-                                    "nc_que_le": 0,
-                                    "nc_que_gt": 0,
                                     "sec_dur": 25.597082138062,
                                     "sec_talk_all": 25.59,
                                     "sec_talk": 0,
@@ -298,23 +298,16 @@ Examples: Constructing a request using NodeJS
                                     "ocid": "101",
                                     "ocnm": "Answer Machine (Agent)",
                                     "ocis_cmpl": "0",
-                                    "ocis_cmpli": "0",
-                                    "ocis_sale": "0",
-                                    "ocis_dmc": "0",
-                                    "oc_abdn": 0,
-                                    "oc_cbck": 0,
                                     "oc_ama": 4,
                                     "oc_amd": 0,
                                     "oc_dead": 0,
                                     "oc_noansw": 2,
-                                    "oc_sale": 0,
-                                    "oc_cmpl": 0,
-                                    "oc_cmpli": 0,
                                     "oc_ncmpl": 10,
                                     "oc_dmc": 0,
                                     "cost_cust": 0.008,
                                     "bill_cust": 0.008,
-                                    "bill_dur": 30
+                                    "bill_dur": 30,
+                                    "callid_max": 7612257798
                             },
                             ...
                             ]
@@ -323,7 +316,6 @@ Examples: Constructing a request using NodeJS
             });
         });
     };
-
 ```
 
 
@@ -420,46 +412,45 @@ Filters | Description
 
 
 ```
-// Response
-
-  GET https://api-106.dxi.eu/reporting.php?token=4f2430df58c1e1875addafc7d41d661f33a2ea02&method=cdr&format=json&fields=callid,urn,qid,qnm,qtype,qtable,cres,aid,anm,dsid,ocid,ocnm,ddi,cli,flags,carrier,ctag,tag,dest,dcode,ctype,dtype,sms_msg,sec_dur,sec_wait,sec_wrap,sec_ring,sec_que,tm_init,tm_answ,tm_disc,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur,ivr_key,sec_key,orig_qnm&range=1493593200:1509580799       
+// Simple GET request
+GET https://api-106.dxi.eu/reporting.php?token=YOUR-TOKEN&method=cdr&format=json&fields=callid,urn,qid,qnm,qtype,qtable,cres,aid,anm,dsid,ocid,ocnm,ddi,cli,flags,carrier,ctag,tag,dest,dcode,ctype,dtype,sms_msg,sec_dur,sec_wait,sec_wrap,sec_ring,sec_que,tm_init,tm_answ,tm_disc,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur,ivr_key,sec_key,orig_qnm&range=1493593200:1509580799       
 
     /**
-     * Pull cdr methods
+     *  Pull cdr methods
+     * @param {type} callBackFunction
      * @returns {undefined}
      */
-    var fetchCDR = function () {
+    var fetchCDR = function (callBackFunction) {
+        if (typeof callBackFunction !== 'function'){
+            throw new Error("Please provide a callback function as parameter");
+        }
         var options = {
             method: 'GET',
-            url: endpoint,
+            url: reportingEndpoint,
             qs:{
                 token: '',// Toke will be intitialised in getToken Function
                 method: 'cdr',
                 fields: 'callid,urn,qid,qnm,qtype,qtable,cnm,cres,aid,anm,dsid,ocid,ocnm,ddi,cli,flags,carrier,ctag,tag,dest,dcode,ctype,dtype,sms_msg,sec_dur,sec_wait,sec_wrap,sec_ring,sec_que,tm_init,tm_answ,tm_disc,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur,ivr_key,sec_key,orig_qnm',
                 range: tstart + ':'+tstop, // Start and stop time in UTC
-                format: 'json',
+                format: 'json'
                 //apply any other filters
                 //campaign:"",
                 //queue:"",
-               //qtype:"",
-               //ctype:"",
-               //agent:"",
-               //dataset:"",
-               //outcome:"",
-               //ddi:"",
-               //cli:"",
-               //urn:"",
-               //callid:"",
-               //sort:"",
-               //start:"",
-               //limit:"",
-            },
-            headers: {
-                'postman-token': '4f7d3ea1-e368-6d2b-8652-64ddd9fd0cae',
-                'cache-control': 'no-cache' 
+                //qtype:"",
+                //ctype:"",
+                //agent:"",
+                //dataset:"",
+                //outcome:"",
+                //ddi:"",
+                //cli:"",
+                //urn:"",
+                //callid:"",
+                //sort:"",
+                //start:"",
+                //limit:"",
             }
         };
-
+        // Get token and then attempt fetching the cdr data
         getToken(function(err, tokenData){
             if(err || !tokenData.success || !tokenData.token){
                 throw new Error("Unable to retrieve token data");
@@ -470,7 +461,9 @@ Filters | Description
                   throw new Error(error);
               }
               // print result to console.
-              console.info(JSON.parse(body));
+              var data = JSON.parse(body);
+              console.info(data);
+              return callBackFunction(data);
               
               // Console log
               /*
@@ -479,8 +472,8 @@ Filters | Description
                 "total": 68,
                 "list": [
                     {
-                        "callid": "7531707222",
-                        "urn": "0",
+                        "callid": "707228882",
+                        "urn": "2428765",
                         "qid": "504016",
                         "qnm": "Christian Inbound Testing - Do not unassign",
                         "qtype": "inbound",
@@ -500,8 +493,8 @@ Filters | Description
                         "tag": null,
                         "dest": "44 Landline Standard",
                         "dcode": "44123456",
-                        "ctype": "in",
-                        "dtype": "in",
+                        "ctype": "out",
+                        "dtype": "out",
                         "sms_msg": null,
                         "sec_dur": "105.026",
                         "sec_wait": "1.184",
@@ -525,12 +518,9 @@ Filters | Description
                     },
                     ...
                     ]
-                
                 }
-                
                 */
             });
         });
     };
-
 ```
