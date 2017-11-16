@@ -536,6 +536,12 @@ customer request using the cdr.urn and cdr.qtable.
 
 Sample code for pulling customer record.
 ```javascript
+/**
+ * This function read customer record from ecnow endpoint. 
+ * It takes a CDR data 
+ * @param {Object} cdr
+ * @returns {undefined}
+ */
 var getcustomerRecordByCDR = function(cdr){
     var options = {
         method: 'GET',

@@ -311,7 +311,12 @@
         });
     };
     
-    
+    /**
+     * This function read customer record from ecnow endpoint. 
+     * It takes a CDR data 
+     * @param {Object} cdr
+     * @returns {undefined}
+     */
     var getcustomerRecordByCDR = function(cdr){
         var options = {
             method: 'GET',
