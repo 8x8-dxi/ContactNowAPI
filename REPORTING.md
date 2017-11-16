@@ -29,7 +29,7 @@ Requesting data requires the following mandatory parameters
 
 Params | Definition
 -----------------|-----------
-fields  | List of fields to be returned. The list must be a string concatinated by comma (,) Syntax `&fields=qtable,qtype,qid,qnm,aid,anm,dsid,dsnm,urn,ddi,cli,tid`
+fields  | List of fields to be returned. The list must be a string concatenated by comma (,) Syntax `&fields=qtable,qtype,qid,qnm,aid,anm,dsid,dsnm,urn,ddi,cli,tid`
 range | UTC Start and Stop Time. Syntax `&range=range=1493593200:1509580799` Note the colon (:) separator
 grouby | The grouping fields. See group list below. Syntax `&groupby=qtable,qnm` (Note all fields can be used)
 
@@ -119,7 +119,7 @@ The syntax for filtering `&fieldName=valueOfTheField`
 
 Filters | Description 
 ----------|---------|
-**range** | Date range in UTS (Unix Time Stamp)
+**range** | Date range in UTC (Unix Time Stamp)
 **campaign** | The Campaign table see ![The terminologies](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#the-terminologies) section of the ECNOW endpoint
 **queue** | Queue ID 
 **qtype** | Queue type. See ![Queues](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#queues) schema
@@ -145,7 +145,7 @@ Examples: Constructing a request using NodeJS
 
     Simple GET request Sample
 
-    https://api-106.dxi.eu/reporting.php?token=4f2430df58c1e1875addafc7d41d661f33a2ea02&method=calls&format=json&fields=ccid,ccnm,cid,cnm,qtable,qtype,qid,qnm,aid,anm,dsid,dsnm,urn,ddi,cli,tid,tnm,has_aid,PT10M,PT15M,PT30M,PT1H,P1D,P1W,P1M,date,day,hour,min_10,dest,dcode,ctype,dtype,cres,is_mob,nc_all,nc_in,nc_out,nc_out_all,nc_sms_out,nc_man,nc_tpt,nc_dtpt,nc_wait,nc_wrap,nc_con,nc_ans,nc_ans_in,nc_ans_man,nc_que,nc_ans_le,nc_ans_gt,nc_que_le,nc_que_gt,sec_dur,sec_talk_all,sec_talk,sec_tpt,sec_wait,sec_wrap,sec_call,sec_ans,ocid,ocnm,ocis_cmpl,ocis_cmpli,ocis_sale,ocis_dmc,oc_abdn,oc_cbck,oc_ama,oc_amd,oc_dead,oc_noansw,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur,callid_max&range=1493593200:1509580799&groupby=qtable,qnm&agent=503314
+    https://[BASE_API_URL]/reporting.php?token=4f2430df58c1e1875addafc7d41d661f33a2ea02&method=calls&format=json&fields=ccid,ccnm,cid,cnm,qtable,qtype,qid,qnm,aid,anm,dsid,dsnm,urn,ddi,cli,tid,tnm,has_aid,PT10M,PT15M,PT30M,PT1H,P1D,P1W,P1M,date,day,hour,min_10,dest,dcode,ctype,dtype,cres,is_mob,nc_all,nc_in,nc_out,nc_out_all,nc_sms_out,nc_man,nc_tpt,nc_dtpt,nc_wait,nc_wrap,nc_con,nc_ans,nc_ans_in,nc_ans_man,nc_que,nc_ans_le,nc_ans_gt,nc_que_le,nc_que_gt,sec_dur,sec_talk_all,sec_talk,sec_tpt,sec_wait,sec_wrap,sec_call,sec_ans,ocid,ocnm,ocis_cmpl,ocis_cmpli,ocis_sale,ocis_dmc,oc_abdn,oc_cbck,oc_ama,oc_amd,oc_dead,oc_noansw,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur,callid_max&range=1493593200:1509580799&groupby=qtable,qnm&agent=503314
 */
 
 
@@ -331,17 +331,70 @@ Examples: Constructing a request using NodeJS
 
 ## cdr
 
-    The calls method is used for when you need to pull your entire call data within
-    a given time range. It comes with some filers which allows for some calls filtering.
-    
-    Requesting data requires your to supply the fields you would like to return in you request.
-    The reporting API allow to request field definition as shown below
+The calls method is used for when you need to pull your entire call data within
+a given time range. It comes with some filers which allows for some calls filtering.
+
+Requesting data requires your to supply the fields you would like to return in your request.
+
+### Mandatory Params
+
+Params | Definition
+-----------------|-----------
+fields  | List of fields to be returned. The list must be a string concatenated by comma (,) Syntax `&fields=callid,urn,qid,qnm,qtype,qtable,`
+range | UTC Start and Stop Time. Syntax `&range=range=1493593200:1509580799` Note the colon (:) separator
+
+#### Fields and definitions
+
+Field Names  | Description | Can be used as grouping 
+-------------|--------------------|------------
+callid| the individual call id.| True
+urn| the unique customer record number.| False
+qid| the queue id.| False
+qnm| the queue name.| False
+qtype| the queue type.| False
+qtable| the queue's assigned campaign.| False
+cid| the campaign id.| False
+cnm| the campaign name.| False
+cres| the call result (Answered, Dead Line, No Answer, etc).| False
+aid| the agent id.| False
+anm| the agent name.| False
+dsid| the dataset id.| False
+ocid| the call outcome id.| False
+ocnm| the call outcome name.| False
+ddi| the destination phone number.| False
+cli| the phone number displayed to the callee.| False
+flags| flags stored against the call.| False
+carrier| the telecoms carrier the call was connected through.| False
+ctag| The Tag ID of the tag| False
+tag| The Tag Name of the Tag| False
+dest| the outbound or inbound destination.| False
+dcode| the prefix of the number dialled that was used to determine the destination.| False
+ctype| Values (in, out).| False
+dtype| Values (in, out, man, tpt, sms_out).| False
+sms_msg| | True
+sec_dur| the call duration in seconds.| False
+sec_wait| DEPRECATED - sum of agent wait time.| False
+sec_wrap| DEPRECATED - sum of agent wrap time.| False
+sec_ring| the time between the call being acknowledged and answered/disconnected.| False
+sec_que| the time between the call connecting to the queueing system and answered/disconnected.| False
+tm_init| the time the call was initialised.| False
+tm_answ| the time the call was answered.| False
+tm_disc| the time the call was disconnected.| False
+oc_sale| number of outcomes - sales| False
+oc_cmpl| number of outcomes - completes (excluding sales)| False
+oc_cmpli| number of outcomes - completes (including sales)| False
+oc_ncmpl| number of outcomes - incompletes| False
+oc_dmc| number of outcomes - DMC's| False
+cost_cust| the cost (GBP)| False
+bill_cust| the cost (GBP)| False
+bill_dur| the duration used to calculate the cost| False
+ivr_key| the last valid key pressed if the call was in an IVR.| False
+sec_key| the time between the call connecting to the queueing system and the customer pressing their last IVR key.| False
+orig_qnm| | False
 
 
 // Response
-{
-    GET https://api-106.dxi.eu/reporting.php?token=4f2430df58c1e1875addafc7d41d661f33a2ea02&method=cdr&format=json&fields=callid,urn,qid,qnm,qtype,qtable,cid,cnm,cres,aid,anm,dsid,ocid,ocnm,ddi,cli,flags,carrier,ctag,tag,dest,dcode,ctype,dtype,sms_msg,sec_dur,sec_wait,sec_wrap,sec_ring,sec_que,tm_init,tm_answ,tm_disc,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur,ivr_key,sec_key,orig_qnm,bk_last_ddi&range=1493593200:1509580799
 
-}        
+  GET https://api-106.dxi.eu/reporting.php?token=4f2430df58c1e1875addafc7d41d661f33a2ea02&method=cdr&format=json&fields=callid,urn,qid,qnm,qtype,qtable,cid,cnm,cres,aid,anm,dsid,ocid,ocnm,ddi,cli,flags,carrier,ctag,tag,dest,dcode,ctype,dtype,sms_msg,sec_dur,sec_wait,sec_wrap,sec_ring,sec_que,tm_init,tm_answ,tm_disc,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur,ivr_key,sec_key,orig_qnm,bk_last_ddi&range=1493593200:1509580799       
 
 ```

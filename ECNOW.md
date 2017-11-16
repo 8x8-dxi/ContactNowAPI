@@ -1,5 +1,5 @@
 This endpoint is the most widely used API. It allows dynamic data/record feed in/out
-of a selected campaign and can persist the DXI database based on certain properties.
+of a selected campaign and can manipulate the corresponding DXI record based on certain data properties.
 
 Before delving deep into this API let's try to understand the important concept and 
 components of the 8x8 ContactNow platform, without the overview knowledge you will
