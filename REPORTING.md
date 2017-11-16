@@ -33,10 +33,6 @@ grouby | The grouping fields. See group list below. Syntax `&groupby=qtable,qnm`
 
 Field Names  | Description | Can be used as grouping 
 -------------|--------------------|------------
-ccid| the call centre id.| True
-ccnm| the call centre name.| True
-cid| the campaign id.| True
-cnm| the campaign name.| True
 qtable| the queue's assigned campaign.| True
 qtype| the queue type.| True
 qid| the queue id.| True
@@ -109,7 +105,7 @@ oc_dmc| number of outcomes - DMC's| False
 cost_cust| the call cost| False
 bill_cust| the call cost | False
 bill_dur| the duration used to calculate the cost| False
-callid_max| | False
+callid_max| The max callid within the time range| False
 
 
 ### Filters and definitions
@@ -133,40 +129,6 @@ Filters | Description
 **urn** | Customer ID reference the ECN Database. See ![Dataset](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#dataset) schema
 **team** | Team ID
 
-## Grouping fields
-
-Group Filters | Description 
-----------|---------|
-qtable |
-qtype |
-qid |
-qnm |
-aid |
-anm |
-dsid |
-dsnm |
-urn |
-ddi |
-cli |
-tid |
-tnm |
-has_aid |
-date |
-day |
-hour |
-min_10 |
-dest |
-dcode |
-ctype |
-dtype |
-cres |
-is_mob |
-ocid |
-ocnm |
-ocis_cmpl |
-ocis_cmpli |
-ocis_sale |
-ocis_dmc  |
 
 
 Examples: Constructing a request using NodeJS
