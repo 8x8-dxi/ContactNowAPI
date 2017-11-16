@@ -411,7 +411,7 @@ Filters | Description
 
 
 ### Fork the !
-```
+```javascript
 // Simple GET request
 GET https://[BASE_API_URL]/reporting.php?token=YOUR-TOKEN&method=cdr&format=json&fields=callid,urn,qid,qnm,qtype,qtable,cres,aid,anm,dsid,ocid,ocnm,ddi,cli,flags,carrier,ctag,tag,dest,dcode,ctype,dtype,sms_msg,sec_dur,sec_wait,sec_wrap,sec_ring,sec_que,tm_init,tm_answ,tm_disc,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur,ivr_key,sec_key,orig_qnm&range=1493593200:1509580799       
 
