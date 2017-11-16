@@ -109,7 +109,6 @@ oc_dmc| number of outcomes - DMC's| False
 cost_cust| the call cost| False
 bill_cust| the call cost | False
 bill_dur| the duration used to calculate the cost| False
-callid_max| The max callid within the time range| False
 
 
 ### Filters and definitions
@@ -145,7 +144,7 @@ Examples: Constructing a request using NodeJS
 
     Simple GET request Sample
 
-    https://[BASE_API_URL]/reporting.php?token=4f2430df58c1e1875addafc7d41d661f33a2ea02&method=calls&format=json&fields=ccid,ccnm,cid,cnm,qtable,qtype,qid,qnm,aid,anm,dsid,dsnm,urn,ddi,cli,tid,tnm,has_aid,PT10M,PT15M,PT30M,PT1H,P1D,P1W,P1M,date,day,hour,min_10,dest,dcode,ctype,dtype,cres,is_mob,nc_all,nc_in,nc_out,nc_out_all,nc_sms_out,nc_man,nc_tpt,nc_dtpt,nc_wait,nc_wrap,nc_con,nc_ans,nc_ans_in,nc_ans_man,nc_que,nc_ans_le,nc_ans_gt,nc_que_le,nc_que_gt,sec_dur,sec_talk_all,sec_talk,sec_tpt,sec_wait,sec_wrap,sec_call,sec_ans,ocid,ocnm,ocis_cmpl,ocis_cmpli,ocis_sale,ocis_dmc,oc_abdn,oc_cbck,oc_ama,oc_amd,oc_dead,oc_noansw,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur,callid_max&range=1493593200:1509580799&groupby=qtable,qnm&agent=503314
+    https://[BASE_API_URL]/reporting.php?token=4f2430df58c1e1875addafc7d41d661f33a2ea02&method=calls&format=json&fields=ccid,ccnm,cid,cnm,qtable,qtype,qid,qnm,aid,anm,dsid,dsnm,urn,ddi,cli,tid,tnm,has_aid,PT10M,PT15M,PT30M,PT1H,P1D,P1W,P1M,date,day,hour,min_10,dest,dcode,ctype,dtype,cres,is_mob,nc_all,nc_in,nc_out,nc_out_all,nc_sms_out,nc_man,nc_tpt,nc_dtpt,nc_wait,nc_wrap,nc_con,nc_ans,nc_ans_in,nc_ans_man,nc_que,nc_ans_le,nc_ans_gt,nc_que_le,nc_que_gt,sec_dur,sec_talk_all,sec_talk,sec_tpt,sec_wait,sec_wrap,sec_call,sec_ans,ocid,ocnm,ocis_cmpl,ocis_cmpli,ocis_sale,ocis_dmc,oc_abdn,oc_cbck,oc_ama,oc_amd,oc_dead,oc_noansw,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur&range=1493593200:1509580799&groupby=qtable,qnm&agent=503314
 */
 
 
@@ -196,7 +195,7 @@ Examples: Constructing a request using NodeJS
         tstart = tstartObject.getTime()/1000,
         tstop = tStopObject.getTime()/1000;
 
-    var fetchCDR = function () {
+    var fetchCalls = function () {
 
         var options = {
             method: 'GET',
@@ -204,7 +203,7 @@ Examples: Constructing a request using NodeJS
             qs: {
                 token: '',// Toke will be intitialised in getToken Function
                 method: 'calls',
-                fields: 'qtable,qtype,qid,qnm,aid,anm,dsid,dsnm,urn,ddi,cli,tid,tnm,has_aid,PT10M,PT15M,PT30M,PT1H,P1D,P1W,P1M,date,day,hour,min_10,dest,dcode,ctype,dtype,cres,is_mob,nc_all,nc_in,nc_out,nc_out_all,nc_sms_out,nc_man,nc_tpt,nc_dtpt,nc_wait,nc_wrap,nc_con,nc_ans,nc_ans_in,nc_ans_man,nc_que,nc_ans_le,nc_ans_gt,nc_que_le,nc_que_gt,sec_dur,sec_talk_all,sec_talk,sec_tpt,sec_wait,sec_wrap,sec_call,sec_ans,ocid,ocnm,ocis_cmpl,ocis_cmpli,ocis_sale,ocis_dmc,oc_abdn,oc_cbck,oc_ama,oc_amd,oc_dead,oc_noansw,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur,callid_max',
+                fields: 'qtable,qtype,qid,qnm,aid,anm,dsid,dsnm,urn,ddi,cli,tid,tnm,has_aid,PT10M,PT15M,PT30M,PT1H,P1D,P1W,P1M,date,day,hour,min_10,dest,dcode,ctype,dtype,cres,is_mob,nc_all,nc_in,nc_out,nc_out_all,nc_sms_out,nc_man,nc_tpt,nc_dtpt,nc_wait,nc_wrap,nc_con,nc_ans,nc_ans_in,nc_ans_man,nc_que,nc_ans_le,nc_ans_gt,nc_que_le,nc_que_gt,sec_dur,sec_talk_all,sec_talk,sec_tpt,sec_wait,sec_wrap,sec_call,sec_ans,ocid,ocnm,ocis_cmpl,ocis_cmpli,ocis_sale,ocis_dmc,oc_abdn,oc_cbck,oc_ama,oc_amd,oc_dead,oc_noansw,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur',
                 range: tstart + ':'+tstop, // Start and stop time in UTC
                 groupby: 'qtable,qnm', // Group the data by Campaign table and queue name
                 agent: 503314,// Notice I am filtering by agent ID which should return every call handled by this agent only
@@ -315,8 +314,7 @@ Examples: Constructing a request using NodeJS
                                     "oc_dmc": 0,
                                     "cost_cust": 0.008,
                                     "bill_cust": 0.008,
-                                    "bill_dur": 30,
-                                    "callid_max": 7612257798
+                                    "bill_dur": 30
                             },
                             ...
                             ]
@@ -331,8 +329,11 @@ Examples: Constructing a request using NodeJS
 
 # cdr
 
-The calls method is used for when you need to pull your entire call data within
+The calls method is used for when you need to pull your entire calls data within
 a given time range. It comes with some filers which allows for some calls filtering.
+
+Note that the cdr method does not return the entire customer record. See example for 
+pulling related customer records.
 
 Requesting data requires your to supply the fields you would like to return in your request.
 
@@ -346,14 +347,13 @@ range | UTC Start and Stop Time. Syntax `&range=range=1493593200:1509580799` Not
 #### Fields and definitions
 
 Field Names  | Description | Can be used as grouping 
--------------|--------------------|------------
+-------------|-------------|------------------------
 callid| the individual call id.| True
 urn| the unique customer record number.| False
 qid| the queue id.| False
 qnm| the queue name.| False
 qtype| the queue type.| False
 qtable| the queue's assigned campaign.| False
-cid| the campaign id.| False
 cnm| the campaign name.| False
 cres| the call result (Answered, Dead Line, No Answer, etc).| False
 aid| the agent id.| False
@@ -392,9 +392,145 @@ ivr_key| the last valid key pressed if the call was in an IVR.| False
 sec_key| the time between the call connecting to the queueing system and the customer pressing their last IVR key.| False
 orig_qnm| | False
 
+
+
+### Filters and definitions
+
+The following filters can be when requesting data using the cdr method.
+The syntax for filtering `&fieldName=valueOfTheField` 
+
+Filters | Description 
+----------|---------|
+**range** | Date range in UTC (Unix Time Stamp)
+**callid** | Call ID 
+**campaign** | The Campaign table see ![The terminologies](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#the-terminologies) section of the ECNOW endpoint
+**queue** | Queue ID 
+**qtype** | Queue type. See ![Queues](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#queues) schema
+**ctype** |Call direction. Can either be "in" OR "out"
+**agent** | Agent ID
+**dataset** | Dataset ID
+**outcome** | Outcome code ID
+**cutoff** | SLA figure in seconds for call cutoff times.
+**ddi** | This should be the customer Phone number depending on the call direction.
+**cli** | Caller ID/Display Number. For incoming call the CLI will be the customer phone number.
+**urn** | Customer ID reference the ECN Database. See ![Dataset](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#dataset) schema
+**sort** | When set the returned data will be return in a particular order of the fields you passed
+**limit** | limits size of data returned
+**start** | works together with limit
+
+
 ```
 // Response
 
-  GET https://api-106.dxi.eu/reporting.php?token=4f2430df58c1e1875addafc7d41d661f33a2ea02&method=cdr&format=json&fields=callid,urn,qid,qnm,qtype,qtable,cid,cnm,cres,aid,anm,dsid,ocid,ocnm,ddi,cli,flags,carrier,ctag,tag,dest,dcode,ctype,dtype,sms_msg,sec_dur,sec_wait,sec_wrap,sec_ring,sec_que,tm_init,tm_answ,tm_disc,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur,ivr_key,sec_key,orig_qnm,bk_last_ddi&range=1493593200:1509580799       
+  GET https://api-106.dxi.eu/reporting.php?token=4f2430df58c1e1875addafc7d41d661f33a2ea02&method=cdr&format=json&fields=callid,urn,qid,qnm,qtype,qtable,cres,aid,anm,dsid,ocid,ocnm,ddi,cli,flags,carrier,ctag,tag,dest,dcode,ctype,dtype,sms_msg,sec_dur,sec_wait,sec_wrap,sec_ring,sec_que,tm_init,tm_answ,tm_disc,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur,ivr_key,sec_key,orig_qnm&range=1493593200:1509580799       
+
+    /**
+     * Pull cdr methods
+     * @returns {undefined}
+     */
+    var fetchCDR = function () {
+        var options = {
+            method: 'GET',
+            url: endpoint,
+            qs:{
+                token: '',// Toke will be intitialised in getToken Function
+                method: 'cdr',
+                fields: 'callid,urn,qid,qnm,qtype,qtable,cnm,cres,aid,anm,dsid,ocid,ocnm,ddi,cli,flags,carrier,ctag,tag,dest,dcode,ctype,dtype,sms_msg,sec_dur,sec_wait,sec_wrap,sec_ring,sec_que,tm_init,tm_answ,tm_disc,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur,ivr_key,sec_key,orig_qnm',
+                range: tstart + ':'+tstop, // Start and stop time in UTC
+                format: 'json',
+                //apply any other filters
+                //campaign:"",
+                //queue:"",
+               //qtype:"",
+               //ctype:"",
+               //agent:"",
+               //dataset:"",
+               //outcome:"",
+               //ddi:"",
+               //cli:"",
+               //urn:"",
+               //callid:"",
+               //sort:"",
+               //start:"",
+               //limit:"",
+            },
+            headers: {
+                'postman-token': '4f7d3ea1-e368-6d2b-8652-64ddd9fd0cae',
+                'cache-control': 'no-cache' 
+            }
+        };
+
+        getToken(function(err, tokenData){
+            if(err || !tokenData.success || !tokenData.token){
+                throw new Error("Unable to retrieve token data");
+            }
+            options.qs.token = tokenData.token;
+            request(options, function (error, response, body) {
+              if (error){
+                  throw new Error(error);
+              }
+              // print result to console.
+              console.info(JSON.parse(body));
+              
+              // Console log
+              /*
+              {
+                "success": true,
+                "total": 68,
+                "list": [
+                    {
+                        "callid": "7531707222",
+                        "urn": "0",
+                        "qid": "504016",
+                        "qnm": "Christian Inbound Testing - Do not unassign",
+                        "qtype": "inbound",
+                        "qtable": "SomeTest",
+                        "cnm": "Willtest",
+                        "cres": "Answered",
+                        "aid": "503314",
+                        "anm": "William Davies",
+                        "dsid": "0",
+                        "ocid": "5013337",
+                        "ocnm": "DNC Complete",
+                        "ddi": "01234567890",
+                        "cli": "01234567891",
+                        "flags": "recorded,processed",
+                        "carrier": "bt-ix",
+                        "ctag": null,
+                        "tag": null,
+                        "dest": "44 Landline Standard",
+                        "dcode": "44123456",
+                        "ctype": "in",
+                        "dtype": "in",
+                        "sms_msg": null,
+                        "sec_dur": "105.026",
+                        "sec_wait": "1.184",
+                        "sec_wrap": "6745.432",
+                        "sec_ring": "0.000",
+                        "sec_que": "80",
+                        "tm_init": "1501080575",
+                        "tm_answ": "1501080655",
+                        "tm_disc": "1501080680",
+                        "oc_sale": "1",
+                        "oc_cmpl": "0",
+                        "oc_cmpli": "1",
+                        "oc_ncmpl": "0",
+                        "oc_dmc": "1",
+                        "cost_cust": "0.045",
+                        "bill_cust": "0.0450",
+                        "bill_dur": "106.0000",
+                        "ivr_key": null,
+                        "sec_key": null,
+                        "orig_qnm": "William Inbound Testing - Do not unassign"
+                    },
+                    ...
+                    ]
+                
+                }
+                
+                */
+            });
+        });
+    };
 
 ```

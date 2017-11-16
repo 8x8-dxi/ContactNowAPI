@@ -43,7 +43,7 @@
     };
 
 
-    var endpoint = 'https://api-106.dxi.eu/reporting.php';
+    var endpoint = 'https://'+BASE_API_URL+'/reporting.php';
     
     // Change the datetime
     // Get the epoch time from the start and stop time
@@ -52,7 +52,11 @@
         tstart = tstartObject.getTime()/1000,
         tstop = tStopObject.getTime()/1000;
 
-    var fetchCDR = function () {
+    /**
+     * 
+     * @returns {undefined}
+     */
+    var fetchCalls = function () {
 
         var options = {
             method: 'GET',
@@ -65,11 +69,24 @@
                 groupby: 'qtable,qnm', // Group the data by Campaign table and queue name
                 agent: 503314,// Notice I am filtering by agent ID which should return every call handled by this agent only
                 format: 'json'
+                //apply any other filters
+                //campaign:"",
+                //queue:"",
+               //qtype:"",
+               //ctype:"",
+               //agent:"",
+               //dataset:"",
+               //outcome:"",
+               //ddi:"",
+               //cli:"",
+               //urn:"",
             },
             headers:
-                    {'postman-token': '3dc507a9-b14a-7b91-b103-eafc74b6a85e',
-                        'cache-control': 'no-cache'}
-            };
+                    {
+                        'postman-token': '3dc507a9-b14a-7b91-b103-eafc74b6a85e',
+                        'cache-control': 'no-cache'
+                    }
+        };
 
         getToken(function(err, tokenData){
             if(err || !tokenData.success || !tokenData.token){
@@ -92,7 +109,6 @@
                             {
                             "ccid": "315",
                                     "ccnm": "ECONStaff",
-                                    "cid": "500650",
                                     "cnm": "Willtest",
                                     "qtable": "APItestcampaign",
                                     "qtype": "outbound",
@@ -178,6 +194,115 @@
                             ]
                     }
                     */
+            });
+        });
+    };
+
+    /**
+     * Pull cdr methods
+     * @returns {undefined}
+     */
+    var fetchCDR = function () {
+        var options = {
+            method: 'GET',
+            url: endpoint,
+            qs:{
+                token: '',// Toke will be intitialised in getToken Function
+                method: 'cdr',
+                fields: 'callid,urn,qid,qnm,qtype,qtable,cnm,cres,aid,anm,dsid,ocid,ocnm,ddi,cli,flags,carrier,ctag,tag,dest,dcode,ctype,dtype,sms_msg,sec_dur,sec_wait,sec_wrap,sec_ring,sec_que,tm_init,tm_answ,tm_disc,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur,ivr_key,sec_key,orig_qnm',
+                range: tstart + ':'+tstop, // Start and stop time in UTC
+                format: 'json',
+                //apply any other filters
+                //campaign:"",
+                //queue:"",
+               //qtype:"",
+               //ctype:"",
+               //agent:"",
+               //dataset:"",
+               //outcome:"",
+               //ddi:"",
+               //cli:"",
+               //urn:"",
+               //callid:"",
+               //sort:"",
+               //start:"",
+               //limit:"",
+            },
+            headers: {
+                'postman-token': '4f7d3ea1-e368-6d2b-8652-64ddd9fd0cae',
+                'cache-control': 'no-cache' 
+            }
+        };
+
+        getToken(function(err, tokenData){
+            if(err || !tokenData.success || !tokenData.token){
+                throw new Error("Unable to retrieve token data");
+            }
+            options.qs.token = tokenData.token;
+            request(options, function (error, response, body) {
+              if (error){
+                  throw new Error(error);
+              }
+              // print result to console.
+              console.info(JSON.parse(body));
+              
+              // Console log
+              /*
+              {
+                "success": true,
+                "total": 68,
+                "list": [
+                    {
+                        "callid": "7531707222",
+                        "urn": "0",
+                        "qid": "504016",
+                        "qnm": "Christian Inbound Testing - Do not unassign",
+                        "qtype": "inbound",
+                        "qtable": "SomeTest",
+                        "cnm": "Willtest",
+                        "cres": "Answered",
+                        "aid": "503314",
+                        "anm": "William Davies",
+                        "dsid": "0",
+                        "ocid": "5013337",
+                        "ocnm": "DNC Complete",
+                        "ddi": "01234567890",
+                        "cli": "01234567891",
+                        "flags": "recorded,processed",
+                        "carrier": "bt-ix",
+                        "ctag": null,
+                        "tag": null,
+                        "dest": "44 Landline Standard",
+                        "dcode": "44123456",
+                        "ctype": "in",
+                        "dtype": "in",
+                        "sms_msg": null,
+                        "sec_dur": "105.026",
+                        "sec_wait": "1.184",
+                        "sec_wrap": "6745.432",
+                        "sec_ring": "0.000",
+                        "sec_que": "80",
+                        "tm_init": "1501080575",
+                        "tm_answ": "1501080655",
+                        "tm_disc": "1501080680",
+                        "oc_sale": "1",
+                        "oc_cmpl": "0",
+                        "oc_cmpli": "1",
+                        "oc_ncmpl": "0",
+                        "oc_dmc": "1",
+                        "cost_cust": "0.045",
+                        "bill_cust": "0.0450",
+                        "bill_dur": "106.0000",
+                        "ivr_key": null,
+                        "sec_key": null,
+                        "orig_qnm": "William Inbound Testing - Do not unassign"
+                    },
+                    ...
+                    ]
+                
+                }
+                
+                */
             });
         });
     };
