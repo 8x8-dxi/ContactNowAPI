@@ -531,12 +531,12 @@ GET https://[BASE_API_URL]/reporting.php?token=YOUR-TOKEN&method=cdr&format=json
 This section demonstrate how you would request the corresponding customer record 
 from the payload returned from either the cdr or calls method.
 
-First we get the cdr data as explained in ![cdr](#cdr) or using the ![calls](#calls) method. The request
+First we get the cdr data as explained in [cdr](#cdr) or using the [calls](#calls) method. The request
 returns a list of calls data as described above, we then loop through the list of data requesting each
 customer request using the cdr.urn and cdr.qtable.
 
 Sample code for pulling customer record.
-```nodejs
+```javascript
     
     /**
      * Get customer records using data from the CDR log.
