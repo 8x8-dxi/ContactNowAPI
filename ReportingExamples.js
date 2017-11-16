@@ -384,7 +384,7 @@
     
     
     /**
-     * Get custoer records using data from the CDR log.
+     * Get customer records using data from the CDR log.
      * @returns {undefined}
      */
     var getDialledCustomerRecords = function (){
@@ -392,6 +392,7 @@
             if (!cdrResponse || cdrResponse.success || cdrResponse.total > 0){
                 throw new Error(cdrResponse);
             }
+            // loop through the cdr data whilst requesting each record.
             for (var i = 0, l = cdrResponse.list.length; i < l; ++i) {
                 var cdr = cdrResponse.list[i];
                 // Notice we are checking the urn value and the table holding the record.

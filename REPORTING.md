@@ -411,9 +411,10 @@ Filters | Description
 **start** | works together with limit
 
 
+### Fork the !
 ```
 // Simple GET request
-GET https://api-106.dxi.eu/reporting.php?token=YOUR-TOKEN&method=cdr&format=json&fields=callid,urn,qid,qnm,qtype,qtable,cres,aid,anm,dsid,ocid,ocnm,ddi,cli,flags,carrier,ctag,tag,dest,dcode,ctype,dtype,sms_msg,sec_dur,sec_wait,sec_wrap,sec_ring,sec_que,tm_init,tm_answ,tm_disc,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur,ivr_key,sec_key,orig_qnm&range=1493593200:1509580799       
+GET https://[BASE_API_URL]/reporting.php?token=YOUR-TOKEN&method=cdr&format=json&fields=callid,urn,qid,qnm,qtype,qtable,cres,aid,anm,dsid,ocid,ocnm,ddi,cli,flags,carrier,ctag,tag,dest,dcode,ctype,dtype,sms_msg,sec_dur,sec_wait,sec_wrap,sec_ring,sec_que,tm_init,tm_answ,tm_disc,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur,ivr_key,sec_key,orig_qnm&range=1493593200:1509580799       
 
     /**
      *  Pull cdr methods
@@ -523,4 +524,38 @@ GET https://api-106.dxi.eu/reporting.php?token=YOUR-TOKEN&method=cdr&format=json
             });
         });
     };
+```
+
+# Request full customer data from cdr data
+
+This section demonstrate how you would request the corresponding customer record 
+from the payload returned from either the cdr or calls method.
+
+First we get the cdr data as explained in ![cdr](#cdr) or using the ![calls](#calls) method. The request
+returns a list of calls data as described above, we then loop through the list of data requesting each
+customer request using the cdr.urn and cdr.qtable.
+
+Sample code for pulling customer record.
+```nodejs
+    
+    /**
+     * Get customer records using data from the CDR log.
+     * @returns {undefined}
+     */
+    var getDialledCustomerRecords = function (){
+        fetchCDR(function (cdrResponse) {
+            if (!cdrResponse || cdrResponse.success || cdrResponse.total > 0){
+                throw new Error(cdrResponse);
+            }
+            // loop through the cdr data whilst requesting each record.
+            for (var i = 0, l = cdrResponse.list.length; i < l; ++i) {
+                var cdr = cdrResponse.list[i];
+                // Notice we are checking the urn value and the table holding the record.
+                if (cdr.urn > 0 && cdr.qtable !== ''){
+                    getcustomerRecordByCDR(cdr);
+                }
+            }
+        });
+    };
+
 ```
