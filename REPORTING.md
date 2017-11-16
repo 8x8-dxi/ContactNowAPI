@@ -536,6 +536,76 @@ customer request using the cdr.urn and cdr.qtable.
 
 Sample code for pulling customer record.
 ```javascript
+var getcustomerRecordByCDR = function(cdr){
+    var options = {
+        method: 'GET',
+        url: ECNOWEndpoint,
+        qs: {
+            token: _TOKEN,
+            method: 'ecnow_records',
+            format: 'json',
+            action: 'read',
+            urn: cdr.urn,
+            table: cdr.qtable// This is required for tartgeting the table hoding the record
+        }
+    };
+
+    request(options, function (error, response, body) {
+          if (error){
+              throw new Error(error);
+          }
+          // print result to console.
+          var customer = JSON.parse(body);
+          if (customer && customer.sussess && customer.total > 0){
+              // Do stuff with the record
+          }
+          console.info(data);
+          /*
+          {
+            "success": true,
+            "total": 1,
+            "list": [
+                {
+                    "Address1": "121B London Road",
+                    "Address2": "",
+                    "Address3": "Reading",
+                    "Address4": "Berkshire",
+                    "Address5": "",
+                    "Address6": "",
+                    "AgentRef": "503314",
+                    "Agent_Specific": "",
+                    "appointment": "",
+                    "callback": "0000-00-00 00:00:00",
+                    "Call_Back_Notes": "",
+                    "Call_Back_Sametime": "",
+                    "Customer_Email": "",
+                    "datasetid": "337",
+                    "FirstName": "Eric",
+                    "flgid": "",
+                    "HomePhone": "",
+                    "id": "2428765",
+                    "LastName": "Forbes",
+                    "loaddate": "2017-06-07",
+                    "HomePhone": "01234567890",
+                    "MobilePhone": "",
+                    "notes": "2017-06-07 15:09:48 agent 503314 set outcome 109\r\n2017-06-07 15:09:49 agent 503314 set outcome 107, call back for 2017-06-07 17:09:00\r\n2017-06-16 10:58:05 agent 503314 set outcome 109\r\n2017-06-16 10:58:06 agent 503314 set outcome 107, call back for 2017-06-16 12:58:00\r\n2017-07-10 13:56:31 agent 503314 set outcome 19, call back for 2017-06-16 12:58:00, 2017-07-10 13:56:31 agent 503314 set wrong number 01184320014, no numbers left\r\n2017-07-17 09:49:49 agent 503314 set outcome 107, call back for 0000-00-00 00:00:00\r\n2017-07-17 10:09:51 agent 503314 set outcome 107, call back for 0000-00-00 00:00:00\r\n",
+                    "outcomecode": "107",
+                    "Postcode": "RG1 5RG",
+                    "ProcessDate": "2017-07-17 10:09:51",
+                    "ProcessType": "NEEDSMOREWORK",
+                    "sourcefile": "Contact Now Test Data.csv",
+                    "Testy": "",
+                    "ThisIsATimeField": "",
+                    "Title": "Mr",
+                    "URN": null,
+                    "VENDOR_URN": null,
+                    "WorkPhone": ""
+                }
+            ]
+           */
+    });
+};
+
     
 /**
  * Get customer records using data from the CDR log.
