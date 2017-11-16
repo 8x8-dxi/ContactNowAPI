@@ -16,7 +16,7 @@ has to be requested using the [ecnow.php endpoint](https://github.com/8x8-dxi/Co
 
 ## Methods
 
-### calls
+# calls
     
 The calls method is used for gathering "grouped" data for a specified date range.
 For example if you wanted to get the total calls handled by a specific agent or queue (see below for full list of filters)
@@ -329,7 +329,7 @@ Examples: Constructing a request using NodeJS
 ```
 
 
-## cdr
+# cdr
 
 The calls method is used for when you need to pull your entire call data within
 a given time range. It comes with some filers which allows for some calls filtering.
@@ -370,7 +370,7 @@ tag| The Tag Name of the Tag| False
 dest| the outbound or inbound destination.| False
 dcode| the prefix of the number dialled that was used to determine the destination.| False
 ctype| Values (in, out).| False
-dtype| Values (in, out, man, tpt, sms_out).| False
+dtype| Call Values (in, out, man, tpt, sms_out).| False
 sms_msg| | True
 sec_dur| the call duration in seconds.| False
 sec_wait| DEPRECATED - sum of agent wait time.| False
@@ -392,7 +392,7 @@ ivr_key| the last valid key pressed if the call was in an IVR.| False
 sec_key| the time between the call connecting to the queueing system and the customer pressing their last IVR key.| False
 orig_qnm| | False
 
-
+```
 // Response
 
   GET https://api-106.dxi.eu/reporting.php?token=4f2430df58c1e1875addafc7d41d661f33a2ea02&method=cdr&format=json&fields=callid,urn,qid,qnm,qtype,qtable,cid,cnm,cres,aid,anm,dsid,ocid,ocnm,ddi,cli,flags,carrier,ctag,tag,dest,dcode,ctype,dtype,sms_msg,sec_dur,sec_wait,sec_wrap,sec_ring,sec_que,tm_init,tm_answ,tm_disc,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur,ivr_key,sec_key,orig_qnm,bk_last_ddi&range=1493593200:1509580799       
