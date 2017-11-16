@@ -19,9 +19,11 @@ For example if you wanted to get the total calls handled by a specific agent or 
 
 It comes with some filers and "grouping" (fields) which allows.
 
-Requesting data requires the following parameters 
+Requesting data requires the following mandatory parameters 
 
-Mandatory Params | Definition
+### Mandatory Params
+
+Params | Definition
 -----------------|-----------
 fields  | List of fields to be returned. The list must be a string concatinated by comma (,) Syntax `&fields=qtable,qtype,qid,qnm,aid,anm,dsid,dsnm,urn,ddi,cli,tid`
 range | UTC Start and Stop Time. Syntax `&range=range=1493593200:1509580799` Note the colon (:) separator
@@ -57,11 +59,11 @@ P1D| | True
 P1W| | True
 P1M| | True
 date| the date (YYYY-MM-DD).| True
-day| the day of the week (monday, tuesday, etc).| True
+day| the day of the week (Monday, Tuesday, etc).| True
 hour| the hour of the day (24 hour).| True
 min_10| the 10 minute period the call was placed within (00, 10, 20, 30, 40, 50).| True
 dest| the outbound or inbound destination.| True
-dcode| the prefix of the number dialed that was used to determine the destination.| True
+dcode| the prefix of the number dialled that was used to determine the destination.| True
 ctype| Values (in, out).| True
 dtype| Values (in, out, man, tpt, sms_out).| True
 cres| the call result (Answered, Dead Line, No Answer, etc).| True
@@ -80,7 +82,7 @@ nc_con| the number of connected calls - excluding those dispositioned with Answe
 nc_ans| the number of answered calls.| False
 nc_ans_in| | False
 nc_ans_man| the number of answered manual calls.| False
-nc_que| the number of calls placed in queuing system but not answered.| False
+nc_que| the number of calls placed in queueing system but not answered.| False
 nc_ans_le| the number of inbound calls answered before cutoff X seconds.| False
 nc_ans_gt| the number of inbound calls answered after cutoff X seconds.| False
 nc_que_le| the number of inbound calls abandoned before cutoff X seconds.| False
