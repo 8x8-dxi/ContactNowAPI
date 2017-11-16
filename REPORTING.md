@@ -14,18 +14,18 @@ has to be requested using the [ecnow.php endpoint](https://github.com/8x8-dxi/Co
 
 ### calls
     
-    The calls method is used for gathering "grouped" data for a specified date range.
-    For example if you wanted to get the total calls handled by a specific agent or queue (see below for full list of filters)
+The calls method is used for gathering "grouped" data for a specified date range.
+For example if you wanted to get the total calls handled by a specific agent or queue (see below for full list of filters)
 
-    It comes with some filers and "grouping" (fields) which allows.
-    
-    Requesting data requires the following parameters 
+It comes with some filers and "grouping" (fields) which allows.
 
-    Mandatory Params | Definition
-    -----------------|-----------
-    fields  | List of fields to be returned. The list must be a string concatinated by comma (,) Syntax `&fields=qtable,qtype,qid,qnm,aid,anm,dsid,dsnm,urn,ddi,cli,tid`
-    range | UTC Start and Stop Time. Syntax `&range=range=1493593200:1509580799` Note the colon (:) separator
-    grouby | The grouping fields. See group list below. Syntax `&groupby=qtable,qnm` (Note all fields can be used)
+Requesting data requires the following parameters 
+
+Mandatory Params | Definition
+-----------------|-----------
+fields  | List of fields to be returned. The list must be a string concatinated by comma (,) Syntax `&fields=qtable,qtype,qid,qnm,aid,anm,dsid,dsnm,urn,ddi,cli,tid`
+range | UTC Start and Stop Time. Syntax `&range=range=1493593200:1509580799` Note the colon (:) separator
+grouby | The grouping fields. See group list below. Syntax `&groupby=qtable,qnm` (Note all fields can be used)
 
 #### Fields and definitions
 
@@ -86,11 +86,6 @@ nc_ans_gt| the number of inbound calls answered after cutoff X seconds.| False
 nc_que_le| the number of inbound calls abandoned before cutoff X seconds.| False
 nc_que_gt| the number of inbound calls abandoned after cutoff X seconds.| False
 sec_dur| the call duration in seconds.| False
-sec_talk_all| DEPRECATED - use sec_dur - sum of both sec_talk and sec_tpt.| False
-sec_talk| DEPRECATED - the sum of agent talk time.| False
-sec_tpt| DEPRECATED - incorrect - sum of agent third party talk time.| False
-sec_wait| DEPRECATED - sum of agent wait time.| False
-sec_wrap| DEPRECATED - sum of agent wrap time.| False
 sec_call| sum of agent call time.| False
 sec_ans| | False
 ocid| the call outcome id.| True
@@ -100,9 +95,8 @@ ocis_cmpli| boolean flag if the outcome is a complete (including sales).| True
 ocis_sale| boolean flag if the outcome is a sale.| True
 ocis_dmc| boolean flag if the outcome is marked as a DMC (decision maker contact).| True
 oc_abdn| number of outcomes - abandoned calls.| False
-oc_cbck| DEPRECATED - number of outcomes - callbacks set.| False
 oc_ama| number of outcomes - answer machine (agent).| False
-oc_amd| number of outcomes - answer machine (dialer).| False
+oc_amd| number of outcomes - answer machine (dialler).| False
 oc_dead| number of outcomes - dead lines.| False
 oc_noansw| the number of outcomes - no answers.| False
 oc_sale| number of outcomes - sales| False
@@ -110,8 +104,8 @@ oc_cmpl| number of outcomes - completes (excluding sales)| False
 oc_cmpli| number of outcomes - completes (including sales)| False
 oc_ncmpl| number of outcomes - incompletes| False
 oc_dmc| number of outcomes - DMC's| False
-cost_cust| the cost (GBP)| False
-bill_cust| the cost (GBP)| False
+cost_cust| the call cost| False
+bill_cust| the call cost | False
 bill_dur| the duration used to calculate the cost| False
 callid_max| | False
 
