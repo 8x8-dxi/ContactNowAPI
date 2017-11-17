@@ -1,10 +1,11 @@
 Please [read the token endpoint](https://github.com/8x8-dxi/ContactNowAPI/blob/master/TOKEN.md) if you haven't already done so.
 
-In this part of the documentation I will aim to explain how you would consume data
-generated from your Contact Centre using a list of exposed methods. 
+In this part of the documentation I will aim to explain how you would consume raw CDR data
+generated from your Contact Centre using a list of exposed methods within the reporting API.
 
 Please note that all response from this endpoint will not include any customer information 
-aside from the customer unique identifiers (UID) and the phone numbers of the customer record. 
+aside from the customer Unique Reference Number (URN), Phone Number of the contact and the Campaign Table 
+where the full contact information is stored. 
 
 This means that customer records stored on the [ECN Database](https://github.com/8x8-dxi/ContactNowAPI#high-level-api-diagram)
 has to be requested using the [ecnow.php endpoint](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md).
@@ -12,6 +13,7 @@ has to be requested using the [ecnow.php endpoint](https://github.com/8x8-dxi/Co
 # Method
 **[calls](#calls)**<br>
 **[cdr](#cdr)**<br>
+**[Requesting full customer data from cdr data](#requesting-full-customer-data-from-cdr-data)**<br>
 
 
 ## Methods
@@ -37,23 +39,20 @@ grouby | The grouping fields. See group list below. Syntax `&groupby=qtable,qnm`
 
 Field Names  | Description | Can be used as grouping 
 -------------|--------------------|------------
-qtable| the queue's assigned campaign.| True
-qtype| the queue type.| True
-qid| the queue id.| True
-qnm| the queue name.| True
-aid| the agent id.| True
-anm| the agent name.| True
-dsid| the dataset id.| True
-dsnm| the dataset name.| True
-urn| the unique customer record number.| True
-ddi| the destination phone number.| True
-cli| the phone number displayed to the callee.| True
-tid| the team id.| True
-tnm| the team name.| True
-has_aid| 1 if an agent is assigned, 0 otherwise.| True
-PT10M| | True
-PT15M| | True
-PT30M| | True
+qtable| campaign name of the assigned queue | True
+qtype| The queue type. See ![Queues](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#queues) | True
+qid| Queue id.| True
+qnm| Queue description.| True
+aid| Agent ID who made or took the call (default is 0 for unanswered calls)| True
+anm| Agent name who made or took the call (if any| True
+dsid| The dataset ID (if any. Default is 0) | True
+dsnm| Dataset description/name.| True
+urn| The contact/customer record unique record number.| True
+ddi| The destination phone number.| True
+cli| The phone number displayed to the callee know as Caller ID/Automatic Number Identification (ANI/CLI)| True
+tid| Agent team id if used. (Default to 0)| True
+tnm| Team name.| True
+has_aid| Analogous to *aid*. 1 if an agent was assigned to the call, 0 otherwise.| True
 PT1H| | True
 P1D| | True
 P1W| | True
@@ -67,7 +66,7 @@ dcode| the prefix of the number dialled that was used to determine the destinati
 ctype| Values (in, out).| True
 dtype| Values (in, out, man, tpt, sms_out).| True
 cres| the call result (Answered, Dead Line, No Answer, etc).| True
-is_mob| 1 if DDI starts with 07, 0 otherwise.| True
+i~~is_mob~~| 1 if DDI starts with 07, 0 otherwise. (This rule is only relevant to the UK number matching)| True
 nc_all| the total number of calls.| False
 nc_in| the number of inbound calls.| False
 nc_out| the number of outbound calls made by the dialler.| False
@@ -144,7 +143,7 @@ Examples: Constructing a request using NodeJS
 
     Simple GET request Sample
 
-    https://[BASE_API_URL]/reporting.php?token=YOUR-TOKEN&method=calls&format=json&fields=qtable,qtype,qid,qnm,aid,anm,dsid,dsnm,urn,ddi,cli,tid,tnm,has_aid,PT10M,PT15M,PT30M,PT1H,P1D,P1W,P1M,date,day,hour,min_10,dest,dcode,ctype,dtype,cres,is_mob,nc_all,nc_in,nc_out,nc_out_all,nc_sms_out,nc_man,nc_tpt,nc_dtpt,nc_wait,nc_wrap,nc_con,nc_ans,nc_ans_in,nc_ans_man,nc_que,nc_ans_le,nc_ans_gt,nc_que_le,nc_que_gt,sec_dur,sec_talk_all,sec_talk,sec_tpt,sec_wait,sec_wrap,sec_call,sec_ans,ocid,ocnm,ocis_cmpl,ocis_cmpli,ocis_sale,ocis_dmc,oc_abdn,oc_cbck,oc_ama,oc_amd,oc_dead,oc_noansw,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur&range=1493593200:1509580799&groupby=qtable,qnm&agent=503314
+    https://[BASE_API_URL]/reporting.php?token=YOUR-TOKEN&method=calls&format=json&fields=qtable,qtype,qid,qnm,aid,anm,dsid,dsnm,urn,ddi,cli,tid,tnm,has_aid,PT1H,P1D,P1W,P1M,date,day,hour,min_10,dest,dcode,ctype,dtype,cres,is_mob,nc_all,nc_in,nc_out,nc_out_all,nc_sms_out,nc_man,nc_tpt,nc_dtpt,nc_wait,nc_wrap,nc_con,nc_ans,nc_ans_in,nc_ans_man,nc_que,nc_ans_le,nc_ans_gt,nc_que_le,nc_que_gt,sec_dur,sec_talk_all,sec_talk,sec_tpt,sec_call,sec_ans,ocid,ocnm,ocis_cmpl,ocis_cmpli,ocis_sale,ocis_dmc,oc_abdn,oc_cbck,oc_ama,oc_amd,oc_dead,oc_noansw,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur&range=1493593200:1509580799&groupby=qtable,qnm&agent=503314
 */
 
 
@@ -213,7 +212,7 @@ var fetchCalls = function (callBackFunction) {
         qs: {
             token: '',// Toke will be intitialised in getToken Function
             method: 'calls',
-            fields: 'qtable,qtype,qid,qnm,aid,anm,dsid,dsnm,urn,ddi,cli,tid,tnm,has_aid,PT10M,PT15M,PT30M,PT1H,P1D,P1W,P1M,date,day,hour,min_10,dest,dcode,ctype,dtype,cres,is_mob,nc_all,nc_in,nc_out,nc_out_all,nc_sms_out,nc_man,nc_tpt,nc_dtpt,nc_wait,nc_wrap,nc_con,nc_ans,nc_ans_in,nc_ans_man,nc_que,nc_ans_le,nc_ans_gt,nc_que_le,nc_que_gt,sec_dur,sec_talk_all,sec_talk,sec_tpt,sec_wait,sec_wrap,sec_call,sec_ans,ocid,ocnm,ocis_cmpl,ocis_cmpli,ocis_sale,ocis_dmc,oc_abdn,oc_cbck,oc_ama,oc_amd,oc_dead,oc_noansw,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur,callid_max',
+            fields: 'qtable,qtype,qid,qnm,aid,anm,dsid,dsnm,urn,ddi,cli,tid,tnm,has_aid,PT1H,P1D,P1W,P1M,date,day,hour,min_10,dest,dcode,ctype,dtype,cres,is_mob,nc_all,nc_in,nc_out,nc_out_all,nc_sms_out,nc_man,nc_tpt,nc_dtpt,nc_wait,nc_wrap,nc_con,nc_ans,nc_ans_in,nc_ans_man,nc_que,nc_ans_le,nc_ans_gt,nc_que_le,nc_que_gt,sec_dur,sec_talk_all,sec_talk,sec_tpt,sec_call,sec_ans,ocid,ocnm,ocis_cmpl,ocis_cmpli,ocis_sale,ocis_dmc,oc_abdn,oc_cbck,oc_ama,oc_amd,oc_dead,oc_noansw,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur,callid_max',
             range: tstart + ':'+tstop, // Start and stop time in UTC
             groupby: 'qtable,qnm', // Group the data by Campaign table and queue name
             agent: 503314,// Notice I am filtering by agent ID which should return every call handled by this agent only
@@ -255,7 +254,6 @@ var fetchCalls = function (callBackFunction) {
                 "list": [{
                     "ccid": "315",
                     "ccnm": "ECONStaff",
-                    "cnm": "Willtest",
                     "qtable": "APItestcampaign",
                     "qtype": "outbound",
                     "qid": "719718",
@@ -270,9 +268,6 @@ var fetchCalls = function (callBackFunction) {
                     "tid": "2000059307",
                     "tnm": "Team Coco",
                     "has_aid": "1",
-                    "PT10M": "2017-08-21_10-30-00",
-                    "PT15M": "2017-08-21_10-30-00",
-                    "PT30M": "2017-08-21_10-30-00",
                     "PT1H": "2017-08-21_10-00-00",
                     "P1D": "2017-08-21",
                     "P1W": "2017-08-20",
@@ -290,8 +285,6 @@ var fetchCalls = function (callBackFunction) {
                     "sec_talk_all": 25.59,
                     "sec_talk": 0,
                     "sec_tpt": 25.59,
-                    "sec_wait": 0,
-                    "sec_wrap": 0,
                     "sec_call": 28,
                     "sec_ans": 0,
                     "ocid": "101",
@@ -340,21 +333,21 @@ range | UTC Start and Stop Time. Syntax `&range=range=1493593200:1509580799` Not
 Field Names  | Description | Can be used as grouping 
 -------------|-------------|------------------------
 callid| the individual call id.| True
-urn| the unique customer record number.| False
-qid| the queue id.| False
-qnm| the queue name.| False
-qtype| the queue type.| False
-qtable| the queue's assigned campaign.| False
-cnm| the campaign name.| False
+qtable| campaign name of the assigned queue | False
+qtype| The queue type. See ![Queues](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#queues) | False
+qid| Queue id.| False
+qnm| Queue description.| False
+aid| Agent ID who made or took the call (default is 0 for unanswered calls)| False
+anm| Agent name who made or took the call (if any| False
+dsid| The dataset ID (if any. Default is 0) | False
+dsnm| Dataset description/name.| True
+urn| The contact/customer record unique record number.| False
+ddi| The destination phone number.| False
+cli| The phone number displayed to the callee know as Caller ID/Automatic Number Identification (ANI/CLI)| False
 cres| the call result (Answered, Dead Line, No Answer, etc).| False
-aid| the agent id.| False
-anm| the agent name.| False
-dsid| the dataset id.| False
 ocid| the call outcome id.| False
 ocnm| the call outcome name.| False
-ddi| the destination phone number.| False
-cli| the phone number displayed to the callee.| False
-flags| flags stored against the call.| False
+flags| Identifies if the call was recorded or not. (recorded,processed)| False
 carrier| the telecoms carrier the call was connected through.| False
 ctag| The Tag ID of the tag| False
 tag| The Tag Name of the Tag| False
@@ -364,8 +357,6 @@ ctype| Values (in, out).| False
 dtype| Call Values (in, out, man, tpt, sms_out).| False
 sms_msg| | True
 sec_dur| the call duration in seconds.| False
-sec_wait| DEPRECATED - sum of agent wait time.| False
-sec_wrap| DEPRECATED - sum of agent wrap time.| False
 sec_ring| the time between the call being acknowledged and answered/disconnected.| False
 sec_que| the time between the call connecting to the queueing system and answered/disconnected.| False
 tm_init| the time the call was initialised.| False
@@ -376,8 +367,8 @@ oc_cmpl| number of outcomes - completes (excluding sales)| False
 oc_cmpli| number of outcomes - completes (including sales)| False
 oc_ncmpl| number of outcomes - incompletes| False
 oc_dmc| number of outcomes - DMC's| False
-cost_cust| the cost (GBP)| False
-bill_cust| the cost (GBP)| False
+cost_cust| the cost| False
+bill_cust| the cost| False
 bill_dur| the duration used to calculate the cost| False
 ivr_key| the last valid key pressed if the call was in an IVR.| False
 sec_key| the time between the call connecting to the queueing system and the customer pressing their last IVR key.| False
@@ -413,7 +404,7 @@ Filters | Description
 ### Fork the !
 ```javascript
 // Simple GET request
-GET https://[BASE_API_URL]/reporting.php?token=YOUR-TOKEN&method=cdr&format=json&fields=callid,urn,qid,qnm,qtype,qtable,cres,aid,anm,dsid,ocid,ocnm,ddi,cli,flags,carrier,ctag,tag,dest,dcode,ctype,dtype,sms_msg,sec_dur,sec_wait,sec_wrap,sec_ring,sec_que,tm_init,tm_answ,tm_disc,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur,ivr_key,sec_key,orig_qnm&range=1493593200:1509580799       
+GET https://[BASE_API_URL]/reporting.php?token=YOUR-TOKEN&method=cdr&format=json&fields=callid,urn,qid,qnm,qtype,qtable,cres,aid,anm,dsid,ocid,ocnm,ddi,cli,flags,carrier,ctag,tag,dest,dcode,ctype,dtype,sms_msg,sec_dur,sec_ring,sec_que,tm_init,tm_answ,tm_disc,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur,ivr_key,sec_key,orig_qnm&range=1493593200:1509580799       
 
 /**
  *  Pull cdr methods
@@ -430,7 +421,7 @@ var fetchCDR = function (callBackFunction) {
         qs:{
             token: '',// Toke will be intitialised in getToken Function
             method: 'cdr',
-            fields: 'callid,urn,qid,qnm,qtype,qtable,cnm,cres,aid,anm,dsid,ocid,ocnm,ddi,cli,flags,carrier,ctag,tag,dest,dcode,ctype,dtype,sms_msg,sec_dur,sec_wait,sec_wrap,sec_ring,sec_que,tm_init,tm_answ,tm_disc,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur,ivr_key,sec_key,orig_qnm',
+            fields: 'callid,urn,qid,qnm,qtype,qtable,cres,aid,anm,dsid,ocid,ocnm,ddi,cli,flags,carrier,ctag,tag,dest,dcode,ctype,dtype,sms_msg,sec_dur,sec_ring,sec_que,tm_init,tm_answ,tm_disc,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur,ivr_key,sec_key,orig_qnm',
             range: tstart + ':'+tstop, // Start and stop time in UTC
             format: 'json'
             //apply any other filters
@@ -478,7 +469,6 @@ var fetchCDR = function (callBackFunction) {
                     "qnm": "Christian Inbound Testing - Do not unassign",
                     "qtype": "inbound",
                     "qtable": "SomeTest",
-                    "cnm": "Willtest",
                     "cres": "Answered",
                     "aid": "503314",
                     "anm": "William Davies",
@@ -497,8 +487,6 @@ var fetchCDR = function (callBackFunction) {
                     "dtype": "out",
                     "sms_msg": null,
                     "sec_dur": "105.026",
-                    "sec_wait": "1.184",
-                    "sec_wrap": "6745.432",
                     "sec_ring": "0.000",
                     "sec_que": "80",
                     "tm_init": "1501080575",
@@ -525,7 +513,7 @@ var fetchCDR = function (callBackFunction) {
 };
 ```
 
-# Request full customer data from cdr data
+# Requesting full customer data from cdr data
 
 This section demonstrate how you would request the corresponding customer record 
 from the payload returned from either the cdr or calls method.

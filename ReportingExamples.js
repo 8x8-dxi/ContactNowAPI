@@ -70,7 +70,7 @@
             qs: {
                 token: '',// Toke will be intitialised in getToken Function
                 method: 'calls',
-                fields: 'qtable,qtype,qid,qnm,aid,anm,dsid,dsnm,urn,ddi,cli,tid,tnm,has_aid,PT10M,PT15M,PT30M,PT1H,P1D,P1W,P1M,date,day,hour,min_10,dest,dcode,ctype,dtype,cres,is_mob,nc_all,nc_in,nc_out,nc_out_all,nc_sms_out,nc_man,nc_tpt,nc_dtpt,nc_wait,nc_wrap,nc_con,nc_ans,nc_ans_in,nc_ans_man,nc_que,nc_ans_le,nc_ans_gt,nc_que_le,nc_que_gt,sec_dur,sec_talk_all,sec_talk,sec_tpt,sec_wait,sec_wrap,sec_call,sec_ans,ocid,ocnm,ocis_cmpl,ocis_cmpli,ocis_sale,ocis_dmc,oc_abdn,oc_cbck,oc_ama,oc_amd,oc_dead,oc_noansw,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur,callid_max',
+                fields: 'qtable,qtype,qid,qnm,aid,anm,dsid,dsnm,urn,ddi,cli,tid,tnm,has_aid,PT1H,P1D,P1W,P1M,date,day,hour,min_10,dest,dcode,ctype,dtype,cres,is_mob,nc_all,nc_in,nc_out,nc_out_all,nc_sms_out,nc_man,nc_tpt,nc_dtpt,nc_wait,nc_wrap,nc_con,nc_ans,nc_ans_in,nc_ans_man,nc_que,nc_ans_le,nc_ans_gt,nc_que_le,nc_que_gt,sec_dur,sec_talk_all,sec_talk,sec_tpt,sec_call,sec_ans,ocid,ocnm,ocis_cmpl,ocis_cmpli,ocis_sale,ocis_dmc,oc_abdn,oc_cbck,oc_ama,oc_amd,oc_dead,oc_noansw,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur,callid_max',
                 range: tstart + ':'+tstop, // Start and stop time in UTC
                 groupby: 'qtable,qnm', // Group the data by Campaign table and queue name
                 agent: 503314,// Notice I am filtering by agent ID which should return every call handled by this agent only
@@ -113,7 +113,6 @@
                             {
                             "ccid": "315",
                                     "ccnm": "ECONStaff",
-                                    "cnm": "Willtest",
                                     "qtable": "APItestcampaign",
                                     "qtype": "outbound",
                                     "qid": "719718",
@@ -128,9 +127,6 @@
                                     "tid": "2000059307",
                                     "tnm": "Team Coco",
                                     "has_aid": "1",
-                                    "PT10M": "2017-08-21_10-30-00",
-                                    "PT15M": "2017-08-21_10-30-00",
-                                    "PT30M": "2017-08-21_10-30-00",
                                     "PT1H": "2017-08-21_10-00-00",
                                     "P1D": "2017-08-21",
                                     "P1W": "2017-08-20",
@@ -168,8 +164,6 @@
                                     "sec_talk_all": 25.59,
                                     "sec_talk": 0,
                                     "sec_tpt": 25.59,
-                                    "sec_wait": 0,
-                                    "sec_wrap": 0,
                                     "sec_call": 28,
                                     "sec_ans": 0,
                                     "ocid": "101",
@@ -217,7 +211,7 @@
             qs:{
                 token: '',// Toke will be intitialised in getToken Function
                 method: 'cdr',
-                fields: 'callid,urn,qid,qnm,qtype,qtable,cnm,cres,aid,anm,dsid,ocid,ocnm,ddi,cli,flags,carrier,ctag,tag,dest,dcode,ctype,dtype,sms_msg,sec_dur,sec_wait,sec_wrap,sec_ring,sec_que,tm_init,tm_answ,tm_disc,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur,ivr_key,sec_key,orig_qnm',
+                fields: 'callid,urn,qid,qnm,qtype,qtable,cres,aid,anm,dsid,ocid,ocnm,ddi,cli,flags,carrier,ctag,tag,dest,dcode,ctype,dtype,sms_msg,sec_dur,sec_ring,sec_que,tm_init,tm_answ,tm_disc,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur,ivr_key,sec_key,orig_qnm',
                 range: tstart + ':'+tstop, // Start and stop time in UTC
                 format: 'json'
                 //apply any other filters
@@ -265,7 +259,6 @@
                         "qnm": "Christian Inbound Testing - Do not unassign",
                         "qtype": "inbound",
                         "qtable": "SomeTest",
-                        "cnm": "Willtest",
                         "cres": "Answered",
                         "aid": "503314",
                         "anm": "William Davies",
@@ -284,8 +277,6 @@
                         "dtype": "out",
                         "sms_msg": null,
                         "sec_dur": "105.026",
-                        "sec_wait": "1.184",
-                        "sec_wrap": "6745.432",
                         "sec_ring": "0.000",
                         "sec_que": "80",
                         "tm_init": "1501080575",
