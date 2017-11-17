@@ -14,7 +14,7 @@ have to be requested using the [ecnow.php endpoint](https://github.com/8x8-dxi/C
 **[calls](#calls)**<br>
 **[cdr](#cdr)**<br>
 **[Requesting full customer data from cdr data](#requesting-full-customer-data-from-cdr-data)**<br>
-**![NodeJS Reporting Client Script](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ReportingExamples.js)
+![NodeJS Reporting Client Script](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ReportingExamples.js)
 
 
 ## Methods
