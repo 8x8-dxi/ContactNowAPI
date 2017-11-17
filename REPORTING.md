@@ -3,12 +3,12 @@ Please [read the token endpoint](https://github.com/8x8-dxi/ContactNowAPI/blob/m
 In this part of the documentation I will aim to explain how you would consume raw CDR data
 generated from your Contact Centre using a list of exposed methods within the reporting API.
 
-Please note that all response from this endpoint will not include any customer information 
+Please note that all responses from this endpoint will not include any customer information 
 aside from the customer Unique Reference Number (URN), Phone Number of the contact and the Campaign Table 
 where the full contact information is stored. 
 
 This means that customer records stored on the [ECN Database](https://github.com/8x8-dxi/ContactNowAPI#high-level-api-diagram)
-has to be requested using the [ecnow.php endpoint](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md).
+have to be requested using the [ecnow.php endpoint](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md).
 
 # Method
 **[calls](#calls)**<br>
@@ -21,9 +21,10 @@ has to be requested using the [ecnow.php endpoint](https://github.com/8x8-dxi/Co
 # calls
     
 The calls method is used for gathering "grouped" data for a specified date range.
-For example if you wanted to get the total calls handled by a specific agent or queue (see below for full list of filters)
+For example if you wanted to get the total calls handled by a specific agent or queue (see below for full list of filters).
 
-It comes with some filers and "grouping" (fields) which allows.
+It comes with some filters and "grouping" (fields) which allows you to manipulate what 
+data is returned.
 
 Requesting data requires the following mandatory parameters 
 
@@ -31,7 +32,7 @@ Requesting data requires the following mandatory parameters
 
 Params | Definition
 -----------------|-----------
-fields  | List of fields to be returned. The list must be a string concatenated by comma (,) Syntax `&fields=qtable,qtype,qid,qnm,aid,anm,dsid,dsnm,urn,ddi,cli,tid`
+fields  | List of fields to be returned. The list must be a string concatenated by a comma (,) Syntax `&fields=qtable,qtype,qid,qnm,aid,anm,dsid,dsnm,urn,ddi,cli,tid`
 range | UTC Start and Stop Time. Syntax `&range=range=1493593200:1509580799` Note the colon (:) separator
 grouby | The grouping fields. See group list below. Syntax `&groupby=qtable,qnm` (Note all fields can be used)
 
@@ -112,7 +113,7 @@ bill_dur| the duration used to calculate the cost| False
 
 ### Filters and definitions
 
-The following filters can be when requesting data using the calls method.
+The following filters can be used when requesting data using the calls method.
 The syntax for filtering `&fieldName=valueOfTheField` 
 
 Filters | Description 
@@ -127,7 +128,7 @@ Filters | Description
 **outcome** | Outcome code ID
 **cutoff** | SLA figure in seconds for call cutoff times.
 **ddi** | This should be the customer Phone number depending on the call direction.
-**cli** | Caller ID/Display Number. For incoming call the CLI will be the customer phone number.
+**cli** | Caller ID/Display Number. For incoming call the CLI will be the customers phone number.
 **urn** | Customer ID reference the ECN Database. See ![Dataset](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md#dataset) schema
 **team** | Team ID
 
@@ -275,7 +276,8 @@ var fetchCalls = function (callBackFunction) {
 # cdr
 
 The calls method is used for when you need to pull your entire calls data within
-a given time range. It comes with some filers which allows for some calls filtering.
+a given time range. It comes with filters allowing you to define what data you 
+would like to return.
 
 Note that the cdr method does not return the entire customer record. See example for 
 pulling related customer records.
@@ -339,7 +341,7 @@ orig_qnm| | False
 
 ### Filters and definitions
 
-The following filters can be when requesting data using the cdr method.
+The following filters can be used when requesting data using the cdr method.
 The syntax for filtering `&fieldName=valueOfTheField` 
 
 Filters | Description 
@@ -445,12 +447,12 @@ var fetchCDR = function (callBackFunction) {
 
 # Requesting full customer data from cdr data
 
-This section demonstrate how you would request the corresponding customer record 
+This section demonstrates how you would request the corresponding customer record 
 from the payload returned from either the cdr or calls method.
 
 First we get the cdr data as explained in [cdr](#cdr) or using the [calls](#calls) method. The request
 returns a list of calls data as described above, we then loop through the list of data requesting each
-customer request using the cdr.urn and cdr.qtable.
+customer record using the cdr.urn and cdr.qtable.
 
 Sample code for pulling customer record.
 ```javascript

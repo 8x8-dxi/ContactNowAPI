@@ -2,17 +2,18 @@ This endpoint is the most widely used API. It allows dynamic data/record feed in
 of a selected campaign and can manipulate the corresponding DXI record based on certain data properties.
 
 Before delving deep into this API let's try to understand the important concept and 
-components of the 8x8 ContactNow platform, without the overview knowledge you will
+components of the 8x8 ContactNow platform; without the overview knowledge you will
 find it challenging.
 
 ## The terminologies
-Some of the terms used are sometimes construed and loosely used and I will explain!
+Some of the terms used are sometimes misconstrued and loosely used and I will explain!
 
 ### In order of relevance
 
 1. ### Campaign (Not the actual __campaign__ notation)
 
-    Is a database table holding a datasets of records grouped by Datasets
+    Is a database table holding one or multiple datasets of records. These datasets and their records 
+    can only dial from this one campaign. 
 
 2. ### Dataset
 
@@ -23,28 +24,30 @@ Some of the terms used are sometimes construed and loosely used and I will expla
 
     1. Status
 
-        Status defines the state of every records within a dataset.
+        Status defines the state of every record within a dataset.
 
         1. *HOLD*
 
-            The dataset and all its records will not be enlisted on the dialler for dialling
+            The dataset and all of its records will not be enlisted on the dialler for dialling.
         2. *LIVE*
 
             All records in the dataset are on the dialler ready to start dialling.
-            [Agents](#queues) assigned to this dataset via [Queues](#queues) **MUST** logged in and in "Wait"
+            [Agents](#queues) assigned to this dataset via [Queues](#queues) **MUST** be logged in and in "Wait"
             status for the records to start dialling.
 
         3. *EXPIRED*
-
+            All records have been expired within a dataset and are no longer available to be dialled. 
+            You will also not be able to edit or reopen the record once expired. 
+            
     2. Priority
         
         This defines the order (0 to 90) in which records in a Campaign are dialled.
-        A dataset with a priority of 90 being the highest will take priority over
+        A dataset with a priority of 90 (the highest possible priority) will take priority over
         any other dataset *WITHIN* the same Campaign.
 
         NOTE: 
-            Dataset priorities does not override other Datasets on a different Campaign regardless
-            its priority.
+            Dataset priorities do not affect other Datasets that are on a different Campaign regardless
+            of its priority.
     
     3. Queues
         See [Queues](#queues)
@@ -53,8 +56,10 @@ Some of the terms used are sometimes construed and loosely used and I will expla
 
 3. ### Queues
 
-    Queues are defined as type of communication channels that can either be Inbound or Outbound.
-    They are used to manage inflow and outflow of **Campaigns** be it Inbound or Outbound.
+    Queues are defined as type of communication channels, the types of queues you can use are 
+    listed below.
+    They are used to manage inflow and outflow of **Campaigns** be it Inbound, Outbound, ivr 
+    or broadcast.
 
     There are various types of Queues with multiple inherited properties which defines
     the behaviours of a queue.
@@ -67,9 +72,9 @@ Some of the terms used are sometimes construed and loosely used and I will expla
     *sms_out*<br>
     *sms_broadcast*<br>
 
-    Outbound Queues type is tightly coupled with Agents and Datasets. 
-    Inbound Queue type is tightly coupled with Campaign Tables and Agents.
-    Outbound Queues must be assigned to a Campaign if 
+    Outbound Queues are tightly coupled with Agents and Datasets. 
+    Inbound Queues are tightly coupled with Campaign Tables and Agents.
+    Outbound Queues must be assigned to a specific Campaign.  
 
 4. ### Outcomes / Outcomecodes
 4. ### Agents
@@ -79,14 +84,14 @@ Some of the terms used are sometimes construed and loosely used and I will expla
 ##### List of Methods
 *ecnow_datasets*<br>
 
-    This methods is used to manipulate datasets within a specified campaign
+    These methods are used to manipulate datasets within a specified campaign.
 
 *ecnow_records*<br>
 *campaign_tables*<br>
 *campaign_fields*<br>
 *ecnow_outcomecodes*<br>
 
-##### List of Action
+##### List of Actions
 *create*<br>
 *read*<br>
 *update*<br>
