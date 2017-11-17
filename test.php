@@ -2,8 +2,8 @@
 require_once './includes/api-wrappers.php';
 
 define('API_H', 'https://api-106.dxi.eu');
-define('API_U', 'Willtest');
-define('API_P', 'DIeOYiZf9Fp506bzQB');
+define('API_U', '');
+define('API_P', '');
 define('CCID', 0);
 $API_TOKEN = "";
 
@@ -145,24 +145,3 @@ Array
             [2]...
         )
  */
-
-
-
-  $url = 'https://desa1-mydomain.cs83.force.com/CTI/services/apexrest/IVRtoSFqueries/query?token=A';
-//$post_vars = http_build_query($data);
-$url = $url.'?cli=9653803485';
-$ch = curl_init($url);
-
-// Allow ssl
-if (preg_match("/^https/i", $url))
-{
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-}
-
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_URL, $url);
-$postResult = curl_exec($ch);
-curl_close($ch);
-
-print_r(json_decode($postResult, true));
