@@ -2,6 +2,16 @@
     Created by Christian Augustine
     ----
     Reporting API NodeJS client script
+    
+    YOU MUST SET THE FOLLOWING VARIABLES
+
+    const  BASE_API_URL = "";// api-106.dxi.eu or api.contactnow.8x8.com/api Get this from https://github.com/8x8-dxi/ContactNowAPI#api-domains
+    const _APIUSERNAME = ''; // your API Username
+    const _APIPASSWORD = ''; // Your API Password
+
+    startDatetimeStr = "2017-07-26 00:00:00", 
+    stopDatetimeStr = "2017-11-14 23:59:59";
+    
 */
 
 
@@ -13,16 +23,19 @@
     
     // Initialisation
     const  BASE_API_URL = "api-106.dxi.eu";// Get this from https://github.com/8x8-dxi/ContactNowAPI#api-domains
-    const _APIUSERNAME = 'Willtest'; // Initialise your API Username
-    const _APIPASSWORD = 'DIeOYiZf9Fp506bzQB'; // You API Password
+    const _APIUSERNAME = ''; // Initialise your API Username
+    const _APIPASSWORD = ''; // Your API Password
     // API end points
     const reportingEndpoint = 'https://'+BASE_API_URL+'/reporting.php';
     const ECNOWEndpoint = 'https://'+BASE_API_URL+'/ecnow.php';
     
     // Change the datetime
+    var startDatetimeStr = "2017-07-26 00:00:00", 
+        stopDatetimeStr = "2017-11-14 23:59:59";
+
     // Get the epoch time from the start and stop time
-    var tstartObject = new Date("2017-07-26 00:00:00"), 
-        tStopObject = new Date("2017-11-14 23:59:59"),
+    var tstartObject = new Date(startDatetimeStr), 
+        tStopObject = new Date(stopDatetimeStr),
         tstart = tstartObject.getTime()/1000,
         tstop = tStopObject.getTime()/1000,
         TOKEN=null;
@@ -441,6 +454,10 @@
             }
         });
     };
+
+
+// Function executions
+
 
 //getToken(function (err, token){
 //    console.info(err, token);
