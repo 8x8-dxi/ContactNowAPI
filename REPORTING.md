@@ -454,7 +454,9 @@ First we get the cdr data as explained in [cdr](#cdr) or using the [calls](#call
 returns a list of calls data as described above, we then loop through the list of data requesting each
 customer record using the cdr.urn and cdr.qtable.
 
-Sample code for pulling customer record.
+Sample code for pulling customer records using the cdr method. 
+
+Fork the NodeJs Reporting client script ![here](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ReportingExamples.js)
 ```javascript
 
  // GET request URI sample to retrieve full customer record
