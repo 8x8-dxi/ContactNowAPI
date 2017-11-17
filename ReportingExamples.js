@@ -12,20 +12,20 @@
     const __TOKEN_FILE_PATH = path.join(__dirname, '../', 'token.json');
     
     // Initialisation
-    const  BASE_API_URL = "";// Get this from https://github.com/8x8-dxi/ContactNowAPI#api-domains
-    const  _TOKEN=null;
-    const _APIUSERNAME = ''; // Initialise your API Username
-    const _APIPASSWORD = ''; // You API Password
+    const  BASE_API_URL = "api-106.dxi.eu";// Get this from https://github.com/8x8-dxi/ContactNowAPI#api-domains
+    const _APIUSERNAME = 'Willtest'; // Initialise your API Username
+    const _APIPASSWORD = 'DIeOYiZf9Fp506bzQB'; // You API Password
     // API end points
     const reportingEndpoint = 'https://'+BASE_API_URL+'/reporting.php';
     const ECNOWEndpoint = 'https://'+BASE_API_URL+'/ecnow.php';
     
     // Change the datetime
     // Get the epoch time from the start and stop time
-    var tstartObject = new Date("2017-11-14 00:00:00"), 
+    var tstartObject = new Date("2017-07-26 00:00:00"), 
         tStopObject = new Date("2017-11-14 23:59:59"),
         tstart = tstartObject.getTime()/1000,
-        tstop = tStopObject.getTime()/1000;
+        tstop = tStopObject.getTime()/1000,
+        TOKEN=null;
     
     /**
      * Get a fresh token direct from ConatcNow
@@ -50,18 +50,18 @@
             }
             // You should really store the token on a local redis server to prevent
             // requesting token when it's not expired. See https://github.com/8x8-dxi/ContactNowAPI/blob/master/TOKEN.md for more info
-            _TOKEN = JSON.parse(body);
-            if (!_TOKEN.success && !_TOKEN.token){
-                throw new Error(_TOKEN);
+            TOKEN = JSON.parse(body);
+            if (!TOKEN.success && !TOKEN.token || TOKEN.error){
+                throw new Error(TOKEN);
             }
             // Store token to a local file
-            fs.writeFile(__TOKEN_FILE_PATH, _TOKEN, function (err) {
+            fs.writeFile(__TOKEN_FILE_PATH, body, function (err) {
                 if (err){
                     throw new Error("Could not save token data");
                 }
                 console.info('Token file saved!');
             });
-            return callbackFunction(false, _TOKEN);
+            return callbackFunction(false, TOKEN);
         });
     };
     /**
@@ -76,15 +76,24 @@
         }
         try{
             var tokenObject = (JSON.parse(fs.readFileSync(__TOKEN_FILE_PATH, "utf8")));
-            if (tokenObject){
-                
+            if (tokenObject.token && tokenObject.expire) {
+                // get current time 
+                var currentTime = new Date(),
+                    expireTime = new Date(tokenObject.expire*1000),
+                    // if the current time is > or == to the expired time - offest of 1 minute
+                    isExpired = currentTime.getTime() >= (expireTime.getTime() - (1 * 60000));
+                    
+                console.info('Is the current token expired? ', isExpired);
+                // reduce the expire time by one minute               
+                if (isExpired){
+                    return generateToken(callbackFunction);
+                }
+                return callbackFunction(false, tokenObject);
             }
             
         } catch(exeption){
             return generateToken(callbackFunction);
         }
-
-
     };
 
     /**
@@ -103,7 +112,7 @@
             qs: {
                 token: '',// Toke will be intitialised in getToken Function
                 method: 'calls',
-                fields: 'qtable,qtype,qid,qnm,aid,anm,dsid,dsnm,urn,ddi,cli,tid,tnm,has_aid,PT1H,P1D,P1W,P1M,date,day,hour,min_10,dest,dcode,ctype,dtype,cres,is_mob,nc_all,nc_in,nc_out,nc_out_all,nc_sms_out,nc_man,nc_tpt,nc_dtpt,nc_wait,nc_wrap,nc_con,nc_ans,nc_ans_in,nc_ans_man,nc_que,nc_ans_le,nc_ans_gt,nc_que_le,nc_que_gt,sec_dur,sec_talk_all,sec_talk,sec_tpt,sec_call,sec_ans,ocid,ocnm,ocis_cmpl,ocis_cmpli,ocis_sale,ocis_dmc,oc_abdn,oc_cbck,oc_ama,oc_amd,oc_dead,oc_noansw,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur,callid_max',
+                fields: 'qtable,qtype,qid,qnm,aid,anm,dsid,dsnm,urn,ddi,cli,tid,tnm,has_aid,PT1H,P1D,P1W,P1M,date,day,hour,min_10,dest,dcode,ctype,dtype,cres,is_mob,nc_all,nc_in,nc_out,nc_out_all,nc_sms_out,nc_man,nc_tpt,nc_dtpt,nc_wait,nc_wrap,nc_con,nc_ans,nc_ans_in,nc_ans_man,nc_que,nc_ans_le,nc_ans_gt,nc_que_le,nc_que_gt,sec_dur,sec_talk_all,sec_talk,sec_tpt,sec_call,sec_ans,ocid,ocnm,ocis_cmpl,ocis_cmpli,ocis_sale,ocis_dmc,oc_abdn,oc_cbck,oc_ama,oc_amd,oc_dead,oc_noansw,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur',
                 range: tstart + ':'+tstop, // Start and stop time in UTC
                 groupby: 'qtable,qnm', // Group the data by Campaign table and queue name
                 agent: 503314,// Notice I am filtering by agent ID which should return every call handled by this agent only
@@ -134,11 +143,11 @@
               // print result to console.
               // print result to console.
               var data = JSON.parse(body);
-              console.info(data);
               return callBackFunction(data);
               
               // Console log
               /*
+                  console.info(data);
                     {
                     "success": true,
                             "total": 7,
@@ -218,8 +227,7 @@
                                     "oc_dmc": 0,
                                     "cost_cust": 0.008,
                                     "bill_cust": 0.008,
-                                    "bill_dur": 30,
-                                    "callid_max": 7612257798
+                                    "bill_dur": 30
                             },
                             ...
                             ]
@@ -246,7 +254,8 @@
                 method: 'cdr',
                 fields: 'callid,urn,qid,qnm,qtype,qtable,cres,aid,anm,dsid,ocid,ocnm,ddi,cli,flags,carrier,ctag,tag,dest,dcode,ctype,dtype,sms_msg,sec_dur,sec_ring,sec_que,tm_init,tm_answ,tm_disc,oc_sale,oc_cmpl,oc_cmpli,oc_ncmpl,oc_dmc,cost_cust,bill_cust,bill_dur,ivr_key,sec_key,orig_qnm',
                 range: tstart + ':'+tstop, // Start and stop time in UTC
-                format: 'json'
+                format: 'json',
+                agent:503314
                 //apply any other filters
                 //campaign:"",
                 //queue:"",
@@ -269,18 +278,19 @@
             if(err || !tokenData.success || !tokenData.token){
                 throw new Error("Unable to retrieve token data");
             }
-            options.qs.token = tokenData.token;
+            options.qs.token = TOKEN = tokenData.token;
+            console.info("Request: ", options);
             request(options, function (error, response, body) {
               if (error){
                   throw new Error(error);
               }
               // print result to console.
               var data = JSON.parse(body);
-              console.info(data);
               return callBackFunction(data);
               
-              // Console log
               /*
+              // Console log
+              console.info(data);
               {
                 "success": true,
                 "total": 68,
@@ -346,7 +356,7 @@
             method: 'GET',
             url: ECNOWEndpoint,
             qs: {
-                token: _TOKEN,
+                token: TOKEN,
                 method: 'ecnow_records',
                 format: 'json',
                 action: 'read',
@@ -364,7 +374,7 @@
               if (customer && customer.success && customer.total > 0){
                   // Do stuff with the record
               }
-              console.info(data);
+              console.info("customer: ", customer);
               /*
               {
                 "success": true,
@@ -418,7 +428,7 @@
      */
     var getDialledCustomerRecords = function (){
         fetchCDR(function (cdrResponse) {
-            if (!cdrResponse || cdrResponse.success || cdrResponse.total > 0){
+            if (!cdrResponse || !cdrResponse.success || !cdrResponse.list){
                 throw new Error(cdrResponse);
             }
             // loop through the cdr data whilst requesting each record.
@@ -432,3 +442,17 @@
         });
     };
 
+//getToken(function (err, token){
+//    console.info(err, token);
+//})
+
+//generateToken(function (err, token){
+//    console.info(err, token);
+//});
+
+//fetchCalls(function (calls){
+//    console.info(calls);
+//});
+
+
+//getDialledCustomerRecords();

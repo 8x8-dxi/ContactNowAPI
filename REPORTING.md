@@ -462,7 +462,7 @@ Sample code for pulling customer record.
 
 /**
  * This function read customer record from ecnow endpoint. 
- * It takes a CDR data 
+ * It is called by getDialledCustomerRecords function (below) and takes a CDR data 
  * @param {Object} cdr
  * @returns {undefined}
  */
@@ -471,7 +471,7 @@ var getcustomerRecordByCDR = function(cdr){
         method: 'GET',
         url: ECNOWEndpoint,
         qs: {
-            token: _TOKEN,
+            token: TOKEN,
             method: 'ecnow_records',
             format: 'json',
             action: 'read',
@@ -489,17 +489,35 @@ var getcustomerRecordByCDR = function(cdr){
           if (customer && customer.success && customer.total > 0){
               // Do stuff with the record
           }
+          console.info("customer: ", customer);
+          /*
+          {
+            "success": true,
+            "total": 1,
+            "list": [
+                {
+                    "Address1": "121B London Road",
+                    "Address2": "",
+                    "Address3": "Reading",
+                    "Address4": "Berkshire",
+                    "Address5": "",
+                    "Address6": "",
+                    "AgentRef": "503314",
+                    ...
+                }
+            ]
+           */
     });
 };
-
     
+
 /**
  * Get customer records using data from the CDR log.
  * @returns {undefined}
  */
 var getDialledCustomerRecords = function (){
     fetchCDR(function (cdrResponse) {
-        if (!cdrResponse || cdrResponse.success || cdrResponse.total > 0){
+        if (!cdrResponse || !cdrResponse.success || !cdrResponse.list){
             throw new Error(cdrResponse);
         }
         // loop through the cdr data whilst requesting each record.
