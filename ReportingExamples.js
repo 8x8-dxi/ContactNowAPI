@@ -5,17 +5,20 @@
 */
 
 
-    var request = require("request");
+    var request = require("request"),
+        fs = require('fs'),
+        path = require('path');
     
-    var BASE_API_URL = "",// Get this from https://github.com/8x8-dxi/ContactNowAPI#api-domains
-        _TOKEN=null,
-        _APIUSERNAME = '', // Initialise your API Username
-        _APIPASSWORD = ''; // You API Pawword
-        
-
-
-    var reportingEndpoint = 'https://'+BASE_API_URL+'/reporting.php',
-        ECNOWEndpoint = 'https://'+BASE_API_URL+'/ecnow.php';
+    const __TOKEN_FILE_PATH = path.join(__dirname, '../', 'token.json');
+    
+    // Initialisation
+    const  BASE_API_URL = "";// Get this from https://github.com/8x8-dxi/ContactNowAPI#api-domains
+    const  _TOKEN=null;
+    const _APIUSERNAME = ''; // Initialise your API Username
+    const _APIPASSWORD = ''; // You API Password
+    // API end points
+    const reportingEndpoint = 'https://'+BASE_API_URL+'/reporting.php';
+    const ECNOWEndpoint = 'https://'+BASE_API_URL+'/ecnow.php';
     
     // Change the datetime
     // Get the epoch time from the start and stop time
@@ -24,14 +27,12 @@
         tstart = tstartObject.getTime()/1000,
         tstop = tStopObject.getTime()/1000;
     
-
     /**
-     * 
-     * @param {Function} callbackFunction
+     * Get a fresh token direct from ConatcNow
+     * @param {type} callbackFunction
      * @returns {undefined}
      */
-    var getToken = function (callbackFunction) {
-        if (_TOKEN !== '') return callbackFunction(false, _TOKEN);;
+    var generateToken = function (callbackFunction){
         var options = {
             method: 'GET',
             url: 'https://'+BASE_API_URL+'/token.php',
@@ -50,8 +51,40 @@
             // You should really store the token on a local redis server to prevent
             // requesting token when it's not expired. See https://github.com/8x8-dxi/ContactNowAPI/blob/master/TOKEN.md for more info
             _TOKEN = JSON.parse(body);
+            if (!_TOKEN.success && !_TOKEN.token){
+                throw new Error(_TOKEN);
+            }
+            // Store token to a local file
+            fs.writeFile(__TOKEN_FILE_PATH, _TOKEN, function (err) {
+                if (err){
+                    throw new Error("Could not save token data");
+                }
+                console.info('Token file saved!');
+            });
             return callbackFunction(false, _TOKEN);
         });
+    };
+    /**
+     * Attempt to get the last stored token and if it does exit we check if
+     * it still within the expiration period.
+     * @param {Function} callbackFunction
+     * @returns {undefined}
+     */
+    var getToken = function (callbackFunction) {
+        if (typeof callbackFunction !== 'function'){
+            throw new Error("Please provide a callback function!");
+        }
+        try{
+            var tokenObject = (JSON.parse(fs.readFileSync(__TOKEN_FILE_PATH, "utf8")));
+            if (tokenObject){
+                
+            }
+            
+        } catch(exeption){
+            return generateToken(callbackFunction);
+        }
+
+
     };
 
     /**
@@ -318,7 +351,7 @@
                 format: 'json',
                 action: 'read',
                 urn: cdr.urn,
-                table: cdr.qtable// This is required for tartgeting the table hoding the record
+                table: cdr.qtable// This is required for targeting the table holding the record
             }
         };
         
@@ -328,7 +361,7 @@
               }
               // print result to console.
               var customer = JSON.parse(body);
-              if (customer && customer.sussess && customer.total > 0){
+              if (customer && customer.success && customer.total > 0){
                   // Do stuff with the record
               }
               console.info(data);

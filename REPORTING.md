@@ -152,7 +152,7 @@ var request = require("request");
 var BASE_API_URL = "",// Get this from https://github.com/8x8-dxi/ContactNowAPI#api-domains
     _TOKEN=null,
     _APIUSERNAME = '', // Initialise your API Username
-    _APIPASSWORD = ''; // You API Pawword
+    _APIPASSWORD = ''; // You API Password
 
 
 
@@ -260,46 +260,7 @@ var fetchCalls = function (callBackFunction) {
                     "qnm": "API-DDI",
                     "aid": "503314",
                     "anm": "Christian Davies",
-                    "dsid": "0",
-                    "dsnm": null,
-                    "urn": "0",
-                    "ddi": "01234567890",
-                    "cli": "01234567890",
-                    "tid": "2000059307",
-                    "tnm": "Team Coco",
-                    "has_aid": "1",
-                    "PT1H": "2017-08-21_10-00-00",
-                    "P1D": "2017-08-21",
-                    "P1W": "2017-08-20",
-                    "P1M": "2017-08",
-                    "date": "2017-08-21",
-                    "day": "Monday",
-                    "hour": "10",
-                    "min_10": "30",
-                    "dest": "Landline Standard",
-                    "dcode": "442",
-                    "ctype": "out",
-                    "dtype": "man",
-                    "cres": "TPT",
-                    "sec_dur": 25.597082138062,
-                    "sec_talk_all": 25.59,
-                    "sec_talk": 0,
-                    "sec_tpt": 25.59,
-                    "sec_call": 28,
-                    "sec_ans": 0,
-                    "ocid": "101",
-                    "ocnm": "Answer Machine (Agent)",
-                    "ocis_cmpl": "0",
-                    "oc_ama": 4,
-                    "oc_amd": 0,
-                    "oc_dead": 0,
-                    "oc_noansw": 2,
-                    "oc_ncmpl": 10,
-                    "oc_dmc": 0,
-                    "cost_cust": 0.008,
-                    "bill_cust": 0.008,
-                    "bill_dur": 30,
-                    "callid_max": 7612257798
+                    ...
                 },
                 ...
                 ]
@@ -471,38 +432,7 @@ var fetchCDR = function (callBackFunction) {
                     "qtable": "SomeTest",
                     "cres": "Answered",
                     "aid": "503314",
-                    "anm": "William Davies",
-                    "dsid": "0",
-                    "ocid": "5013337",
-                    "ocnm": "DNC Complete",
-                    "ddi": "01234567890",
-                    "cli": "01234567891",
-                    "flags": "recorded,processed",
-                    "carrier": "bt-ix",
-                    "ctag": null,
-                    "tag": null,
-                    "dest": "44 Landline Standard",
-                    "dcode": "44123456",
-                    "ctype": "out",
-                    "dtype": "out",
-                    "sms_msg": null,
-                    "sec_dur": "105.026",
-                    "sec_ring": "0.000",
-                    "sec_que": "80",
-                    "tm_init": "1501080575",
-                    "tm_answ": "1501080655",
-                    "tm_disc": "1501080680",
-                    "oc_sale": "1",
-                    "oc_cmpl": "0",
-                    "oc_cmpli": "1",
-                    "oc_ncmpl": "0",
-                    "oc_dmc": "1",
-                    "cost_cust": "0.045",
-                    "bill_cust": "0.0450",
-                    "bill_dur": "106.0000",
-                    "ivr_key": null,
-                    "sec_key": null,
-                    "orig_qnm": "William Inbound Testing - Do not unassign"
+                    ...
                 },
                 ...
                 ]
@@ -524,6 +454,10 @@ customer request using the cdr.urn and cdr.qtable.
 
 Sample code for pulling customer record.
 ```javascript
+
+ // GET request URI sample to retrieve full customer record
+ // GET https://[BASE_API_URL]/ecnow.php?token=YOUR-TOKEN&method=ecnow_records&action=read&urn=THE-URN&table=THE-qTable&format=json&
+
 /**
  * This function read customer record from ecnow endpoint. 
  * It takes a CDR data 
@@ -540,7 +474,7 @@ var getcustomerRecordByCDR = function(cdr){
             format: 'json',
             action: 'read',
             urn: cdr.urn,
-            table: cdr.qtable// This is required for tartgeting the table hoding the record
+            table: cdr.qtable// This is required for targeting the table holding the record
         }
     };
 
@@ -550,53 +484,9 @@ var getcustomerRecordByCDR = function(cdr){
           }
           // print result to console.
           var customer = JSON.parse(body);
-          if (customer && customer.sussess && customer.total > 0){
+          if (customer && customer.success && customer.total > 0){
               // Do stuff with the record
           }
-          console.info(data);
-          /*
-          {
-            "success": true,
-            "total": 1,
-            "list": [
-                {
-                    "Address1": "121B London Road",
-                    "Address2": "",
-                    "Address3": "Reading",
-                    "Address4": "Berkshire",
-                    "Address5": "",
-                    "Address6": "",
-                    "AgentRef": "503314",
-                    "Agent_Specific": "",
-                    "appointment": "",
-                    "callback": "0000-00-00 00:00:00",
-                    "Call_Back_Notes": "",
-                    "Call_Back_Sametime": "",
-                    "Customer_Email": "",
-                    "datasetid": "337",
-                    "FirstName": "Eric",
-                    "flgid": "",
-                    "HomePhone": "",
-                    "id": "2428765",
-                    "LastName": "Forbes",
-                    "loaddate": "2017-06-07",
-                    "HomePhone": "01234567890",
-                    "MobilePhone": "",
-                    "notes": "2017-06-07 15:09:48 agent 503314 set outcome 109\r\n2017-06-07 15:09:49 agent 503314 set outcome 107, call back for 2017-06-07 17:09:00\r\n2017-06-16 10:58:05 agent 503314 set outcome 109\r\n2017-06-16 10:58:06 agent 503314 set outcome 107, call back for 2017-06-16 12:58:00\r\n2017-07-10 13:56:31 agent 503314 set outcome 19, call back for 2017-06-16 12:58:00, 2017-07-10 13:56:31 agent 503314 set wrong number 01184320014, no numbers left\r\n2017-07-17 09:49:49 agent 503314 set outcome 107, call back for 0000-00-00 00:00:00\r\n2017-07-17 10:09:51 agent 503314 set outcome 107, call back for 0000-00-00 00:00:00\r\n",
-                    "outcomecode": "107",
-                    "Postcode": "RG1 5RG",
-                    "ProcessDate": "2017-07-17 10:09:51",
-                    "ProcessType": "NEEDSMOREWORK",
-                    "sourcefile": "Contact Now Test Data.csv",
-                    "Testy": "",
-                    "ThisIsATimeField": "",
-                    "Title": "Mr",
-                    "URN": null,
-                    "VENDOR_URN": null,
-                    "WorkPhone": ""
-                }
-            ]
-           */
     });
 };
 
