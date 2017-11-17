@@ -1,5 +1,5 @@
 The token endpoint provides access to the 8x8 ContactNow API interface.
-This endpoint does not implement any methods but come with two exposed actions
+This endpoint does not implement any separate methods but comes with two exposed actions.
 
 ##### Actions
 **get** : Get a new token if one does not already exist.<br>
@@ -33,9 +33,9 @@ GET https://api.contactnow.8x8.com/api/token.php?action=get&username=YOUR-API-US
 }
 ```
 **Note**<br>
-**A token is bind to the source IP. Attempting to use a token from a different IP will return "Invalid token" error !**<br>
+**A token is bound to the source IP. Attempting to use a token from a different IP will return the "Invalid token" error !**<br>
 **A token lifespan is 11 hours and 59 seconds**<br>
-The *expire* key of which value is the Unix timestamp indicate when the token value expires.
+The *expire* key which is a Unix timestamp indicates when the token will expire.
 Your returned token should be stored locally until you need to fetch a new one <br>
 
 
