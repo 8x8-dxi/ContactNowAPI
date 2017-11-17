@@ -4,7 +4,7 @@ This technical documentation is aimed at the very technical minded person/develo
 to use the ContactNow API v2 for data manipulation in and out of the 8x8 ContactNow Dialler (Dialer *for the US*!).
 
 **It is worth noting that the use of 8x8 ContactNow API for manipulating data on your dialling list/Campaign
-comes at your very own risk! You MUST understand the national/local legal implications governing
+comes at your own risk! You MUST understand the national/local legal implications governing
 the frequency/rate at which you dial a specific customer record**
 
 # Table of Contents
@@ -18,13 +18,13 @@ the frequency/rate at which you dial a specific customer record**
 **[PHP Client Script](#php-client-script)**<br>
 
 ### 8x8 ContactNow API v2
-The version 2 of the API is built on a legacy web service which is still currently
-being used by 99.9% of our clients. The API v2 is not that REST*ful* as you would explicitly need to 
-pass the point as script names, actions and methods as url params in order to send you request. But
+Version 2 of the API is built on a legacy web service which is still currently
+being used by 99.9% of our clients. API v2 is not that REST*ful* as you would explicitly need to 
+pass the endpoint as script names, actions and methods as url params in order to send your request. But
 you don't have to worry too much about that as this documentation comes with a PHP and Javascript/NodeJS
 client script to help you CRUD the API.
 
-This version of the API is here to stay for a long while as its still in production and heavily supported 
+This version of the API is here to stay for the foreseeable future as its still in production and heavily supported 
 by our support and product team.
 
 That said, we have a new kid on the block and it's... API v3! Version 3 is the next big thing 
@@ -33,7 +33,7 @@ things simple we will focus on API v2.
 
 ## Accessing the API
 To get access to the 8x8 ContactNow API you will need an 8x8 ContactNow Contact Centre (center *for the US*!) account.
-Once you have a contact centre, you can request for an API credentials from our support team.
+Once you have a contact centre, you can request API credentials from our support team.
 
 
 ## API Domains
@@ -48,7 +48,7 @@ https://app.contactnow.8x8.com | [https://api.contactnow.8x8.com/api/](https://a
 
 
 ## API Endpoints Scripts
-As earlier stated the version 2 of the API does not fully implement the concept of
+As earlier stated, version 2 of the API does not fully implement the concept of
 a REST*ful* web service in the sense that you would have to append a script to the base url which defines
 a certain set of methods and actions.
 
@@ -69,7 +69,9 @@ type of data manipulation.
 1. #### [token.php](https://github.com/8x8-dxi/ContactNowAPI/blob/master/TOKEN.md) See Token documentation
 
     The token endpoint provides access to the 8x8 ContactNow API interface.
-    This endpoint does not implement any methods but come with two exposed actions    
+    This endpoint does not implement any methods but comes with two exposed actions.
+    The token generated using this endpoint will be required when running any other API requests 
+    using other endpoints.
 
 2. #### [ecnow.php](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md) See ecnow documentation
 
@@ -78,7 +80,7 @@ type of data manipulation.
 
 3. #### [database.php](https://github.com/8x8-dxi/ContactNowAPI/blob/master/DATABASE.md) See database documentation
 
-    The database endpoint enable a user to dynamically configure various components of the contact centre.
+    The database endpoint allows a user to dynamically configure various components of the contact centre.
     This include the ability to manipulate campaign settings, Campaign/Queue assignments to Agents and many more.
 
 4. #### ajax.php
@@ -93,7 +95,7 @@ type of data manipulation.
 
 6. #### recording.php
 
-    This endpoint allow you to pull down your call recording (if any)
+    This endpoint allows you to pull down (download) your call recordings (if any are available).
 
 7. #### click2dial.php
 
@@ -101,14 +103,14 @@ type of data manipulation.
 
 8. ~~agent.php~~ 
     
-    The agent endpoint allows an agent to manipulate live calls and status change. To use this endpoint 
-    you would have to constantly poll to receive any state change. This is where API v3 comes in as its implement
-    a WebSocket layer to aid a push notification mechanism for when it detect a change in status.
+    The agent endpoint allows an agent to manipulate live calls and and make status changes. To use this endpoint 
+    you would have to constantly poll to receive any state change. This is where API v3 comes in as it implements
+    a WebSocket layer to aid a push notification mechanism for when it detects a change in status.
 
 ## PHP Client Script
-This part of the documentation will aim to simplify CRUD*ing* the API. The php client script
-contains functions which act as API wrappers functions. The aim is to save you some valuable
-time of trying to understand the semantics of the core API.
+This part of the documentation aims to simplify CRUD*ing* the API. The php client script
+contains functions which act as API wrapper functions. The aim is to save you some valuable
+time when trying to understand the semantics of the core API.
 
 
 
