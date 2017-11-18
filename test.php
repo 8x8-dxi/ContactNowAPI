@@ -137,7 +137,7 @@ Array
                     [aod_maxdial] => 1
                     [aod_passthru] => 1
                     [stop_monitor] => 0
-                    [numbers] => 08452866546,02034766183
+                    [numbers] => 01234567890,01234567892
                 )
 
             [1] => Array
@@ -145,7 +145,7 @@ Array
                     [qid] => 504025
                     [type] => outbound
                     [description] => William Outbound
-                    [callerid] => 08452866546
+                    [callerid] => 01234567890
                     [campaignid] => 500650
                     [announce] => 0
                     [monitor] => 1
@@ -169,7 +169,7 @@ Array
                     [aod_maxdial] => 1
                     [aod_passthru] => 1
                     [stop_monitor] => 1
-                    [numbers] => 08452866645
+                    [numbers] => 01234567890
                 )
 
             [2]...
