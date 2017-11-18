@@ -92,7 +92,7 @@ function get_auth_token() {
  * This function decides when a fresh token should be requested direct from
  * the ContactNow API by retrieving the stored token data in /tmp/contactNowToken.log
  * and computing the expired time to the current local time.
- * @return string Returns the token string
+ * @return string the token string
  */
 function getTokenValue (){
     if(file_exists(TOKEN_FILE)){

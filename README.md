@@ -120,7 +120,7 @@ wrapped functions;
 #### Mandatory Variables
 ```php
 /*
- * Supply the API BASE URL
+ * Supply the API BASE URL see https://github.com/8x8-dxi/ContactNowAPI#api-domains
  */
 define('API_H', '[API BASE URL]');
 /*
@@ -143,10 +143,10 @@ $API_TOKEN = "";
 ```
 
 
-Functions | Parameters | Description
-----------|------------|------------
-get_auth_token() | None is explicitly passed but requires the global API_H, API_U, API_P variables | Request a token from direct the API. Data returned is dynamically stored in a local file for lookup.
-getTokenValue() | N/A | The function is directly called by the main wrapper functions before posting request. It first check if a token was already generated and then tried to validate the expiration time with your server local time. It decided whether or not to request a fresh to by calling `get_auth_token()`
+Wrapper Functions | Parameters | Description | Output
+------------------|------------|-------------|---------------
+get_auth_token() | None is explicitly passed but requires the global API_H, API_U, API_P variables | Request a token from direct the API. Data returned is dynamically stored in a local file for lookup. | Returns array of token data see all possible return data [here](https://github.com/8x8-dxi/ContactNowAPI/blob/master/TOKEN.md)
+getTokenValue() | N/A | The function is directly called by the main wrapper functions before posting request. It first check if a token was already generated and then tried to validate the expiration time with your server local time. It decided whether or not to request a fresh to by calling `get_auth_token()`| Returns the token string
 
 
 
