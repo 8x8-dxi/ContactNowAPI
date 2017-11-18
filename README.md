@@ -53,15 +53,15 @@ a REST*ful* web service in the sense that you would have to append a script to t
 a certain set of methods and actions.
 
 ### API Endpoint Request Format 
-`API BASE URL/scriptName.php?token=MY-TOKEN&method=method&...`
+`https://[API BASE URL]/scriptName.php?token=MY-TOKEN&method=method&format=json&...`
 
-The API will by default return a JSON response for every request. If you speak XML and wish to consume the
-API in XML then you need to append `&formart=xml` to your requests.   
+The API will by default return a JSON response for some request. If you speak XML and wish to consume the
+API in XML format then you need to supply `&formart=xml` to your requests.   
 
-This section aims to list the various endpoints and scripts that can be used for certain
-type of data manipulation. 
 
 ## High level API diagram
+The diagram gives you some understanding of the high level design of the various endpoint and how they interact with 
+some element of the system.
 ![API Diagram](https://raw.githubusercontent.com/8x8-dxi/ContactNowAPI/master/images/High-level-API-diagram.png)
 
 ### APIs
@@ -76,17 +76,17 @@ type of data manipulation.
 2. #### [ecnow.php](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md) See ecnow documentation
 
     This endpoint is the most widely used API. It allows dynamic data/record feed in/out of
-    the campaign database and the dialler.
+    the campaign database. In addition, it can pass records to the dialler depending on your request instructions.
 
 3. #### [database.php](https://github.com/8x8-dxi/ContactNowAPI/blob/master/DATABASE.md) See database documentation
 
     The database endpoint allows a user to dynamically configure various components of the contact centre.
-    This include the ability to manipulate campaign settings, Campaign/Queue assignments to Agents and many more.
+    This include the ability to manipulate campaign settings, Campaign, Queue, Agents and assignments between different entities.
 
 4. #### ajax.php
 
     The Ajax API is used for retrieving live statistics of your contact centre activities such as
-    status board agents, outgoing/incoming calls and more.
+    status board for agents, outgoing, incoming calls and more.
 
 5. #### [reporting.php](https://github.com/8x8-dxi/ContactNowAPI/blob/master/REPORTING.md)
 
@@ -111,6 +111,43 @@ type of data manipulation.
 This part of the documentation aims to simplify CRUD*ing* the API. The php client script
 contains functions which act as API wrapper functions. The aim is to save you some valuable
 time when trying to understand the semantics of the core API.
+
+The wrapper function which can be found in [include/api-wrappers.php](https://github.com/8x8-dxi/ContactNowAPI/blob/master/includes/api-wrappers.php) of this repo.
+
+The script requires initialisation of the following Global Variable which are parsed in 
+wrapped functions;
+
+#### Mandatory Variables
+```php
+/*
+ * Supply the API BASE URL
+ */
+define('API_H', '[API BASE URL]');
+/*
+ * Supply your API username
+ */
+define('API_U', '');
+/*
+ * Supply your API password
+ */
+define('API_P', '');
+/*
+ * Supply your Contact Centre ID 
+ */
+define('CCID', 0);
+/*
+ * Dyanamic mutable variable.
+ */
+$API_TOKEN = "";
+
+```
+
+
+Functions | Parameters | Description
+----------|------------|------------
+get_auth_token() | None is explicitly passed but requires the global API_H, API_U, API_P variables | Request a token from direct the API. Data returned is dynamically stored in a local file for lookup.
+getTokenValue() | N/A | The function is directly called by the main wrapper functions before posting request. It first check if a token was already generated and then tried to validate the expiration time with your server local time. It decided whether or not to request a fresh to by calling `get_auth_token()`
+
 
 
 

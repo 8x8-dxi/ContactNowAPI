@@ -1,10 +1,25 @@
 <?php
 require_once './includes/api-wrappers.php';
 
-define('API_H', 'https://api-106.dxi.eu');
+/*
+ * Supply the API BASE URL
+ */
+define('API_H', '[API BASE URL]');
+/*
+ * Supply your API username
+ */
 define('API_U', '');
+/*
+ * Supply your API password
+ */
 define('API_P', '');
+/*
+ * Supply your Contact Centre ID 
+ */
 define('CCID', 0);
+/*
+ * Dyanamic mutable variable.
+ */
 $API_TOKEN = "";
 
 //echo getTokenValue();
