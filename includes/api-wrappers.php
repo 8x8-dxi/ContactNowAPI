@@ -21,16 +21,15 @@ define('TOKEN_FILE', '/tmp/contactNowToken.log');
 
 /**
  * Make a curl request to a url with any request types
- * @param type $url API Base URL including the script name
- * @param type $post POST data
- * @param type $import
+ * @param string $url API Base URL including the script name
+ * @param array $post POST data
+ * @param string $import loose type
  * @return type
  */
 function post_request($url, $post = array(), $import = "") {
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:'));
     curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8');
-
 
     if (!empty($import)) {
         $id = uniqid();

@@ -22,6 +22,21 @@ define('CCID', 0);
  */
 $API_TOKEN = "";
 
+// ecnow api alias
+api_ecnow($method, $action, $data = array());
+
+// Alias for database API
+api_db($method, $action, $data = array());
+
+// Alias for reporting
+api_reporting($method, $options = array());
+
+// Alias for agent api
+api_agent($action, $options = array());
+
+// ajax api alias
+api_ajax($method, $options = array());
+
 //echo getTokenValue();
 
 // Get agents

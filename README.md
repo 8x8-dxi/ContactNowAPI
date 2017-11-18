@@ -142,11 +142,20 @@ $API_TOKEN = "";
 
 ```
 
+Some of the functions in the script are helper functions hence we will focus on the 
+main ones you are likely to use
 
-Wrapper Functions | Parameters | Description | Output
-------------------|------------|-------------|---------------
-get_auth_token() | None is explicitly passed but requires the global API_H, API_U, API_P variables | Request a token from direct the API. Data returned is dynamically stored in a local file for lookup. | Returns array of token data. See all possible return data [here](https://github.com/8x8-dxi/ContactNowAPI/blob/master/TOKEN.md)
-getTokenValue() | N/A | The function is directly called by the main wrapper functions before posting request. It first check if a token was already generated and then tried to validate the expiration time with your server local time. It decided whether or not to request a fresh to by calling `get_auth_token()`| Returns the token string
+Wrapper Functions | Description | Output
+------------------|-------------|---------------
+get_auth_token() | Request a token from direct the API. Data returned is dynamically stored in a local file for lookup. | Returns array of token data. See all possible return data [here](https://github.com/8x8-dxi/ContactNowAPI/blob/master/TOKEN.md). None parameter is explicitly passed but requires the global API_H, API_U, API_P variables
+getTokenValue() | The function is directly called by the main wrapper functions before posting request. It first check if a token was already generated and then tried to validate the expiration time with your server local time. It decided whether or not to request a fresh to by calling `get_auth_token()`| Returns the token string
+post_request() | Used by all function to make a curl request to the APIs. | Array data returned from the API
+api_ecnow($method, $action, $data = array()) | ecnow api alias |n
+api_db($method, $action, $data = array()) | Alias for database API |
+api_reporting($method, $options = array()) | Alias for reporting |
+api_agent($action, $options = array()) | Alias for agent api | 
+api_ajax($method, $options = array()) | ajax api alias |
+
 
 
 
