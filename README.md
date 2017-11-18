@@ -150,11 +150,11 @@ Wrapper Functions | Description | Output
 get_auth_token() | Request a token from direct the API. Data returned is dynamically stored in a local file for lookup. | Returns array of token data. See all possible return data [here](https://github.com/8x8-dxi/ContactNowAPI/blob/master/TOKEN.md). None parameter is explicitly passed but requires the global API_H, API_U, API_P variables
 getTokenValue() | The function is directly called by the main wrapper functions before posting request. It first check if a token was already generated and then tried to validate the expiration time with your server local time. It decided whether or not to request a fresh to by calling `get_auth_token()`| Returns the token string
 post_request() | Used by all function to make a curl request to the APIs. | Array data returned from the API
-api_ecnow($method, $action, $data = array()) | ecnow api alias |n
-api_db($method, $action, $data = array()) | Alias for database API |
-api_reporting($method, $options = array()) | Alias for reporting |
-api_agent($action, $options = array()) | Alias for agent api | 
-api_ajax($method, $options = array()) | ajax api alias |
+api_ecnow() | Alias for the ecnow APIs alias which can accept a minimum of two params. `$method` is the exposed list of methods on the [ecnow endpoint](https://github.com/8x8-dxi/ContactNowAPI/blob/master/ECNOW.md). `$action` which can be either "create", "update" or "read".  $data = array() |
+api_db() | Alias for the database APIs. Accept a minimum of two params. `$method` is the exposed list of methods on the [database endpoint](https://github.com/8x8-dxi/ContactNowAPI/blob/master/DATABASE.md). `$action` which can be either "create", "update" or "read".  $data = array() |n|
+api_reporting() | Alias for the reporting APIs. Accept two params as $method and filters $options as array of filters. see list of methods and option in the [reporting.php](https://github.com/8x8-dxi/ContactNowAPI/blob/master/REPORTING.md) endpoint|
+api_agent() | Alias for the agent api. Params are `$action` and `$options`| 
+api_ajax() | Alias for the ajax api. Params are `$action` and `$options` |
 
 
 
