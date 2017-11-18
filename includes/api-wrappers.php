@@ -165,7 +165,7 @@ function dxi($script, $get = array(), $post = array(), $import = array()) {
     }
 
     // If token has expired get a new one and re-send the API request
-    if (isset($json['error']) && $json['error'] == 'Expired token' && isset($json['expire']) && $json['expire'] == -1) {
+    if (isset($json['error']) OR $json['error'] == 'Expired token' OR (isset($json['expire']) && $json['expire'] == -1)) {
         $API_TOKEN = getTokenValue();
         $get['token'] = $API_TOKEN;
         $url = API_H."/$script.php?" . http_build_query($get);
@@ -297,15 +297,14 @@ function api_db($method, $action, $data = array()) {
 }
 
 // Alias for reporting API (use this for all reporting when implementing new features)
-function api_reporting($method, $post = array()) {
-    $get['method'] = $method;
-    return dxi("reporting", $get, $post, null);
+function api_reporting($method, $options = array()) {
+    return dxi("reporting", array('method'=>$method), $options, null);
 }
 
 // Alias for agent api
-function api_agent($action, $get = array()) {
-    $get['action'] = $action;
-    return dxi("agent", $get);
+function api_agent($action, $options = array()) {
+    $options['action'] = $action;
+    return dxi("agent", $options);
 }
 
 // ecnow api alias
@@ -314,10 +313,10 @@ function api_ecnow($method, $action, $data = array()) {
 }
 
 // ajax api alias
-function api_ajax($method, $get = array()) {
-    $get['method'] = $method;
-    $get['action'] = 'read';
-    return dxi("ajax", $get, null, null);
+function api_ajax($method, $options = array()) {
+    $options['method'] = $method;
+    $options['action'] = 'read';
+    return dxi("ajax", $options, null, null);
 }
 
 /**

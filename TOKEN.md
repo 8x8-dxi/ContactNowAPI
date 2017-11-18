@@ -33,14 +33,14 @@ GET https://api.contactnow.8x8.com/api/token.php?action=get&username=YOUR-API-US
 }
 ```
 **Note**<br>
-**A token is bound to the source IP. Attempting to use a token from a different IP will return the "Invalid token" error !**<br>
+**A token is bind to the source IP generating it. Attempting to use a token from a different IP will return the "Invalid token" error!**<br>
 **A token lifespan is 11 hours and 59 seconds**<br>
 The *expire* key which is a Unix timestamp indicates when the token will expire.
 Your returned token should be stored locally until you need to fetch a new one <br>
 
 
 ```javascript
-// Validate token request URL
+// You can request a token validation at any time using the following request
 
 GET token.php?action=validate&token=TOKEN-VALUE
 ```

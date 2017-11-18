@@ -53,7 +53,7 @@ a REST*ful* web service in the sense that you would have to append a script to t
 a certain set of methods and actions.
 
 ### API Endpoint Request Format 
-`API BASE URL/scriptName.php?`
+`API BASE URL/scriptName.php?token=MY-TOKEN&method=method&...`
 
 The API will by default return a JSON response for every request. If you speak XML and wish to consume the
 API in XML then you need to append `&formart=xml` to your requests.   
