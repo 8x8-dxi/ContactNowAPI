@@ -6,8 +6,17 @@
 
  */
 
+/**
+ * Define a log path for logging your request. It is highly recommended to log your request
+ * as we may some times request logs from you to help debug your issues/cases.
+ */
 define('LOG_PATH', '/tmp/api_imports/');
 define('LOG_FILE', '/tmp/contactNowAPI.log');
+/**
+ * This is required for storing your token data for a later use. It recommended that you
+ * do not abuse your allowable rate limits hence I strongly advice that you log your
+ * token data to prevent unnecessary token request.
+ */
 define('TOKEN_FILE', '/tmp/contactNowToken.log');
 
 /**
