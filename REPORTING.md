@@ -38,7 +38,7 @@ Params | Definition
 -----------------|-----------
 fields  | List of fields to be returned. The list must be a string concatenated by a comma (,) Syntax `&fields=qtable,qtype,qid,qnm,aid,anm,dsid,dsnm,urn,ddi,cli,tid`
 range | UTC Start and Stop Time. Syntax `&range=range=1493593200:1509580799` Note the colon (:) separator
-grouby | The grouping fields. See group list below. Syntax `&groupby=qtable,qnm` (Note all fields can be used)
+groupby | The grouping fields. See group list below. Syntax `&groupby=qtable,qnm` (Note all fields can be used)
 
 #### Fields and definitions
 

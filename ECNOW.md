@@ -77,18 +77,32 @@ Some of the terms used are sometimes misconstrued and loosely used and I will ex
     Outbound Queues must be assigned to a specific Campaign.  
 
 4. ### Outcomes / Outcomecodes
-4. ### Agents
+
+    Outcomes are a very important part of the dialler as they are not just used as flags for call outcomes but also play
+    a very important role of deciding how records behaves when loaded into the dialler.
+    
+    Typically outcomes have two main property which are 
+
+    **Complete** indicates if a records should be removed from the dialling list. and 
+    **incomplete** is the opposite of **complete** 
 
 
 
 ##### List of Methods
 *ecnow_datasets*<br>
 
-    These methods are used to manipulate datasets within a specified campaign.
+    These methods are used to manipulate datasets within a specified campaign. You can call this method
+    when you which to change the status 
 
-*ecnow_records*<br>
 *campaign_tables*<br>
+
+    This method is used for 
 *campaign_fields*<br>
+
+    
+*ecnow_records*<br>
+
+    
 *ecnow_outcomecodes*<br>
 
 ##### List of Actions
