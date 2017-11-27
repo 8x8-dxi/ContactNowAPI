@@ -301,15 +301,15 @@ Action
 
 Filters
 
-        One of these is required:
-        **table**: the campaign table name
-        **dataset**: the dataset id
+    One of these is required:
+    table: the campaign table name
+    dataset: the dataset id
 
-	id: match a record on its ID field
-	outcome: match outcomecode or comma seperated list of outcomecodes
-	agent: agent specific records
-	ddi: match any phone numbers in the HomePhone, WorkPhone, MobilePhone
-	search: array of search params eg `array("firstname" => "john", "lastname" => "c")`
+    id: match a record on its ID field
+    outcome: match outcomecode or comma seperated list of outcomecodes
+    agent: agent specific records
+    ddi: match any phone numbers in the HomePhone, WorkPhone, MobilePhone
+    search: array of search params eg `array("firstname" => "john", "lastname" => "c")`
 
 Defaults
 
