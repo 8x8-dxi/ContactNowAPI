@@ -100,7 +100,7 @@ Some of the terms used are sometimes misconstrued and loosely used and I will ex
 # List of Methods
 
 
-*ecnow_datasets*<br>
+## ecnow_datasets
 
 These methods is used to manipulate datasets within a specified campaign. You can call this method
 when you which to change the status of a dataset and its respective records.
@@ -178,7 +178,7 @@ Array
 ```
 
 
-*campaign_tables*<br>
+## campaign_tables
 
 This method is only used for reading Campaigns Table metadata
 
@@ -220,7 +220,7 @@ print_r($CampaignTables)
 ```
 
 
-*campaign_fields*
+## campaign_fields
 
 Get a list of fields from a specific campaign
 
@@ -289,7 +289,7 @@ print_r($myCampaignMetadata);
 
 ```
 
-*ecnow_records*<br>
+## ecnow_records
 
 This method allows for creating/reading/updating of records within a specified campaign/dataset
 
