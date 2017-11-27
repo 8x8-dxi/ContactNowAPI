@@ -5,7 +5,16 @@ Before delving deep into this API let's try to understand the important concept 
 components of the 8x8 ContactNow platform; without the overview knowledge you will
 find it challenging.
 
-## The terminologies
+# Table of Contents
+**[Terminologies](#terminologies)**<br>
+**[List of Methods](#list-ofethods)**<br>
+**[ecnow_datasets](#ecnow_datasets)**<br>
+**[campaign_tables](#campaign_tables)**<br>
+**[campaign_fields](#campaign_fields)**<br>
+**[ecnow_records](#ecnow_records)**<br>
+
+
+# Terminologies
 Some of the terms used are sometimes misconstrued and loosely used and I will explain!
 
 ### In order of relevance
@@ -88,7 +97,7 @@ Some of the terms used are sometimes misconstrued and loosely used and I will ex
 
 
 
-##### List of Methods
+# List of Methods
 
 
 *ecnow_datasets*<br>
@@ -96,11 +105,11 @@ Some of the terms used are sometimes misconstrued and loosely used and I will ex
 These methods is used to manipulate datasets within a specified campaign. You can call this method
 when you which to change the status of a dataset and its respective records.
 
-Action 
+Allowed Actions
 
-    *create*<br>
-    *read*<br>
-    *update*<br>
+    create
+    read
+    update
 
 Filters
 
@@ -211,13 +220,13 @@ print_r($CampaignTables)
 ```
 
 
-*campaign_fields*<br>
+*campaign_fields*
 
 Get a list of fields from a specific campaign
 
-Action 
+Allowed Action 
 
-    *read*<br>
+    read
 
 Filters
 
@@ -286,9 +295,9 @@ This method allows for creating/reading/updating of records within a specified c
 
 Action 
 
-    *create*<br>
-    *read*<br>
-    *update*<br>
+    create
+    read
+    update
 
 Filters
 
