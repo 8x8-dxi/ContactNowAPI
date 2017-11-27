@@ -89,27 +89,337 @@ Some of the terms used are sometimes misconstrued and loosely used and I will ex
 
 
 ##### List of Methods
+
+
 *ecnow_datasets*<br>
 
-    These methods are used to manipulate datasets within a specified campaign. You can call this method
-    when you which to change the status 
+These methods is used to manipulate datasets within a specified campaign. You can call this method
+when you which to change the status of a dataset and its respective records.
+
+Action 
+
+    *create*<br>
+    *read*<br>
+    *update*<br>
+
+Filters
+
+	qid: Queue id or comma separated list of queue id's
+	dataset: Dataset id
+	state: d_status value (HOLD|LIVE|EXPIRED)
+	table: the campaign table name datasets were imported into
+
+Defaults
+
+```json
+    {
+        "qid" : 0,
+        "dataset" : 0,
+        "d_status" : "HOLD",
+        "d_priority" : 0,
+        "notes" : "",
+        "reccount" : "",
+        
+    }
+```
+
+
+Examples using the __php__ [api-wrappers](https://github.com/8x8-dxi/ContactNowAPI/blob/master/includes/api-wrappers.php) script.
+
+```php
+
+// Initialise token
+
+getTokenValue();
+
+// Read all __LIVE__ datasets from campaign Willtest using dataset status (state)
+
+$filters = array('table' => 'Willtest', 'state' => 'HOLD');
+
+// To target a specific dataset
+// $filters = array('table' => 'Willtest', 'dataset' => 3);
+
+$Datasets = api_ecnow('ecnow_datasets', 'read', $filters);
+
+print_r($Datasets);
+/*
+Array
+(
+    [success] => 1
+    [total] => 6
+    [list] => Array
+        (
+            [0] => Array
+                (
+                    [dataset] => 351
+                    [qid] => 75674454
+                    [d_status] => LIVE
+                    [d_priority] => 0
+                    [notes] => Loaded by Importer 2.1
+                    [callbacks] => none
+                    [crm_account] => 0
+                    [crm_campaign] =>
+                    [description] => MyNumber
+                    [locked] => 0
+                )
+        )
+)
+*/
+
+```
+
 
 *campaign_tables*<br>
 
-    This method is used for 
+This method is only used for reading Campaigns Table metadata
+
+Examples using the __php__ [api-wrappers](https://github.com/8x8-dxi/ContactNowAPI/blob/master/includes/api-wrappers.php) script.
+
+
+```php
+
+
+// Get all campaign tables from my Contact Centre
+$CampaignTables = api_ecnow('campaign_tables', 'read');
+
+print_r($CampaignTables)
+/*
+ Array
+(
+    [success] => 1
+    [total] => 4
+    [list] => Array
+        (
+            [0] => Array
+                (
+                    [name] => APItestcampaign
+                )
+
+            [2] => Array
+                (
+                    [name] => BradOutbound
+                )
+            [3] => Array
+                (
+                    [name] => Willtest
+                )
+
+            [4]...
+        )
+ */
+
+```
+
+
 *campaign_fields*<br>
 
+Get a list of fields from a specific campaign
+
+Action 
+
+    *read*<br>
+
+Filters
+
+	table - the campaign table
+	name - the field name
+
+Fields
+
+	name - the name of the field in the database campaign table
+	standard_field - greater than zero if it was a standard field when created
+	group_name - the group the field is in eg Phone Numbers, Name and Address, System etc
+	size - the size of the field (usually number of allowed characters)
+	order - can be used to sort the fields into a specific order
+	picklist - if this field has a predefined set of values, references 'picklist' filter in 'picklist' method
+	table - the campaign table this field is in
+	type - the type of field ('smalltext'/'varchar', 'select', 'radio', 'checkbox', 'largetext')
+	prompt - an alias for the field, shown on the agent screens
+	readonly - disables the input on agent screens
+	search - allows search on the field on the inbound screen
+	hidden - does not show the field on agent screns
+
     
+Examples using the __php__ [api-wrappers](https://github.com/8x8-dxi/ContactNowAPI/blob/master/includes/api-wrappers.php) script.
+
+```php
+
+$filters = array('table' =>'Willtest' /*,'name' => 'id'*/);
+
+//$myCampaignMetadata = api_ecnow('campaign_fields', 'read', $filters);
+
+print_r($myCampaignMetadata);
+/*
+ Array
+(
+    [success] => 1
+    [total] => 33
+    [list] => Array
+        (
+            [0] => Array
+                (
+                    [position] => 1
+                    [table] => Willtest
+                    [name] => id
+                    [size] => 200
+                    [standard_field] => 1
+                    [group_name] => system
+                    [type] => int
+                    [prompt] => id
+                    [readonly] => Y
+                    [search] => yes
+                    [hidden] => N
+                    [hidden_on_script] => N
+                    [order] => 0
+                    [picklist] => 
+                    [required] => N
+                )
+            [1]...    
+        )
+ */
+
+```
+
 *ecnow_records*<br>
 
-    
-*ecnow_outcomecodes*<br>
+This method allows for creating/reading/updating of records within a specified campaign/dataset
 
-##### List of Actions
-*create*<br>
-*read*<br>
-*update*<br>
-*delete*<br>
+Action 
+
+    *create*<br>
+    *read*<br>
+    *update*<br>
+
+Filters
+
+        One of these is required:
+        **table**: the campaign table name
+        **dataset**: the dataset id
+
+	id: match a record on its ID field
+	outcome: match outcomecode or comma seperated list of outcomecodes
+	agent: agent specific records
+	ddi: match any phone numbers in the HomePhone, WorkPhone, MobilePhone
+	search: array of search params eg `array("firstname" => "john", "lastname" => "c")`
+
+Defaults
+
+```json
+
+    {
+        "id": 1,// The record ID/URN
+        "dataset": 1, // DatasetId
+        "agentref":0,// Agent ID the records is assigned to
+        "homephone": "",// String of phone number
+        "mobilephone": "",// String of phone number
+        "workphone": "", // String of phone number
+        "callback": "",// datetime default "0000-00-00 00:00:00"
+        "outcomecode": "",// Outcome code ID
+        "agent_specific": NULL,// 1 if the record MUST only be dialled by the **agentref**
+        "call_back_sametime": NULL,// 1 if the record MUST dialled the same time from the last time it was dialled.
+
+
+    }
+```
+Examples using the __php__ [api-wrappers](https://github.com/8x8-dxi/ContactNowAPI/blob/master/includes/api-wrappers.php) script.
+
+```php
+
+// Reading data for ecnow_records
+
+// Read ecnow_datasets
+$filters = array(
+    // Mandatory
+    'table' => 'Willtest',
+    // Other Options
+    'dataset' => 3,
+    // If you need to return data by callback datettime or process date. This filter works with tstart & tstop
+    'timetype' => 'callback', // 'callback' OR 'processdate'
+    'tstart' => '2017-11-01',
+    'tstart' => '2017-11-26 23:59:59',
+    'tstart' => '2017-11-26 23:59:59',
+    /*
+     * Records modes can be (active, live, callbacks, live-callbacks, unexpired
+     * active => all records with ProcessType IN ('HOLD: New Prospect', 'New Prospect', 'HOLD: NEEDSMOREWORK', 'NEEDSMOREWORK');
+     * live => ProcessType IN ('NEEDSMOREWORK', 'New Prospect')
+     * callbacks => ProcessType` IN ('HOLD: NEEDSMOREWORK', 'NEEDSMOREWORK')
+     * live-callbacks => ProcessType IN ('NEEDSMOREWORK')
+     * unexpired => ProcessType != 'EXPIRED'
+     */
+    'mode' => 'live',
+    /*
+     * You can search records using the search filter. Note that search is an array of field names and values
+     * you wish to search for
+     */
+    'search' => array(
+        'id' => 34,// suppying id will ignore every other search fields
+        //'phone' => '01234567890' // Will search all phone fields (HomePhone, WorkPhone, MobilePhone)
+        
+    ),
+    /*
+     * This filter only applies when using the 'search' filter. Defaults to wildecard search
+     * when supplied will search the exact values provided the you search list
+     */
+    'type' => 'exact',
+    /*
+     * Will search all phone fields (HomePhone, WorkPhone, MobilePhone)
+     */
+    'ddi' => '01234567890',
+    
+);
+
+$Records = api_ecnow('ecnow_records', 'read', $filters);
+
+print_r($Records);
+
+/*
+Array
+(
+    [success] => 1
+    [total] => 3
+    [list] => Array
+        (
+            [0] => Array
+                (
+                    [Address1] =>
+                    [Address2] =>
+                    [Address3] =>
+                    [Address4] =>
+                    [Address5] =>
+                    [Address6] =>
+                    [AgentRef] => 0
+                    [Agent_Specific] =>
+                    [appointment] =>
+                    [callback] => 0000-00-00 00:00:00
+                    [Call_Back_Notes] =>
+                    [Call_Back_Sametime] =>
+                    [Customer_Email] =>
+                    [datasetid] => 3
+                    [FirstName] =>
+                    [flgid] =>
+                    [HomePhone] =>
+                    [id] => 411
+                    [LastName] =>
+                    [loaddate] => 2015-01-23
+                    [MobilePhone] => 01234567890
+                    [notes] =>
+                    [outcomecode] => 100
+                    [Postcode] =>
+                    [ProcessDate] => 0000-00-00 00:00:00
+                    [ProcessType] => EXPIRED
+                    [sourcefile] => 01234567890 SMS Broadcast test.csv
+                    [Testy] =>
+                    [ThisIsATimeField] =>
+                    [Title] =>
+                    [URN] =>
+                    [VENDOR_URN] =>
+                    [WorkPhone] =>
+                )
+    )   
+)
+*/
+
+```
 
 
 ## ![Back to Index](https://github.com/8x8-dxi/ContactNowAPI/wiki)

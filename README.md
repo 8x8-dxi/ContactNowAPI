@@ -55,8 +55,8 @@ a certain set of methods and actions.
 ### API Endpoint Request Format 
 `https://[API BASE URL]/scriptName.php?token=MY-TOKEN&method=method&format=json&...`
 
-The API will by default return a JSON response for some request. If you speak XML and wish to consume the
-API in XML format then you need to supply `&formart=xml` to your requests.   
+The API will by default return XML response for some request. If you speak JSON and wish to consume the
+API in JSON format then you need to supply `&formart=json` to your requests.   
 
 
 ## High level API diagram

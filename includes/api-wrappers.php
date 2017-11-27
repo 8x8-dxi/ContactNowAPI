@@ -105,8 +105,17 @@ function get_auth_token() {
 function getTokenValue (){
     if(file_exists(TOKEN_FILE)){
         $response = file_get_contents(TOKEN_FILE);
+        if (empty($response)){
+            return get_auth_token();
+        }
         $tokenArray = json_decode($response, true);
-        if (!$tokenArray || (!isset($tokenArray['token']) && !isset($tokenArray['expire']))){
+        
+        if (isset($tokenArray['error'])){
+            throw new Exception(print_r($tokenArray, true));
+            unlink(TOKEN_FILE);
+            return;
+        }
+        if (!isset($tokenArray['token']) && !isset($tokenArray['expire'])){
             $tokenArray = get_auth_token();
         }
         // Check if the expire time has elapse
@@ -173,7 +182,7 @@ function dxi($script, $get = array(), $post = array(), $import = array()) {
     }
 
     // If token has expired get a new one and re-send the API request
-    if (isset($json['error']) OR $json['error'] == 'Expired token' OR (isset($json['expire']) && $json['expire'] == -1)) {
+    if ((isset($json['error']) && $json['error'] == 'Expired token') OR (isset($json['expire']) && $json['expire'] == -1)) {
         $API_TOKEN = getTokenValue();
         $get['token'] = $API_TOKEN;
         $url = API_H."/$script.php?" . http_build_query($get);
