@@ -336,7 +336,9 @@ Examples using the __php__ [api-wrappers](https://github.com/8x8-dxi/ContactNowA
 
 // Reading data for ecnow_records
 
-// Read ecnow_datasets
+// Filters includes all possible filters for reading records. All expect from 'table'
+// are optional
+
 $filters = array(
     // Mandatory
     'table' => 'Willtest',
@@ -411,7 +413,7 @@ Array
                     [LastName] =>
                     [loaddate] => 2015-01-23
                     [MobilePhone] => 01234567890
-                    [notes] =>
+                    [notes] => // Notes are callback notes.
                     [outcomecode] => 100
                     [Postcode] =>
                     [ProcessDate] => 0000-00-00 00:00:00
