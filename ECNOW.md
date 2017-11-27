@@ -102,7 +102,7 @@ Some of the terms used are sometimes misconstrued and loosely used and I will ex
 
 ## ecnow_datasets
 
-These methods is used to manipulate datasets within a specified campaign. You can call this method
+This methods is used to manipulate datasets within a specified campaign. You can call this method
 when you which to change the status of a dataset and its respective records.
 
 Allowed Actions
@@ -313,7 +313,7 @@ Filters
 
 Defaults
 
-```json
+```javascript
 
     {
         "id": 1,// The record ID/URN
