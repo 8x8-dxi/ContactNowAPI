@@ -544,7 +544,7 @@ depending on the dataset status. Please see example below for updating a record 
 from the dialler.
 
 
-Please [Outcome code on the](https://github.com/8x8-dxi/ContactNowAPI/blob/master/DATABASE.md#outcomecodes)
+Please see [Outcome code on the DATABASE endpoint](https://github.com/8x8-dxi/ContactNowAPI/blob/master/DATABASE.md#outcomecodes)
 ```php
 /*
     Here is an example for updating a lead
