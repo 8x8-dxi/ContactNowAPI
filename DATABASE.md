@@ -11,26 +11,28 @@ depending on the *complete* value (Y/N). Below.
 
 Manipulate disposition / outcome codes.
 
-Filters<br>
-	uid: match outcome<br>
-	mode: set to system to return just the internal system outcome codes.<br>
+Filters
 
-Fields<br>
-	outcome - The outcome id<br>
-	description - Outcome label<br>
-	dmc - Y | N<br>
-	sale - Y | N<br>
-	complete - Y | N<br>
-	answerphone - Y | N<br>
+	uid: match outcome<
+	mode: set to system to return just the internal system outcome codes.
 
-defaults
+Fields
 
-	<outcome>0</outcome><br>
-	<description /><br>
-	<dmc /><br>
-	<sale /><br>
-	<complete /><br>
-	<answerphone>0</answerphone /><br>
+	outcome - The outcome id
+	description - Outcome label
+	dmc - Y | N
+	sale - Y | N
+	complete - Y | N
+	answerphone - Y | N
+
+Defaults fields
+
+	<outcome>0</outcome>
+	<description />
+	<dmc />
+	<sale />
+	<complete />
+	<answerphone>0</answerphone />
 
 Example for reading Outcomecode<br>
 
