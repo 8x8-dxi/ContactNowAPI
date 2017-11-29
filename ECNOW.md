@@ -132,7 +132,7 @@ Defaults
 ```
 
 
-Examples using the __php__ [api-wrappers](https://github.com/8x8-dxi/ContactNowAPI/blob/master/includes/api-wrappers.php) script.
+Examples using the  *php*  [api-wrappers](https://github.com/8x8-dxi/ContactNowAPI/blob/master/includes/api-wrappers.php) script.
 
 ```php
 
@@ -181,7 +181,7 @@ Array
 
 This method is only used for reading Campaigns Table metadata
 
-Examples using the __php__ [api-wrappers](https://github.com/8x8-dxi/ContactNowAPI/blob/master/includes/api-wrappers.php) script.
+Examples using the  *php*  [api-wrappers](https://github.com/8x8-dxi/ContactNowAPI/blob/master/includes/api-wrappers.php) script.
 
 
 ```php
@@ -248,7 +248,7 @@ Fields
 	hidden - does not show the field on agent screns
 
     
-Examples using the __php__ [api-wrappers](https://github.com/8x8-dxi/ContactNowAPI/blob/master/includes/api-wrappers.php) script.
+Examples using the  *php*  [api-wrappers](https://github.com/8x8-dxi/ContactNowAPI/blob/master/includes/api-wrappers.php) script.
 
 ```php
 
@@ -329,7 +329,7 @@ Defaults
 
     }
 ```
-Examples using the __php__ [api-wrappers](https://github.com/8x8-dxi/ContactNowAPI/blob/master/includes/api-wrappers.php) script.
+Examples using the  *php*  [api-wrappers](https://github.com/8x8-dxi/ContactNowAPI/blob/master/includes/api-wrappers.php) script.
 
 ### Reading data from ecnow_records
 ```php
@@ -431,7 +431,7 @@ Array
 
 ```
 ### Creating new lead on ContactNow 
-Using the __php__ [api-wrappers](https://github.com/8x8-dxi/ContactNowAPI/blob/master/includes/api-wrappers.php) script.
+Using the  *php*  [api-wrappers](https://github.com/8x8-dxi/ContactNowAPI/blob/master/includes/api-wrappers.php) script.
 
 ```php
 // Mandatory fields When compiling you data.
@@ -536,14 +536,68 @@ Array
 
 
 ### Updating lead on ContactNow
-Using the __php__ [api-wrappers](https://github.com/8x8-dxi/ContactNowAPI/blob/master/includes/api-wrappers.php) script.
+Using the *php* [api-wrappers](https://github.com/8x8-dxi/ContactNowAPI/blob/master/includes/api-wrappers.php) script.
 
 The update action of the ecnow_records can be used to change a record/lead information.
 It can also be used in conjunction with outcomecode to remove/add a record to the dialler
-depending on the dataset status. Please see expample below for updating a record and also removing a record
+depending on the dataset status. Please see example below for updating a record and also removing a record
 from the dialler.
 
+
+Please [Outcome code on the] https://github.com/8x8-dxi/ContactNowAPI/blob/master/DATABASE.md#outcomecodes
 ```php
+/*
+    Here is an example for updating a lead
+    You must supply the record ID and the dataset you wish to update
+*/
+
+// This example explain how you would remove a record from the dialler by supplying a complete outcome code created by you.
+$lead = array(
+    // Mandatory fields
+    'id' => 2499265,
+    'dataset' => 3,
+    // The record WILL BE removed from the dialler if the outcome code complete value is set to 'Y'
+    'outcomecode' => 510456,
+    'notes_append' => 'Setting record to Complete.'
+);
+
+$result = api_ecnow('ecnow_records', 'update', $lead);
+
+print_r($result);
+/*
+Result of a successful update
+
+Array
+(
+    [success] => 1
+    [total] => 1
+    [bad] => 0
+    [info] => Record is NOT live on the dialer due having a complete outcome.
+)
+Result of a failed update for a mismatch record id and the dataset id
+Array
+(
+    [success] => 1
+    [total] => 0
+    [bad] => 1
+    [error] => Record id [2499265] does not exist.
+)
+*
+
+
+// Example for setting adjusting callback datetime.
+
+$lead = array(
+    // Mandatory fields
+    'id' => 967849,
+    'dataset' => 3,
+    'callback' => '2017-12-01 10:00:00',
+    'notes_append' => 'Setting record to Complete.'
+);
+
+$result = api_ecnow('ecnow_records', 'update', $lead);
+
+print_r($result);
 
 
 
