@@ -586,7 +586,7 @@ Array
     [bad] => 1
     [error] => Record id [2499265] does not exist.
 )
-*
+*/
 
 
 // Example for setting adjusting callback datetime.
