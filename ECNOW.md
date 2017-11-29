@@ -140,7 +140,7 @@ Examples using the  *php*  [api-wrappers](https://github.com/8x8-dxi/ContactNowA
 
 getTokenValue();
 
-// Read all __LIVE__ datasets from campaign Willtest using dataset status (state)
+// Read all LIVE datasets from campaign Willtest using dataset status (state)
 
 $filters = array('table' => 'Willtest', 'state' => 'HOLD');
 
