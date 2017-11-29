@@ -26,7 +26,7 @@ Some of the terms used are sometimes misconstrued and loosely used and I will ex
 
 2. ### Dataset
 
-    Is as a subset of records within a Campaign. It is a child of a Campaign. 
+    Is as a subset of records within a Campaign. It is a child of a Campaign and thus used to identifi=y a campign when reading/creating/updating a record. 
     Datasets have three main properties which are used to control status and dial order of its records as children.
 
     #### Properties
