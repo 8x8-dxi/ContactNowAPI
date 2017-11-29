@@ -431,7 +431,7 @@ Array
 
 ```
 ### Creating new lead on ContactNow 
-    using the __php__ [api-wrappers](https://github.com/8x8-dxi/ContactNowAPI/blob/master/includes/api-wrappers.php) script.
+Using the __php__ [api-wrappers](https://github.com/8x8-dxi/ContactNowAPI/blob/master/includes/api-wrappers.php) script.
 
 ```php
 // Mandatory fields When compiling you data.
@@ -536,7 +536,7 @@ Array
 
 
 ### Updating lead on ContactNow
-    using the __php__ [api-wrappers](https://github.com/8x8-dxi/ContactNowAPI/blob/master/includes/api-wrappers.php) script.
+Using the __php__ [api-wrappers](https://github.com/8x8-dxi/ContactNowAPI/blob/master/includes/api-wrappers.php) script.
 
 The update action of the ecnow_records can be used to change a record/lead information.
 It can also be used in conjunction with outcomecode to remove/add a record to the dialler
