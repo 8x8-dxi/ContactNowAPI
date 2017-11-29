@@ -11,33 +11,36 @@ depending on the *complete* value (Y/N). Below.
 
 Manipulate disposition / outcome codes.
 
-Filters
-	uid: match outcome
-	mode: set to system to return just the internal system outcome codes.
+Filters<br>
+	uid: match outcome<br>
+	mode: set to system to return just the internal system outcome codes.<br>
 
-Fields
-	outcome - The outcome id
-	description - Outcome label
-	dmc - Y | N
-	sale - Y | N
-	complete - Y | N
-	answerphone - Y | N
+Fields<br>
+	outcome - The outcome id<br>
+	description - Outcome label<br>
+	dmc - Y | N<br>
+	sale - Y | N<br>
+	complete - Y | N<br>
+	answerphone - Y | N<br>
 
 defaults
-	<outcome>0</outcome>
-	<description />
-	<dmc />
-	<sale />
-	<complete />
-	<answerphone>0</answerphone />
 
-Example for reading Outcomecode
+	<outcome>0</outcome><br>
+	<description /><br>
+	<dmc /><br>
+	<sale /><br>
+	<complete /><br>
+	<answerphone>0</answerphone /><br>
+
+Example for reading Outcomecode<br>
+
 Using the *php* [api-wrappers](https://github.com/8x8-dxi/ContactNowAPI/blob/master/includes/api-wrappers.php) script.
 
 ```php
 
 $myOutcomecode= api_db('outcomecodes', 'read');
 print_r($myOutcomecode);
+
 /**
  Array
 (
@@ -66,7 +69,7 @@ print_r($myOutcomecode);
                     [do_not_call] => N
                     [answerphone] => 0
                 )
-            [2]...    
+            //[2]...    
  */
 ```
 
