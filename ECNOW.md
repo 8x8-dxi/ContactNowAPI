@@ -88,13 +88,12 @@ Some of the terms used are sometimes misconstrued and loosely used and I will ex
 4. ### Outcomes / Outcomecodes
 
     Outcomes are a very important part of the dialler as they are not just used as flags for call outcomes but also play
-    a very important role of deciding how records behaves when loaded into the dialler.
+    a very important role of deciding how records behave when loaded into the dialler.
     
-    Typically outcomes have two main property which are 
+    Typically outcomes have many properties but one of those (Complete) is very important when loading leads to be dialled 
 
-    **Complete** indicates if a records should be removed from the dialling list. and 
-    **incomplete** is the opposite of **complete** 
-
+    **Complete** which is denoted as either __Y__ or __N__ to indicates if a records should be removed from the dialling list.
+    Setting a record with an outcome code of complete = Y will push the record onto the dialler provided the dataset status == LIVE
 
 
 # List of Methods
