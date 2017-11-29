@@ -10,7 +10,7 @@
  * Define a log path for logging your request. It is highly recommended to log your request
  * as we may some times request logs from you to help debug your issues/cases.
  */
-define('LOG_PATH', '/tmp/api_imports/');
+define('API_LOG_DIR', '/tmp/api_imports/');
 define('LOG_FILE', '/tmp/contactNowAPI.log');
 /**
  * This is required for storing your token data for a later use. It recommended that you
@@ -20,7 +20,8 @@ define('LOG_FILE', '/tmp/contactNowAPI.log');
 define('TOKEN_FILE', '/tmp/contactNowToken.log');
 
 /**
- * Make a curl request to a url with any request types
+ * Make a curl request to a url with any request types. Make sure this script and 
+ * read and write to /tmp/api_imports/. otherwise your POST files will not be parsed.
  * @param string $url API Base URL including the script name
  * @param array $post POST data
  * @param string $import loose type
@@ -34,16 +35,16 @@ function post_request($url, $post = array(), $import = "") {
     if (!empty($import)) {
         $id = uniqid();
         $filename = "import-$id.json";
-        $dir_name = LOG_PATH;
+        $dir_name = API_LOG_DIR;
 
         if (!is_dir($dir_name)) {
             mkdir($dir_name);
         }
-        $uploadfile = "$dir_name/$filename";
-        $fh = fopen($uploadfile, "w");
+        $uploadfile = $dir_name.$filename;
+        $fh = fopen($uploadfile, "wr");
         fputs($fh, $import);
         fclose($fh);
-
+        
         $post['easycall'] = "@$uploadfile";
         $post['filename'] = $filename;
     }
@@ -182,9 +183,9 @@ function dxi($script, $get = array(), $post = array(), $import = array()) {
     }
 
     // If token has expired get a new one and re-send the API request
-    if ((isset($json['error']) && $json['error'] == 'Expired token') OR (isset($json['expire']) && $json['expire'] == -1)) {
-        $API_TOKEN = getTokenValue();
-        $get['token'] = $API_TOKEN;
+    if ((isset($json['error']) && ($json['error'] == 'Expired token' OR $json['error'] == 'Unknown token')) OR (isset($json['expire']) && $json['expire'] == -1)) {
+        $API_TOKEN = get_auth_token();
+        $get['token'] = $API_TOKEN['token'];
         $url = API_H."/$script.php?" . http_build_query($get);
         $response = post_request($url, $post, $import);
 

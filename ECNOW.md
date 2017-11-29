@@ -331,9 +331,9 @@ Defaults
 ```
 Examples using the __php__ [api-wrappers](https://github.com/8x8-dxi/ContactNowAPI/blob/master/includes/api-wrappers.php) script.
 
+### Reading data from ecnow_records
 ```php
 
-// Reading data for ecnow_records
 
 // Filters includes all possible filters for reading records. All expect from 'table'
 // are optional
@@ -402,7 +402,7 @@ Array
                     [appointment] =>
                     [callback] => 0000-00-00 00:00:00
                     [Call_Back_Notes] =>
-                    [Call_Back_Sametime] =>
+                    [Call_Back_Sametime] => // Notes are callback notes added by the agent
                     [Customer_Email] =>
                     [datasetid] => 3
                     [FirstName] =>
@@ -412,7 +412,7 @@ Array
                     [LastName] =>
                     [loaddate] => 2015-01-23
                     [MobilePhone] => 01234567890
-                    [notes] => // Notes are callback notes.
+                    [notes] => // This is a system generated notes/log
                     [outcomecode] => 100
                     [Postcode] =>
                     [ProcessDate] => 0000-00-00 00:00:00
@@ -430,6 +430,76 @@ Array
 */
 
 ```
+### Posting records to using ecnow_records
 
+```php
+
+
+// Lead list may contain multiple record
+$leads = array(
+    array(
+        // Mandatory fields
+        'dataset' => 3, // Dataset status MUST be NOT BE EXPIRED
+        // ONE OF THESE PHONE FIELDS MUST BE SUPPLIED.
+        'HomePhone' => '',
+        'WorkPhone' => '',
+        'MobilePhone' => '01234567890',
+        
+        'Title' => 'Mr.',
+        'FirstName' => 'Jon',
+        'LastName' => 'Dow',
+        'Address1' => '123 Street Name',
+        'Address2' => 'Address line 2',
+        'Address3' => 'Town',
+        'Address4' => 'City',
+        'Address5' => 'State',
+        'Address6' => 'Country',
+        'Postcode' => 'Postal Code',
+        // Optional fields for deciding how the record should be dialled
+        'callback' => '2017-12-10 10:00:00',
+        'AgentRef' => 503314,// Pass a prefared agent id you want the call to be assigned to
+        'outcomecode' => 109, // This can be any other outcome code with a non Complete flag set to 'N'
+        'Call_Back_Notes' => 'This is a note for agent to see',
+        'notes_append' => date('Y-m-d H:i:s'). ': Add a log'
+    )
+);
+
+
+$Records = api_ecnow('ecnow_records', 'create', $leads);
+
+print_r($Records);
+/*
+ * A returned response will include the following keys and values
+    success => 1/0 (1=true, 0=false) 
+    total => 0 to n. This is the total number of record that was successfully inersted 
+    [bad] => 0 to n. Number of records that may have failed validattion
+    [key] => Record ID inserted
+    [info] => Depending on the status of the dataset the returned infor might either be 
+             Record is LIVE on the dialer. OR Record NOT live on the dialer.
+
+Array
+(
+    [success] => 1
+    [total] => 1
+    [bad] => 0
+    [key] => 2499265
+    [info] => Record NOT live on the dialer. 
+)
+*/
+
+/*
+ * Possible error that may occur which mean that your code did not POST a file
+ * to the API. 
+ * Make sure that your code have the right access to write the data to API_LOG_DIR
+ * Array
+(
+    [success] =>
+    [error] => No file uploaded. Missing 'easycall' section?
+)
+ */
+ 
+
+
+```
 
 ## ![Back to Index](https://github.com/8x8-dxi/ContactNowAPI/wiki)
