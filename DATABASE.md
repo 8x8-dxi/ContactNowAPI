@@ -43,7 +43,7 @@ Using the *php* [api-wrappers](https://github.com/8x8-dxi/ContactNowAPI/blob/mas
 $myOutcomecode= api_db('outcomecodes', 'read');
 print_r($myOutcomecode);
 
-/**
+/*
  Array
 (
     [success] => 1
