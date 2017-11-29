@@ -430,12 +430,20 @@ Array
 */
 
 ```
-### Posting records to using ecnow_records
+### Posting leads to ContactNow using using the __php__ [api-wrappers](https://github.com/8x8-dxi/ContactNowAPI/blob/master/includes/api-wrappers.php) script.
 
 ```php
+// Mandatory fields When compiling you data.
 
+'dataset' => 1 // Dataset status MUST be NOT BE EXPIRED. Please read Dataset section of this page.
 
-// Lead list may contain multiple record
+// ONE OF THESE PHONE FIELDS MUST BE SUPPLIED.
+'HomePhone' => '',
+'WorkPhone' => '',
+'MobilePhone' => '01234567890',
+
+// Build a List of leads to be pushed. 
+
 $leads = array(
     array(
         // Mandatory fields
@@ -457,13 +465,38 @@ $leads = array(
         'Postcode' => 'Postal Code',
         // Optional fields for deciding how the record should be dialled
         'callback' => '2017-12-10 10:00:00',
-        'AgentRef' => 503314,// Pass a prefared agent id you want the call to be assigned to
+        'AgentRef' => 503314,// Pass a preferred agent id you want the call to be assigned to
         'outcomecode' => 109, // This can be any other outcome code with a non Complete flag set to 'N'
         'Call_Back_Notes' => 'This is a note for agent to see',
         'notes_append' => date('Y-m-d H:i:s'). ': Add a log'
     )
+    //array(...),
+    //array(...),
+    //array(...)
 );
 
+// Can also POST a single lead/record like so
+/*
+$leads = array(
+        // Mandatory fields
+        'dataset' => 3, // Dataset status MUST be NOT BE EXPIRED
+        // ONE OF THESE PHONE FIELDS MUST BE SUPPLIED.
+        'HomePhone' => '',
+        'WorkPhone' => '',
+        'MobilePhone' => '01234567890',
+        
+        'Title' => 'Mr.',
+        'FirstName' => 'Jon',
+        'LastName' => 'Dow',
+        'Address1' => '123 Street Name',
+        'Address2' => 'Address line 2',
+        'Address3' => 'Town',
+        'Address4' => 'City',
+        'Address5' => 'State',
+        'Address6' => 'Country',
+        'Postcode' => 'Postal Code',
+);
+*/
 
 $Records = api_ecnow('ecnow_records', 'create', $leads);
 
