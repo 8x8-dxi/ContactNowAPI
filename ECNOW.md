@@ -36,7 +36,7 @@ Some of the terms used are sometimes misunderstood and loosely used, I will expl
 
         1. *HOLD*
 
-            In HOLD state, all it's records the dataset will not be removed from the dialler.
+            In HOLD state, all records in the dataset are removed from the dialler.
 
         2. *LIVE*
 
@@ -46,7 +46,7 @@ Some of the terms used are sometimes misunderstood and loosely used, I will expl
 
         3. *EXPIRED*
 
-            All records have been expired within a dataset and are no longer available to be dialled. 
+            All records have been closed and are no longer available to be dialled. 
             You will also not be able to edit or reopen the record once expired. 
             
     2. Priority
