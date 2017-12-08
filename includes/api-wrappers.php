@@ -6,12 +6,9 @@
 
  */
 
-/**
- * Define a log path for logging your request. It is highly recommended to log your request
- * as we may some times request logs from you to help debug your issues/cases.
- */
-define('API_LOG_DIR', '/tmp/api_imports/');
 define('LOG_FILE', '/tmp/contactNowAPI.log');
+ini_set('display_errors', 'On');
+error_reporting(E_ALL);
 /**
  * This is required for storing your token data for a later use. It recommended that you
  * do not abuse your allowable rate limits hence I strongly advice that you log your
@@ -20,8 +17,6 @@ define('LOG_FILE', '/tmp/contactNowAPI.log');
 define('TOKEN_FILE', '/tmp/contactNowToken.log');
 
 /**
- * Make a curl request to a url with any request types. Make sure this script and 
- * read and write to /tmp/api_imports/. otherwise your POST files will not be parsed.
  * @param string $url API Base URL including the script name
  * @param array $post POST data
  * @param string $import loose type
@@ -31,36 +26,12 @@ function post_request($url, $post = array(), $import = "") {
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:'));
     curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8');
-
-    if (!empty($import)) {
-        $id = uniqid();
-        $filename = "import-$id.json";
-        $dir_name = API_LOG_DIR;
-
-        if (!is_dir($dir_name)) {
-            mkdir($dir_name);
-        }
-        $uploadfile = $dir_name.$filename;
-        $fh = fopen($uploadfile, "wr");
-        fputs($fh, $import);
-        fclose($fh);
-        
-        $post['easycall'] = "@$uploadfile";
-        $post['filename'] = $filename;
-    }
-
-    foreach ($post as $field => $value) {
-        if (is_array($value)) {
-            $post[$field] = json_encode($value);
-        }
-    }
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+    curl_setopt($ch, CURLOPT_URL,$url);
+    curl_setopt($ch, CURLOPT_POST,1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $import);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     $postResult = curl_exec($ch);
     curl_close($ch);
-    if (isset($uploadfile)) {
-        @unlink($uploadfile);
-    }
     return $postResult;
 }
 
@@ -160,6 +131,7 @@ function dxi($script, $get = array(), $post = array(), $import = array()) {
     $get['token'] = $API_TOKEN;
     $get['format'] = 'json';
     $get['campaign'] = CCID;
+    $get['raw'] = 1;
 
     $url = API_H."/$script.php?" . http_build_query($get);
     log_debug("API Call: \nURL: $url\n" . print_r($post, true) . print_r($import, true));
