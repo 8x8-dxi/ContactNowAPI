@@ -15,18 +15,17 @@ find it challenging.
 
 
 # Terminologies
-Some of the terms used are sometimes misconstrued and loosely used and I will explain!
+Some of the terms used are sometimes misunderstood and loosely used, I will explain!
 
 ### In order of relevance
 
 1. ### Campaign (Not the actual __campaign__ notation)
 
-    Is a database table holding one or multiple datasets of records. These datasets and their records 
-    can only dial from this one campaign. 
+    Is a database table holding one or multiple dataset of records.
 
 2. ### Dataset
 
-    Is as a subset of records within a Campaign. It is a child of a Campaign and thus used to identifi=y a campign when reading/creating/updating a record. 
+    Is as a set of records grouped together by an identifier within a Campaign. Since it's a child of a Campaign, it is used to identify a Campaign table when reading, creating, or updating a record. 
     Datasets have three main properties which are used to control status and dial order of its records as children.
 
     #### Properties
@@ -37,7 +36,8 @@ Some of the terms used are sometimes misconstrued and loosely used and I will ex
 
         1. *HOLD*
 
-            The dataset and all of its records will not be enlisted on the dialler for dialling.
+            In HOLD state, all records in the dataset are removed from the dialler.
+
         2. *LIVE*
 
             All records in the dataset are on the dialler ready to start dialling.
@@ -45,7 +45,8 @@ Some of the terms used are sometimes misconstrued and loosely used and I will ex
             status for the records to start dialling.
 
         3. *EXPIRED*
-            All records have been expired within a dataset and are no longer available to be dialled. 
+
+            All records have been closed and are no longer available to be dialled. 
             You will also not be able to edit or reopen the record once expired. 
             
     2. Priority
