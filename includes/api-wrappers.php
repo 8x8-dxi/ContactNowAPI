@@ -28,7 +28,11 @@ function post_request($url, $post = array(), $import = "") {
     curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8');
     curl_setopt($ch, CURLOPT_URL,$url);
     curl_setopt($ch, CURLOPT_POST,1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $import);
+    if (!empty($post)) {
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+    }else{
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $import);
+    }
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     $postResult = curl_exec($ch);
     curl_close($ch);
@@ -198,7 +202,7 @@ function build_request_data(&$action, &$get, &$post, &$import, &$data) {
         }
         $import = $data;
     } else {
-        $post = $data;
+        $post = $import = $data;
     }
 }
 
