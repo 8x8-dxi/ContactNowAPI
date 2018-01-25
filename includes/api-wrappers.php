@@ -99,9 +99,8 @@ function getTokenValue (){
         // Check if the expire time has elapse
         $expireAt = new DateTime('@'.$tokenArray['expire']);
         $now = new DateTime(date("Y-m-d H:i:s"));
-        $timeLapse = $now->diff($expireAt);
         // Get a fresh token
-        if ($timeLapse->h === 0 && $timeLapse->i <= 1){
+        if ($expireAt->getTimestamp() <= $now->getTimestamp()){
             $tokenArray = get_auth_token();
         }
     } else {
