@@ -81,8 +81,10 @@ function get_auth_token() {
 function getTokenValue (){
     if(file_exists(TOKEN_FILE)){
         $response = file_get_contents(TOKEN_FILE);
+        
         if (empty($response)){
-            return get_auth_token();
+            $tokenArray =  get_auth_token();
+            return $tokenArray['token'];
         }
         $tokenArray = json_decode($response, true);
         
