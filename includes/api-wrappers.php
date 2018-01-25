@@ -161,6 +161,7 @@ function dxi($script, $get = array(), $post = array(), $import = array()) {
 
     // If token has expired get a new one and re-send the API request
     if ((isset($json['error']) && ($json['error'] == 'Expired token' OR $json['error'] == 'Unknown token')) OR (isset($json['expire']) && $json['expire'] == -1)) {
+        // The aim for calling get_auth_token() it to force creation of a new token so as to overwrite the outdated token data stored in the token temp file
         $API_TOKEN = get_auth_token();
         $get['token'] = $API_TOKEN['token'];
         $url = API_H."/$script.php?" . http_build_query($get);
