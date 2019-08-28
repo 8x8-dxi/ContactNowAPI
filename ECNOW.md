@@ -344,7 +344,7 @@ $filters = array(
     'table' => 'Willtest',
     // Other Options
     'dataset' => 3,
-    // If you need to return data by callback datettime or process date. This filter works with tstart & tstop
+    // If you need to return data by callback datetime or process date. This filter works with tstart & tstop
     'timetype' => 'callback', // 'callback' OR 'processdate'
     'tstart' => '2017-11-01',
     'tstart' => '2017-11-26 23:59:59',
@@ -363,12 +363,12 @@ $filters = array(
      * you wish to search for
      */
     'search' => array(
-        'id' => 34,// suppying id will ignore every other search fields
+        'id' => 34,// supplying id will ignore every other search fields
         //'phone' => '01234567890' // Will search all phone fields (HomePhone, WorkPhone, MobilePhone)
         
     ),
     /*
-     * This filter only applies when using the 'search' filter. Defaults to wildecard search
+     * This filter only applies when using the 'search' filter. Defaults to wildcard search
      * when supplied will search the exact values provided the you search list
      */
     'type' => 'exact',
@@ -506,10 +506,10 @@ print_r($Records);
 /*
  * A returned response will include the following keys and values
     success => 1/0 (1=true, 0=false) 
-    total => 0 to n. This is the total number of record that was successfully inersted 
-    [bad] => 0 to n. Number of records that may have failed validattion
+    total => 0 to n. This is the total number of record that was successfully inserted 
+    [bad] => 0 to n. Number of records that may have failed validation
     [key] => Record ID inserted
-    [info] => Depending on the status of the dataset the returned infor might either be 
+    [info] => Depending on the status of the dataset the returned information might either be 
              Record is LIVE on the dialer. OR Record NOT live on the dialer.
 
 Array
