@@ -117,6 +117,7 @@ Filters
 	dataset: Dataset id
 	state: d_status value (HOLD|LIVE|EXPIRED)
 	table: the campaign table name datasets were imported into
+        description : Dataset name
 
 Defaults
 
